@@ -1,0 +1,178 @@
+{% extends "fumetsu/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load utils_extras %}
+{% block content %}
+
+		<div class="col-12 col-lg-8 col-pd-0 ep-info float-left">
+			<div class="d-block d-md-none">
+				<div class="col-12 text-center">
+					<img class="ser-m-img" src="{{ posts.image.url }}">
+				</div>
+			</div>			
+			<div class="d-none d-md-block">
+				<div class="col-12 ser-b-col">
+					<img class="ser-img" src="{{ posts.image_bg.url }}">
+				<div class="col-3 ser-c-col">
+					<img class="ser-cover" src="{{ posts.image.url }}">
+				</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="col-12 col-pd-0">
+			<h2>{{posts.key_map.title}}</h2>
+
+			<div id="tags">
+				Tagi:
+				{% for tag in tags %}
+	    			{{ tag }},
+				
+				{% endfor %}
+			</div>
+				<p>{{posts.content}}</p>
+         {% if napisy and user.is_authenticated %}
+	    <a class="float-right" href="/media/{{napisy}}">Napisy</a>
+    {% endif %}
+			</div>
+
+		</div>
+
+		<div clas='ep_box'>
+			{% for e in ep %}
+	    		<a class="epis" href="{% url 'ep-nm' posts.web_name e.ep_nr %}">
+					<div class="col-12 col-lg-8 {% if forloop.counter0|divisibleby:2 %}alt-bg{% endif %} episodes float-left">
+		    			<div class="float-left">
+		    				{% if user|has_group:"Informator" or user|has_group:"Uploader" or user|has_group:"content_creator" %}
+								id: {{ e.ep_nr|floatformat }} 
+							{% endif %}
+							Odcinek: {{ e.ep_title|floatformat }}
+						</div>
+		    			<div class="float-right d-none d-md-block">{{ e.date_postsed|date:"d.m.o" }}</div>
+               <div>{{e.title}}</div>                              
+		    		</div>
+				</a>
+			
+			{% endfor %}
+ 	<div class="col-12 col-lg-8 float-left">   
+  {% for family in family_anime %}
+   <div class="col-6 col-md-3 other">
+		  <a href="{% url 'anime-nm' family.key_map.web_name %}">
+      <img class="oth-img" src="{{ family.image.url }}">     
+    			{{family.key_map.title}}
+			    <div class="series-title-s">{{family.desc}}</div>
+		  </a>
+   </div>
+	{% endfor %}
+		</div>
+   </div>
+		<div class="col-12 col-lg-8 float-left">
+			<div class="comments">
+			<h5>Sekcja komentarzy:</h5>
+			{% if user.is_authenticated %}
+			<form method="POST">
+				{% csrf_token %}
+				<div class="box_cr_com">
+					<div class="com_cr_cont">
+						{{ form|crispy }}
+					</div>
+					<button class="btn btn-op float-right" name="com_cr_bt">Wyślij komentarz</button>
+				</div>
+				<div class="clearfix"></div>
+			</form>
+			{% endif %}
+			</div>
+			<div id="Section_comm">
+				{% for com in comment %}
+			    	<div class="box_com ">
+			    		<div class="com_aut">			
+							<img class="com_img float-left" src="{{ com.author.profile.image.url }}">
+							<div class="com_nick float-left">
+								<a href="{% url 'user-inf' com.author.profile.web_name %}" style="color:{{com.color}}">
+									{{com.author.profile.nick}}
+								</a>
+							</div>
+
+							{% if com.author == user %}
+							<div class="dropleft float-right">
+								<a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<i class="fas fa-ellipsis-v"></i>
+								</a>
+							        <div class="dropdown-menu com_edit" aria-labelledby="navbarDropdown">
+										<div class="text-center">
+											<a href="" class="bt_com_sh" data-toggle="modal" data-target="#modalComRe">Edytuj</a>
+										</div>
+										<div class="text-center">
+											<a href="" class="bt_com_del" data-toggle="modal" data-target="#modalComDel">Usuń</a>
+										</div>
+							        </div>
+								</div>
+								{% endif %}
+
+							<div class="com_date float-right d-none d-md-block">{{com.date_posted}}</div>
+						</div>
+						<div class="com_cont">
+							
+							<div class="com_val">
+								
+								<br>{{com.content}}
+							</div>		
+							<input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
+						</div>
+					</div>	
+				{% endfor %}
+			</div>
+
+
+<div class="modal fade" id="modalComRe" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Edytuj Komentarz</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <form method="POST">
+                {% csrf_token %}
+                <div class="box_up_com">
+                    <div class="com_up_cont cont_edit">
+                        {{ com_ed|crispy }}
+                        <input type="hidden" name="idd" value="" class="pdk">
+                    </div>
+                    <button class="btn btn-op btn-edit" name="com_up_bt">Edytuj</button>
+                </div>
+            </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalComDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Usuń komentarz</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <h5 class="modal-title w-100 font-weight-bold">Na pewno chcesz usnąć komentarz?</h5>
+        <div class="com_up_div">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="box_up_com">
+                    <div class="com_up_cont">
+                        <input type="hidden" name="idd" value="" class="pdk">
+                        </div>
+                    <button class="btn btn-danger btn-edit" name="com_up_del">Usuń</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+</div>
+
+		</div>
+
+{% endblock content %}

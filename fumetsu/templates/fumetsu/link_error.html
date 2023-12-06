@@ -1,0 +1,23 @@
+{% extends "fumetsu/base.html" %}
+{% load static %}
+{% block content %}
+
+    {% for post in posts %}
+
+        <div class="col-12 col-lg-8 new-ep alt-bg float-left">
+            <a href="{% url 'ep-nm' post.key_map_ep.key_map.web_name post.key_map_ep.ep_nr %}">
+            <h4>Anime: {{ post.key_map_ep.key_map }}</h4>
+            <p>odc: {{ post.key_map_ep.ep_title}}</p>
+            <p>ilosc: {{ post.ilosc}}</p>
+            </a>
+            <form method="POST">
+		        {% csrf_token %}
+                <input type="hidden" name="hrfd" value={{post.key_map_ep.key_map.id_anime}} class="pdk">
+		        <button class="btn btn-op" type="submit" name="ply_error">usuń skargę</button>
+	        </form>
+        </div>
+
+        <hr/>
+
+    {% endfor %}
+{% endblock content %}

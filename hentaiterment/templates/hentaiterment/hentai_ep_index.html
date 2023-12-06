@@ -1,0 +1,41 @@
+{% extends "hentaiterment/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+	<div class="col-12 col-lg-8 float-left">
+	<a href="{% url 'kh-hentai' anime_nm.web_name %}"><h2>{{anime_nm.title}} {{odc_html.title|floatformat}}</h2></a>
+	{% if prev %}
+		<a class="float-left" href="{% url 'kh-hentai-odc' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i> POPRZEDNI</a>
+	{% endif %}
+
+	{% if next %}
+		<a class="float-right" href="{% url 'kh-hentai-odc' next.key_map.web_name next.ep_nr %}">NASTĘPNY <i class="fas fa-chevron-right"></i></a>
+	{% endif %}
+	</div>
+	<div class="col-12 col-lg-8 float-left">
+		<div class="d-flex justify-content-center">
+		{% for links in link %}
+			<div class="ep-players ">
+				<button class="btn-ply btn btn-op" value="{{forloop.counter}}">
+					{{links.web_site}}
+				</button>
+			</div>
+		{% endfor %}
+			{% if odc_html.napisy %}
+				<div class="ep-players ">
+					<button class="btn-ply btn btn-op" value="-">
+						<a href="/media/{{odc_html.napisy}}">Napisy</a>
+					</button>
+				</div>
+			{% endif %}
+	</div>
+	{% for links in link %}
+	<div class="video_cont">
+		<iframe src="{{links.link}}" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>	
+	</div>
+	{% endfor %}
+	</div>
+
+
+{% endblock content %}

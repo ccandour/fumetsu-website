@@ -1,0 +1,186 @@
+{% extends "fumetsu/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load utils_extras %}
+{% block content %}
+
+<script src="{% static 'fumetsu/js/web_ep.js' %}"></script>
+<div class="col-12 col-lg-8 float-left">
+	<img class="user-img float-left mb-3" src="{{ f_user.profile.image.url  }}">
+    {% if user|has_group:"Moderator" %}   
+    <div class="text-center">
+    <a href="" data-toggle="modal" data-target="#BanForm" style="color:{{f_user.color}}"><h2>{{ f_user.profile.nick }} </h2></a>
+    </div> 
+        
+    {% else %}  
+	<h2 style="color:{{f_user.color}}">{{ f_user.profile.nick }} </h2>
+    {% endif %}
+	<p>{{ f_user.profile.description|safe  }}</p>
+
+</div>
+
+{% if user.is_authenticated%}
+  {% if user == f_user %}
+			<a class="nav-link" href="{% url 'profile' %}">edytuj</a>
+  {% endif %}
+{% endif %}
+
+<div class="col-12 col-lg-8 float-left">
+    <div class="coment_sectiona">
+    Sekcja komentarzy:
+        <div id="Section_comm_ser">
+                {% for com in com_ser %}        
+                    <div class="box_com ">
+                        <div class="com_aut">           
+                            <div class="com_nick float-left"><a href="{% url 'anime-nm' com.key_map.web_name %}">{{com.key_map.title}}</a></div>
+
+                            {% if com.author == user %}
+                            <div class="dropleft float-right">
+                                <a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                    <div class="dropdown-menu com_edit" aria-labelledby="navbarDropdown">
+                                        <div class="text-center">
+                                            <a href="" class="bt_com_sh" data-toggle="modal" data-target="#modalComRe">Edytuj</a>
+                                        </div>
+                                        <div class="text-center">
+                                            <a href="" class="bt_com_del" data-toggle="modal" data-target="#modalComDel">Usuń</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                            <div class="com_date float-right">{{com.date_posted}}</div>
+                        </div>
+                        <div class="com_cont">
+                            <a href="{% url 'anime-nm' com.key_map.web_name %}">
+                            <div class="com_val">
+                                
+                                <br>{{com.content}}
+                            </div> 
+                            </a>     
+                            <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
+                        </div>
+                    </div>    
+            {% endfor %}
+        </div>
+
+        <div id="Section_comm_ep">
+                {% for com in com_ep %}
+                    <div class="box_com ">
+                        <div class="com_aut">
+                            <div class="com_nick float-left"><a href="{% url 'ep-nm' com.key_map_ep.key_map.web_name com.key_map_ep.ep_nr %}">{{com.key_map_ep.key_map.title}} odcinek: {{com.key_map_ep.ep_title|floatformat}}</a></div>
+
+                            {% if com.author == user %}
+                            <div class="dropleft float-right">
+                                <a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                    <div class="dropdown-menu com_edit" aria-labelledby="navbarDropdown">
+                                        <div class="text-center">
+                                            <a href="" class="bt_com_sh" data-toggle="modal" data-target="#modalComRe">Edytuj</a>
+                                        </div>
+                                        <div class="text-center">
+                                            <a href="" class="bt_com_del" data-toggle="modal" data-target="#modalComDel">Usuń</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                            <div class="com_date float-right">{{com.date_posted}}</div>
+                        </div>
+                        <div class="com_cont">
+                            <a href="{% url 'ep-nm' com.key_map_ep.key_map.web_name com.key_map_ep.ep_nr %}">
+                            <div class="com_val">
+
+                                <br>{{com.content}}
+                            </div>
+                            </a>
+                            <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
+                        </div>
+                    </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+{% if user|has_group:"Moderator" %}  
+<div class="modal fade" id="BanForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">okres bana</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <form method="POST">
+                {% csrf_token %}
+                <div class="box_up_com">
+                    <div class="com_up_cont cont_edit">
+                        {{ ban_form|crispy }}
+                        <input type="hidden" name="idd" value="" class="pdk">
+                    </div>
+                    <button class="btn btn-op btn-edit" name="com_up_bt">Ustaw.</button>
+                </div>
+            </form> 
+        
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="modal fade" id="modalComRe" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Edytuj Komentarz</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <form method="POST">
+                {% csrf_token %}
+                <div class="box_up_com">
+                    <div class="com_up_cont cont_edit">
+                        {{ com_ed|crispy }} 
+                        <input type="hidden" name="idd" value="" class="pdk">
+                    </div>
+                    <button class="btn btn-op btn-edit" name="com_up_bt">Edytuj</button>
+                </div>
+            </form>         
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalComDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Usuń komentarz</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <h5 class="modal-title w-100 font-weight-bold">Na pewno chcesz usnąć komentarz?</h5>
+        <div class="com_up_div">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="box_up_com">
+                    <div class="com_up_cont">                                                           
+                        <input type="hidden" name="idd" value="" class="pdk">
+                        </div>
+                    <button class="btn btn-danger btn-edit" name="com_up_del">Usuń</button>
+                </div>
+            </form> 
+        </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+{% endblock content %}

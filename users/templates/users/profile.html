@@ -1,0 +1,43 @@
+{% extends "fumetsu/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="col-12 col-lg-8 float-left">
+
+	<form method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+
+		<fieldset class="form-group">
+			<legend class="border-bottom mb-4">Informacje o profilu {{users.username}}</legend>
+			{{nick_form|crispy}}
+			{{users.name}}
+			{{users.email}}
+			{{ p_form|crispy }}
+			</br>
+			dozwolone tagi:
+			{% for o in r_valid %}
+				{{o}},
+			{% endfor %}
+			
+		</fieldset>
+		<div class="form-group">
+			<button class="btn btn-op user-btn" type="submit">Update</button>
+			
+		</div>
+	</form>
+	<div class="dropleft float-right">
+		<div class="text-center">
+			<a href="{% url 'password_change' %}">
+				<button class="btn btn-op user-btn">Zmień hasło</button>
+			</a>
+		</div>
+
+	</div>
+	<a href="{% url 'user-inf' user.profile.web_name %}">
+		<button class="btn btn-op user-btn">Sprawdź profil</button>
+	</a>
+
+
+</div>
+{% endblock content %}

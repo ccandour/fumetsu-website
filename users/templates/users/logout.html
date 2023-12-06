@@ -1,0 +1,15 @@
+{% extends "fumetsu/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="col-12 col-md-9 col-lg-8 float-left">
+	<div class="content-section">
+		<h3>Zostałeś wylogowany.</h3>
+		<div class="border-top pt-3">
+			<small class="text-muted float-right">
+				możesz się znów zalogować
+				<a href="{% url 'login' %}">Login</a>
+			</small>
+		</div>
+	</div>
+</div>
+{% endblock content %}

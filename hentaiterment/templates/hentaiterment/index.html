@@ -1,0 +1,27 @@
+{% extends "hentaiterment/base.html" %}
+{% load static %}
+{% block content %}
+
+	<h2 >NAJNOWSZE HENTAIE</h2>
+
+	{% for post in anime %}
+
+
+		<div class="col-12 col-lg-8 new-ep alt-bg float-left">
+			<div class="new-date d-none d-lg-block">{{ post.odc_nm.date_posted|date:"d.m.o" }}</div>
+			<div class="col-12 col-sm-5 float-left">
+				<img class="new-img float-left" src="{{ post.image.url }}">
+			</div>
+			<div class="col-12 col-sm-7 pt-1 float-right">
+				<a href="{% url 'kh-hentai' post.odc_nm.key_map.web_name %}"><h4>{{post.odc_nm.key_map.title}}</h4></a>
+            	<p>Odcinek {{post.odc_nm.ep_title|floatformat}} - {{ post.odc_nm.title }}</p>
+				<p>{{ post.content|truncatewords:25|safe}}</p>
+				<br>
+			</div>
+			<a class="new-btn" href="{% url 'kh-hentai-odc' post.odc_nm.key_map.web_name post.odc_nm.ep_nr %}">
+				<button type="button" class="btn btn-op new-btn float-right">Oglądaj</button>
+				</a>
+		</div>
+
+	{% endfor %}
+{% endblock content %}

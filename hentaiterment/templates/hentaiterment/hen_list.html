@@ -1,0 +1,31 @@
+{% extends "hentaiterment/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="col-12 col-lg-8 float-left anime-list">
+	<h2 >Lista Hentai</h2>
+    {% if not_found %}
+        {{not_found}}
+    {% else %}
+    	{% for post in an_list %}
+                <div class="col-6 col-md-4 col-lg-3 ser-col float-left">
+                    <div class="series">
+                        <a href="{% url 'kh-hentai' post.key_map.web_name %}">
+                            <img class="ser-img" src="{{ post.image.url }}">
+                            {% if post.key_map.title|length <= 35 %}
+                                <div class="series-title">{{ post.key_map.title}}</div>
+                            {% elif post.key_map.title|length > 50 %}
+                                <div class="series-title-s">{{ post.key_map.title}}</div>
+                            {% elif post.key_map.title|length > 35 %}
+                                <div class="series-title-m">{{ post.key_map.title}}</div>
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+
+    	{% endfor %}
+    {% endif %}
+</div>
+
+{% endblock content %}

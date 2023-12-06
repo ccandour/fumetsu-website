@@ -1,0 +1,38 @@
+{% extends "fumetsu/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="col-12 col-lg-8 float-left">
+  <div class="content-section">
+    <form method="POST">
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Dołącz do nas</legend>
+          {% csrf_token %}
+          {% for field in form %}
+          <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.help_text %}
+              <small >{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+              <p style="color: red">{{ error }}</p>
+            {% endfor %}
+          </p>
+          {% endfor %}
+
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-op" type="submit">Rejestracja</button>
+
+      </div>
+    </form>
+    <div class="border-top pt-3">
+      <small class="text-muted float-right">
+        Masz już u nas konto?
+        <a class="ml-2" href="{% url 'login' %}">Zaloguj się</a>
+      </small>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,106 @@
+{% extends "fumetsu/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+{{test}}
+<div class="col-12 col-md-9 col-lg-8 float-left">  
+          Szukaj
+  <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="float-left">{{ filter.name }}</div>
+
+        <button class="btn-none float-right" name="upd_urls" type="submit"><div class="ser"><i class="fas fa-search"></i></div></button>
+        <button class="btn-none float-right" name="ses_cl"><div class="ser"><i class="fas fa-times"></i></div></button>
+        <a class="btn-none float-right" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Tagi
+        </a>
+        <div class="clearfix"></div>
+        <div class="space"></div>
+        <div class="collapse" id="collapseExample">
+                {% for field in filter.ch_box %}
+                    {{field}}
+                {% endfor %}
+
+                    <form method="POST" name="page_stack">
+        {% csrf_token %}
+        <div>
+        Wyswietlaj
+        <button class="btn-none" name="page_12"><i>12</i></button>
+        <button class="btn-none" name="page_24"><i>24</i></button>
+        <button class="btn-none" name="page_48"><i>48</i></button>
+        anime
+        </div>
+    </form>
+        </div>
+  </form>
+
+</div>
+<div class="col-12 col-lg-8 float-left anime-list">
+	<h2 >Lista Anime</h2>
+    {% if not_found %}
+        {{not_found}}
+    {% else %}
+    	{% for post in an_list %}
+            {% if ses_bool %}
+                {% for pos in post %}
+            		<div class="col-6 col-md-4 col-lg-3 ser-col float-left">
+            			<div class="series">
+                            <a href="{% url 'anime-nm' pos.key_map.web_name %}">
+                                <img class="ser-img" src="{{ pos.image.url }}">
+                                 {% if pos.key_map.title|length <= 35 %}
+                                <div class="series-title">{{ pos.key_map.title}}</div>
+                            {% elif pos.key_map.title|length > 50 %}
+                                <div class="series-title-s">{{ pos.key_map.title}}</div>
+                            {% elif pos.key_map.title|length > 35 %}
+                                <div class="series-title-m">{{ pos.key_map.title}}</div>
+                            {% endif %}
+                            </a>
+                        </div>
+                	</div>
+                {% endfor %}
+            {% else %}
+                <div class="col-6 col-md-4 col-lg-3 ser-col float-left">
+                    <div class="series">
+                        <a href="{% url 'anime-nm' post.key_map.web_name %}">
+                            <img class="ser-img" src="{{ post.image.url }}">
+                            {% if post.key_map.title|length <= 35 %}
+                                <div class="series-title">{{ post.key_map.title}}</div>
+                            {% elif post.key_map.title|length > 50 %}
+                                <div class="series-title-s">{{ post.key_map.title}}</div>
+                            {% elif post.key_map.title|length > 35 %}
+                                <div class="series-title-m">{{ post.key_map.title}}</div>
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+    	{% endfor %}
+    {% endif %}
+</div>
+<div class="col-12 col-lg-8 float-left">    
+    <div class="text-center controls">
+    <form method="POST">
+        {% csrf_token %}
+        {% if page|add:"-1" > 0 %}
+        <button class="btn btn-op" name="page_ch" value={{page|add:"-1"}}><i class="fas fa-chevron-left"></i></button>
+        {% endif %}
+
+        {% if page|add:"-2" > 0 %}
+        <button class="btn btn-op" name="page_ch" value="1">1</button>
+        {% endif %}
+        {% if page|add:"-1" > 0 %}
+        <button class="btn btn-op" name="page_ch" value={{page|add:"-1"}}>{{page|add:"-1"}}</button>
+        {% endif %}
+        <div class="btn btn-current">{{page}}</div>
+        {% if page|add:"+1" <= page_max %}
+        <button class="btn btn-op" name="page_ch" value={{page|add:"+1"}}>{{page|add:"+1"}}</button>
+        {% endif %}
+        {% if page|add:"+2" <= page_max %}
+        <button class="btn btn-op" name="page_ch" value={{page|add:"+2"}}>{{page|add:"+2"}}</button>
+        {% endif %}
+        {% if page|add:"+1" <= page_max %}
+        <button class="btn btn-op" name="page_ch" value={{page|add:"+1"}}><i class="fas fa-chevron-right"></i></button>
+        {% endif %}
+    </form>
+</div>
+{% endblock content %}
