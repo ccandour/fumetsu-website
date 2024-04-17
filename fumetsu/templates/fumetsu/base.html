@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load utils_extras %}
 <!DOCTYPE html>
-<html xml:lang="pl" lang="pl">
+<html xml:lang="pl" lang="pl" data-bs-theme="dark" data-bs-core="modern">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
@@ -11,8 +11,11 @@
 	<title>Fumetsu</title>
 	<link rel="Shortcut icon" href="" />
 
-    <!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Halfmoon CSS -->
+    <link href="{% static 'blog/halfmoon.min.css' %}" rel="stylesheet">
+
+    <!-- Halfmoon modern core theme -->
+    <link href="{% static 'blog/halfmoon.modern.css' %}" rel="stylesheet">
 
 	<!--CSS-->
   <link rel="stylesheet" type="text/css" href={% static 'fumetsu/css/style.css' %}>
@@ -35,69 +38,65 @@
 <body>
 <!-- Główny Kontener -->
 
+<!-- Navbar -->
+<header class="site-header">
+    <nav class="navbar navbar-expand-md" >
+        <div class="container-fluid justify-content-center">
+            <a class="navbar-brand" href="{% url 'fumetsu-home' %}"><img class="logo" src="{% static 'fumetsu/img/logo.png' %}" alt="Fumetsu"/></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'fumetsu-list' %}">Anime</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'fumetsu-info' %}">Aktualności</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'fumetsu-about' %}">O nas</a>
+                    </li>
+
+                    <!-- Dropdown usera -->
+                    <li class="nav-item dropdown nav-ico">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end mt-md-2 rounded-top-0">
+                            {% if user.is_authenticated%}
+                            <li><a class="dropdown-item" href="{% url 'user-inf' user.profile.web_name %}">Profil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Wyloguj</a></li>
+                            {% else %}
+                            <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                            <li><a class="dropdown-item" href="{% url 'register' %}">Rejestracja</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+
+                    <!-- Dropdown staff -->
+                    {% if user|has_group:"Informator" or user|has_group:"Uploader" or user|has_group:"content_creator" %}
+                    <li class="nav-item dropdown nav-ico">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-cog"></i>
+                        </a>
+                    <ul class="dropdown-menu dropdown-menu-end mt-md-2 rounded-top-0">
+                        <li><a class="dropdown-item" href="{% url 'Cre-info' %}">Dodaj posta</a></li>
+                        <li><a class="dropdown-item" href="{% url 'Cre-ani'  %}">Nowy Odc</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ed-an' %}">Popraw Anime</a></li>
+                        <li><a class="dropdown-item" href="{% url 'lnk-err' %}">Spr skargi url</a></li>
+                    </ul>
+                  {% endif %}
+                </ul>
+          </div>
+        </div>
+    </nav>
+</header>
+
 <div id="main-container">
-	<!-- Nagłówek -->
-	<header class="menu container-fluid">
-<nav class="navbar navbar-expand-lg menu">
-	<a class="navbar-brand" href="{% url 'fumetsu-home' %}"><img class="logo" src="{% static 'fumetsu/img/logo.png' %}" alt="Fumetsu"/></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-    <i class="fas fa-bars"></i>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarToggler">
-	<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-		<li class="nav-item m-btn">
-			<a class="nav-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
-		</li>
-		<li class="nav-item m-btn">
-			<a class="nav-link" href="{% url 'fumetsu-list' %}">Anime</a>
-		</li>
-<!-- 		<li class="nav-item m-btn">
-			<a class="nav-link" href="{% url 'fumetsu-info' %}">Aktualności</a>
-		</li> -->
-		<li class="nav-item m-btn">
-			<a class="nav-link" href="{% url 'fumetsu-about' %}">O nas</a>
-		</li>
-		<li class="nav-item dropdown nav-ico">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-user"></i>
-        </a>
-        <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdown">
-        
-		{% if user.is_authenticated%}
-			<a class="nav-link" href="{% url 'user-inf' user.profile.web_name %}">Profil</a>
-			<a class="nav-link" href="{% url 'logout' %}">Wyloguj</a>
-		{% else %}
-			<a class="nav-link" href="{% url 'login' %}">Login</a>
-			<a class="nav-link" href="{% url 'register' %}">Rejestracja</a>
-		{% endif %}
-        </div>
-      </li>
-      {% if user|has_group:"Informator" or user|has_group:"Uploader" or user|has_group:"content_creator" %}
-      <li class="nav-item dropdown nav-ico">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-cog"></i>
-        </a>
-        <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdown">
-		{% if user|has_group:"Informator" %}	
-			<a class="nav-link" href="{% url 'Cre-info' %}">Dodaj posta</a>
-		{% endif %}	
-		{% if user|has_group:"Uploader" %}	
-			<a class="nav-link" href="{% url 'Cre-ani'  %}">Nowy Odc</a>
-		{% endif %}	
-		{% if user|has_group:"content_creator" %}	
-			<a class="nav-link" href="{% url 'Cre-ser' %}">Nowa Seria</a>
-		{% endif %}	
-		{% if user|has_group:"Uploader" %}	
-			<a class="nav-link" href="{% url 'ed-an' %}">Popraw Anime</a>
-		{% endif %}
-			<a class="nav-link" href="{% url 'lnk-err' %}">Spr skargi url</a>
-        </div>
-      </li>
-      {% endif %}
-	</ul>
-  </div>
-</nav>
-	</header>
 
 	<!-- Slajder -->
 
@@ -148,34 +147,35 @@
 				</div>
 			</div>
 		</section>
-	</div>
+</div>
 		<!--Stopka-->
 
-	<div class="clearfix"></div>
-		<footer class="ftr container-fluid">
-			<div class="row justify-content-center">
- 				<div class="col-12 col-lg-10">
- 					<div class="float-left">
- 						<a href="https://www.facebook.com/fumetsusubs/" target="_blank"><div class="float-left ftr-ico ftr-fb"><i class="fab fa-facebook-f"></i></div></a>
- 						<a href="https://discord.gg/t5phVKT" target="_blank"><div class="float-left ftr-ico ftr-dc"><i class="fab fa-discord"></i></div></a>
- 						<a href="https://patronite.pl/fumetsu" target="_blank"><div class="float-left ftr-ico ftr-pt"><img src="{% static 'fumetsu/img/patronite.png' %}" class="pt"></div></a>
- 					</div>
- 					<div class="float-right p-2 d-none d-md-block">© Fumetsu 2020 All Rights Reserved</div>
-  				</div>
-  			</div>
-		</footer>
+<div class="clearfix"></div>
+<footer class="ftr container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="float-left">
+                <a href="https://www.facebook.com/fumetsusubs/" target="_blank"><div class="float-left ftr-ico ftr-fb"><i class="fab fa-facebook-f"></i></div></a>
+                <a href="https://discord.gg/t5phVKT" target="_blank"><div class="float-left ftr-ico ftr-dc"><i class="fab fa-discord"></i></div></a>
+                <a href="https://patronite.pl/fumetsu" target="_blank"><div class="float-left ftr-ico ftr-pt"><img src="{% static 'fumetsu/img/patronite.png' %}" class="pt"></div></a>
+            </div>
+            <div class="float-right p-2 d-none d-md-block">© Fumetsu 2020 All Rights Reserved</div>
+        </div>
+    </div>
+</footer>
 	
- <div id="consent-popup" class="hidden text-center">
+<div id="consent-popup" class="hidden text-center">
     Ta strona wykorzystuje pliki cookie. Korzystając z niej, akceptujesz je. <a id="accept" href=""><button class="btn btn-op ml-4">Rozumiem</button></a>
 </div>
 	
-	<!-- JS Bootrap -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<!-- JS Bootrap -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
-    <!-- js -->
-	<script src="{% static 'fumetsu/js/script.js' %}"></script>
-	<script src="{% static 'fumetsu/js/web_ep.js' %}"></script>
+<!-- js -->
+<script src="{% static 'fumetsu/js/script.js' %}"></script>
+<script src="{% static 'fumetsu/js/web_ep.js' %}"></script>
+
 </body>
 </html>
