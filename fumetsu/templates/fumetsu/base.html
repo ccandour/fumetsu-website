@@ -12,10 +12,10 @@
 	<link rel="Shortcut icon" href="" />
 
     <!-- Halfmoon CSS -->
-    <link href="{% static 'blog/halfmoon.min.css' %}" rel="stylesheet">
+    <link href="{% static 'fumetsu/css/halfmoon.min.css' %}" rel="stylesheet">
 
     <!-- Halfmoon modern core theme -->
-    <link href="{% static 'blog/halfmoon.modern.css' %}" rel="stylesheet">
+    <link href="{% static 'fummesu/css/halfmoon.modern.css' %}" rel="stylesheet">
 
 	<!--CSS-->
   <link rel="stylesheet" type="text/css" href={% static 'fumetsu/css/style.css' %}>
@@ -40,21 +40,23 @@
 
 <!-- Navbar -->
 <header class="site-header">
-    <nav class="navbar navbar-expand-md" >
+    <nav class="navbar navbar-expand-md" style="background-color: var(--bs-content-bg); border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
         <div class="container-fluid justify-content-center">
-            <a class="navbar-brand" href="{% url 'fumetsu-home' %}"><img class="logo" src="{% static 'fumetsu/img/logo.png' %}" alt="Fumetsu"/></a>
+            <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
+                <img class="d-inline-block align-text-top" src="{% static 'fumetsu/img/logo.png' %}" height="36"/>
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
+                <span class="fas fa-bars"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarToggler">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'fumetsu-home' %}">Strona Główna</a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'fumetsu-list' %}">Anime</a>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'fumetsu-list' %}">Anime</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'fumetsu-info' %}">Aktualności</a>
                     </li>
                     <li class="nav-item">
@@ -62,7 +64,7 @@
                     </li>
 
                     <!-- Dropdown usera -->
-                    <li class="nav-item dropdown nav-ico">
+                    <li class="nav-item dropdown nav-ico pt-0">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <i class="fas fa-user"></i>
                         </a>

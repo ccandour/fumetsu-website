@@ -117,7 +117,7 @@ h2
 
 .carousel
 {
-	
+
 }
 
 .karuzela
@@ -194,7 +194,7 @@ h2
 	padding: 10px 0;
 	background-position: center;
  	background-repeat: no-repeat;
- 	background-size: cover; 
+ 	background-size: cover;
 }
 .new-date {
     position: absolute;
@@ -279,7 +279,7 @@ h2
 #schedule{
 /*color: #667ac1;*/
 font-size: 26px;
-text-align: center;	
+text-align: center;
 }
 .series{
 	text-align: center;
@@ -439,7 +439,7 @@ margin: 0 5px;
   padding-top: 56.25%;
   position: relative;
 }
- 
+
 .video_cont iframe {
    border: 0;
    height: 100%;
@@ -515,7 +515,7 @@ margin: 0 5px;
  font-size: 12px;
  text-align:center;
 }
- 
+
 .oth-img{
     width: 100%;
     padding: 5px 10px;
