@@ -1,5 +1,4 @@
 {% load static %}
-{% load staticfiles %}
 {% load utils_extras %}
 <!DOCTYPE html>
 <html xml:lang="pl" lang="pl" data-bs-theme="dark" data-bs-core="modern">
@@ -62,9 +61,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'fumetsu-about' %}">O nas</a>
                     </li>
+                </ul>
+                <ul class="navbar-nav ms-auto d-flex">
 
                     <!-- Dropdown usera -->
-                    <li class="nav-item dropdown nav-ico pt-0">
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <i class="fas fa-user"></i>
                         </a>
@@ -81,8 +82,8 @@
 
                     <!-- Dropdown staff -->
                     {% if user|has_group:"Informator" or user|has_group:"Uploader" or user|has_group:"content_creator" %}
-                    <li class="nav-item dropdown nav-ico">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item dropdown nav-ico pt-0">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-display="static">
                           <i class="fas fa-cog"></i>
                         </a>
                     <ul class="dropdown-menu dropdown-menu-end mt-md-2 rounded-top-0">
@@ -172,8 +173,10 @@
 	
 <!-- JS Bootrap -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+
 
 <!-- js -->
 <script src="{% static 'fumetsu/js/script.js' %}"></script>

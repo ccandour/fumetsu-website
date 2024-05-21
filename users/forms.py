@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
 
-from captcha.fields import ReCaptchaField, ReCaptchaV2Checkbox 
+from django_recaptcha.fields import ReCaptchaField, ReCaptchaV2Checkbox
 import datetime
 
 class SignupForm(UserCreationForm):

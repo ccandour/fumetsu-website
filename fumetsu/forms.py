@@ -5,7 +5,7 @@ from .models import *
 from anime.models import Odc_name, Tags_map, Post, Anime_url, Tags
 
 from django.forms.models import modelformset_factory
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 class Form_upload(forms.ModelForm):
 

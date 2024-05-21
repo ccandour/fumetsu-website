@@ -4,8 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from fumetsu.models import Series_comment, Anime_list
 from .models import Tags_map, Episode_comment
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
-from captcha.fields import ReCaptchaField, ReCaptchaV2Checkbox 
+from django.utils.translation import gettext_lazy as _
+from django_recaptcha.fields import ReCaptchaField, ReCaptchaV2Checkbox
 
 class CreateComment(forms.ModelForm):
 
