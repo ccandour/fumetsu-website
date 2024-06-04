@@ -557,3 +557,7 @@ margin: 0 5px;
 .tlm{
     cursor: pointer;
 }
+
+.fs-6 {
+	font-size: 2rem !important;
+}
