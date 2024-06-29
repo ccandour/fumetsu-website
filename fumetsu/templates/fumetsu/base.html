@@ -17,10 +17,12 @@
     <link href="{% static 'fummesu/css/halfmoon.modern.css' %}" rel="stylesheet">
 
 	<!--CSS-->
-    <link rel="stylesheet" type="text/css" href={% static 'fumetsu/css/style.css' %}>
+    <link href="{% static 'fumetsu/css/style.css' %}" rel="stylesheet">
 
-    <!--popup-->
-    <!--<link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">-->
+    <!--JS-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
@@ -44,22 +46,22 @@
             <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
                 <img class="d-inline-block align-text-top" src="{% static 'fumetsu/img/logo.png' %}" height="36"/>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fas fa-bars"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active fs-6" href="{% url 'fumetsu-home' %}">Strona Główna</a>
+                        <a class="nav-link active menu-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'fumetsu-list' %}">Anime</a>
+                        <a class="nav-link active menu-link" href="{% url 'fumetsu-list' %}">Anime</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'fumetsu-info' %}">Aktualności</a>
+                        <a class="nav-link menu-link" href="{% url 'fumetsu-info' %}">Aktualności</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'fumetsu-about' %}">O nas</a>
+                        <a class="nav-link menu-link" href="{% url 'fumetsu-about' %}">O nas</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto d-flex">
@@ -171,11 +173,6 @@
     Ta strona wykorzystuje pliki cookie. Korzystając z niej, akceptujesz je. <a id="accept" href=""><button class="btn btn-op ml-4">Rozumiem</button></a>
 </div>
 	
-<!-- JS Bootrap -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-
 
 <!-- js -->
 <script src="{% static 'fumetsu/js/script.js' %}"></script>
