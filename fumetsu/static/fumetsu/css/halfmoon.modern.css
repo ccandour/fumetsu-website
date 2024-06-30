@@ -12,7 +12,7 @@
 [data-bs-core=modern] {
 	/* Gray */
 
-	--bs-slate-hue: 216;
+	--bs-slate-hue: 288;
 	--bs-slate-saturation: 20%;
 
 	/* Light gray */
@@ -59,40 +59,40 @@
 
 	/* Primary */
 
-	--bs-primary-hue: var(--bs-navy-hue);
-	--bs-primary-saturation: var(--bs-navy-saturation);
-	--bs-primary-100-hsl: var(--bs-navy-100-hsl);
-	--bs-primary-200-hsl: var(--bs-navy-200-hsl);
-	--bs-primary-300-hsl: var(--bs-navy-300-hsl);
-	--bs-primary-400-hsl: var(--bs-navy-400-hsl);
-	--bs-primary-500-hsl: var(--bs-navy-500-hsl);
-	--bs-primary-600-hsl: var(--bs-navy-600-hsl);
-	--bs-primary-700-hsl: var(--bs-navy-700-hsl);
-	--bs-primary-800-hsl: var(--bs-navy-800-hsl);
-	--bs-primary-900-hsl: var(--bs-navy-900-hsl);
-	--bs-primary-100: var(--bs-navy-100);
-	--bs-primary-200: var(--bs-navy-200);
-	--bs-primary-300: var(--bs-navy-300);
-	--bs-primary-400: var(--bs-navy-400);
-	--bs-primary-500: var(--bs-navy-500);
-	--bs-primary-600: var(--bs-navy-600);
-	--bs-primary-700: var(--bs-navy-700);
-	--bs-primary-800: var(--bs-navy-800);
-	--bs-primary-900: var(--bs-navy-900);
-	--bs-primary-hsl: var(--bs-navy-hsl);
-	--bs-primary: var(--bs-navy);
-	--bs-primary-foreground-hsl: var(--bs-navy-foreground-hsl);
-	--bs-primary-foreground: var(--bs-navy-foreground);
-	--bs-primary-text-emphasis-hsl: var(--bs-navy-text-emphasis-hsl);
-	--bs-primary-text-emphasis: var(--bs-navy-text-emphasis);
-	--bs-primary-hover-bg: var(--bs-navy-hover-bg);
-	--bs-primary-active-bg: var(--bs-navy-active-bg);
-	--bs-primary-bg-subtle: var(--bs-navy-bg-subtle);
-	--bs-primary-border-subtle: var(--bs-navy-border-subtle);
-	--bs-primary-checkbox-svg: var(--bs-navy-checkbox-svg);
-	--bs-primary-dash-svg: var(--bs-navy-dash-svg);
-	--bs-primary-radio-svg: var(--bs-navy-radio-svg);
-	--bs-primary-switch-svg: var(--bs-navy-switch-svg);
+	--bs-primary-hue: var(--bs-purple-hue);
+	--bs-primary-saturation: var(--bs-purple-saturation);
+	--bs-primary-100-hsl: var(--bs-purple-100-hsl);
+	--bs-primary-200-hsl: var(--bs-purple-200-hsl);
+	--bs-primary-300-hsl: var(--bs-purple-300-hsl);
+	--bs-primary-400-hsl: var(--bs-purple-400-hsl);
+	--bs-primary-500-hsl: var(--bs-purple-500-hsl);
+	--bs-primary-600-hsl: var(--bs-purple-600-hsl);
+	--bs-primary-700-hsl: var(--bs-purple-700-hsl);
+	--bs-primary-800-hsl: var(--bs-purple-800-hsl);
+	--bs-primary-900-hsl: var(--bs-purple-900-hsl);
+	--bs-primary-100: var(--bs-purple-100);
+	--bs-primary-200: var(--bs-purple-200);
+	--bs-primary-300: var(--bs-purple-300);
+	--bs-primary-400: var(--bs-purple-400);
+	--bs-primary-500: var(--bs-purple-500);
+	--bs-primary-600: var(--bs-purple-600);
+	--bs-primary-700: var(--bs-purple-700);
+	--bs-primary-800: var(--bs-purple-800);
+	--bs-primary-900: var(--bs-purple-900);
+	--bs-primary-hsl: var(--bs-purple-hsl);
+	--bs-primary: var(--bs-purple);
+	--bs-primary-foreground-hsl: var(--bs-purple-foreground-hsl);
+	--bs-primary-foreground: var(--bs-purple-foreground);
+	--bs-primary-text-emphasis-hsl: var(--bs-purple-text-emphasis-hsl);
+	--bs-primary-text-emphasis: var(--bs-purple-text-emphasis);
+	--bs-primary-hover-bg: var(--bs-purple-hover-bg);
+	--bs-primary-active-bg: var(--bs-purple-active-bg);
+	--bs-primary-bg-subtle: var(--bs-purple-bg-subtle);
+	--bs-primary-border-subtle: var(--bs-purple-border-subtle);
+	--bs-primary-checkbox-svg: var(--bs-purple-checkbox-svg);
+	--bs-primary-dash-svg: var(--bs-purple-dash-svg);
+	--bs-primary-radio-svg: var(--bs-purple-radio-svg);
+	--bs-primary-switch-svg: var(--bs-purple-switch-svg);
 
 	/* Info */
 
@@ -152,40 +152,40 @@
 
 	/* Primary */
 
-	--bs-primary-hue: var(--bs-sky-hue);
-	--bs-primary-saturation: var(--bs-sky-saturation);
-	--bs-primary-100-hsl: var(--bs-sky-100-hsl);
-	--bs-primary-200-hsl: var(--bs-sky-200-hsl);
-	--bs-primary-300-hsl: var(--bs-sky-300-hsl);
-	--bs-primary-400-hsl: var(--bs-sky-400-hsl);
-	--bs-primary-500-hsl: var(--bs-sky-500-hsl);
-	--bs-primary-600-hsl: var(--bs-sky-600-hsl);
-	--bs-primary-700-hsl: var(--bs-sky-700-hsl);
-	--bs-primary-800-hsl: var(--bs-sky-800-hsl);
-	--bs-primary-900-hsl: var(--bs-sky-900-hsl);
-	--bs-primary-100: var(--bs-sky-100);
-	--bs-primary-200: var(--bs-sky-200);
-	--bs-primary-300: var(--bs-sky-300);
-	--bs-primary-400: var(--bs-sky-400);
-	--bs-primary-500: var(--bs-sky-500);
-	--bs-primary-600: var(--bs-sky-600);
-	--bs-primary-700: var(--bs-sky-700);
-	--bs-primary-800: var(--bs-sky-800);
-	--bs-primary-900: var(--bs-sky-900);
-	--bs-primary-hsl: var(--bs-sky-hsl);
-	--bs-primary: var(--bs-sky);
-	--bs-primary-foreground-hsl: var(--bs-sky-foreground-hsl);
-	--bs-primary-foreground: var(--bs-sky-foreground);
-	--bs-primary-text-emphasis-hsl: var(--bs-sky-text-emphasis-hsl);
-	--bs-primary-text-emphasis: var(--bs-sky-text-emphasis);
-	--bs-primary-hover-bg: var(--bs-sky-hover-bg);
-	--bs-primary-active-bg: var(--bs-sky-active-bg);
-	--bs-primary-bg-subtle: var(--bs-sky-bg-subtle);
-	--bs-primary-border-subtle: var(--bs-sky-border-subtle);
-	--bs-primary-checkbox-svg: var(--bs-sky-checkbox-svg);
-	--bs-primary-dash-svg: var(--bs-sky-dash-svg);
-	--bs-primary-radio-svg: var(--bs-sky-radio-svg);
-	--bs-primary-switch-svg: var(--bs-sky-switch-svg);
+	--bs-primary-hue: var(--bs-purple-hue);
+	--bs-primary-saturation: var(--bs-purple-saturation);
+	--bs-primary-100-hsl: var(--bs-purple-100-hsl);
+	--bs-primary-200-hsl: var(--bs-purple-200-hsl);
+	--bs-primary-300-hsl: var(--bs-purple-300-hsl);
+	--bs-primary-400-hsl: var(--bs-purple-400-hsl);
+	--bs-primary-500-hsl: var(--bs-purple-500-hsl);
+	--bs-primary-600-hsl: var(--bs-purple-600-hsl);
+	--bs-primary-700-hsl: var(--bs-purple-700-hsl);
+	--bs-primary-800-hsl: var(--bs-purple-800-hsl);
+	--bs-primary-900-hsl: var(--bs-purple-900-hsl);
+	--bs-primary-100: var(--bs-purple-100);
+	--bs-primary-200: var(--bs-purple-200);
+	--bs-primary-300: var(--bs-purple-300);
+	--bs-primary-400: var(--bs-purple-400);
+	--bs-primary-500: var(--bs-purple-500);
+	--bs-primary-600: var(--bs-purple-600);
+	--bs-primary-700: var(--bs-purple-700);
+	--bs-primary-800: var(--bs-purple-800);
+	--bs-primary-900: var(--bs-purple-900);
+	--bs-primary-hsl: var(--bs-purple-hsl);
+	--bs-primary: var(--bs-purple);
+	--bs-primary-foreground-hsl: var(--bs-purple-foreground-hsl);
+	--bs-primary-foreground: var(--bs-purple-foreground);
+	--bs-primary-text-emphasis-hsl: var(--bs-purple-text-emphasis-hsl);
+	--bs-primary-text-emphasis: var(--bs-purple-text-emphasis);
+	--bs-primary-hover-bg: var(--bs-purple-hover-bg);
+	--bs-primary-active-bg: var(--bs-purple-active-bg);
+	--bs-primary-bg-subtle: var(--bs-purple-bg-subtle);
+	--bs-primary-border-subtle: var(--bs-purple-border-subtle);
+	--bs-primary-checkbox-svg: var(--bs-purple-checkbox-svg);
+	--bs-primary-dash-svg: var(--bs-purple-dash-svg);
+	--bs-primary-radio-svg: var(--bs-purple-radio-svg);
+	--bs-primary-switch-svg: var(--bs-purple-switch-svg);
 
 	/* Info */
 
