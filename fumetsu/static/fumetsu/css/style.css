@@ -229,25 +229,24 @@ h2
 	padding: 20px;
 }
 
-.fb{
+.facebook{
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
+}
+
+.patronite-icon {
+	height: 16px;
 }
 .ftr-fb:hover{
 	background-color: #3C5A99;
 	border: none;
 }
 
-.fb:hover{
-}
-
-.dc{
-	background-color: #2C2F33;
-}
 .ftr-dc:hover{
 	background-color: #2C2F33;
 }
-.pt{
+
+.pt {
 	 position: relative;
 	height: 30px;
 	width: 27px;
