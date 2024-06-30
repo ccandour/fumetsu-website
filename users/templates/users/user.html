@@ -5,8 +5,8 @@
 {% block content %}
 
 <script src="{% static 'fumetsu/js/web_ep.js' %}"></script>
-<div class="col-12 col-lg-8 float-left">
-	<img class="user-img float-left mb-3" src="{{ f_user.profile.image.url  }}">
+<div class="col-12 col-lg-8 float-start">
+	<img class="user-img float-start mb-3" src="{{ f_user.profile.image.url  }}">
     {% if user|has_group:"Moderator" %}   
     <div class="text-center">
     <a href="" data-toggle="modal" data-target="#BanForm" style="color:{{f_user.color}}"><h2>{{ f_user.profile.nick }} </h2></a>
@@ -25,17 +25,17 @@
   {% endif %}
 {% endif %}
 
-<div class="col-12 col-lg-8 float-left">
+<div class="col-12 col-lg-8 float-start">
     <div class="coment_sectiona">
     Sekcja komentarzy:
         <div id="Section_comm_ser">
                 {% for com in com_ser %}        
                     <div class="box_com ">
                         <div class="com_aut">           
-                            <div class="com_nick float-left"><a href="{% url 'anime-nm' com.key_map.web_name %}">{{com.key_map.title}}</a></div>
+                            <div class="com_nick float-start"><a href="{% url 'anime-nm' com.key_map.web_name %}">{{com.key_map.title}}</a></div>
 
                             {% if com.author == user %}
-                            <div class="dropleft float-right">
+                            <div class="dropleft float-end">
                                 <a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </a>
@@ -50,7 +50,7 @@
                                 </div>
                                 {% endif %}
 
-                            <div class="com_date float-right">{{com.date_posted}}</div>
+                            <div class="com_date float-end">{{com.date_posted}}</div>
                         </div>
                         <div class="com_cont">
                             <a href="{% url 'anime-nm' com.key_map.web_name %}">
@@ -69,10 +69,10 @@
                 {% for com in com_ep %}
                     <div class="box_com ">
                         <div class="com_aut">
-                            <div class="com_nick float-left"><a href="{% url 'ep-nm' com.key_map_ep.key_map.web_name com.key_map_ep.ep_nr %}">{{com.key_map_ep.key_map.title}} odcinek: {{com.key_map_ep.ep_title|floatformat}}</a></div>
+                            <div class="com_nick float-start"><a href="{% url 'ep-nm' com.key_map_ep.key_map.web_name com.key_map_ep.ep_nr %}">{{com.key_map_ep.key_map.title}} odcinek: {{com.key_map_ep.ep_title|floatformat}}</a></div>
 
                             {% if com.author == user %}
-                            <div class="dropleft float-right">
+                            <div class="dropleft float-end">
                                 <a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </a>
@@ -87,7 +87,7 @@
                                 </div>
                                 {% endif %}
 
-                            <div class="com_date float-right">{{com.date_posted}}</div>
+                            <div class="com_date float-end">{{com.date_posted}}</div>
                         </div>
                         <div class="com_cont">
                             <a href="{% url 'ep-nm' com.key_map_ep.key_map.web_name com.key_map_ep.ep_nr %}">

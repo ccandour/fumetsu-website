@@ -3,17 +3,17 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-	<div class="col-12 col-lg-8 float-left">
+	<div class="col-12 col-lg-8 float-start">
 	<a href="{% url 'kh-hentai' anime_nm.web_name %}"><h2>{{anime_nm.title}} {{odc_html.title|floatformat}}</h2></a>
 	{% if prev %}
-		<a class="float-left" href="{% url 'kh-hentai-odc' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i> POPRZEDNI</a>
+		<a class="float-start" href="{% url 'kh-hentai-odc' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i> POPRZEDNI</a>
 	{% endif %}
 
 	{% if next %}
-		<a class="float-right" href="{% url 'kh-hentai-odc' next.key_map.web_name next.ep_nr %}">NASTĘPNY <i class="fas fa-chevron-right"></i></a>
+		<a class="float-end" href="{% url 'kh-hentai-odc' next.key_map.web_name next.ep_nr %}">NASTĘPNY <i class="fas fa-chevron-right"></i></a>
 	{% endif %}
 	</div>
-	<div class="col-12 col-lg-8 float-left">
+	<div class="col-12 col-lg-8 float-start">
 		<div class="d-flex justify-content-center">
 		{% for links in link %}
 			<div class="ep-players ">

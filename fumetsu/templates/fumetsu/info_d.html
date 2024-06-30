@@ -3,15 +3,15 @@
 {% load crispy_forms_tags %}
 {% block content %}
     
-    <div class="col-12 col-lg-8 alt-bg float-left">
+    <div class="col-12 col-lg-8 alt-bg float-start">
         <h2 >{{ content.title }}</h2>
-    <img class="info-img float-left" src="{{ content.image.url }}">
-            <p class="float-right new-date">{{ content.date_posted|date:"d.m.o" }}</p>
+    <img class="info-img float-start" src="{{ content.image.url }}">
+            <p class="float-end new-date">{{ content.date_posted|date:"d.m.o" }}</p>
             <div class="clearfix"></div>
             <p>{{ content.content|safe }}</p>
         </div>
         
-   <div class="col-12 col-lg-8 float-left">
+   <div class="col-12 col-lg-8 float-start">
             <div class="comments">
             <h5>Sekcja komentarzy:</h5>
             {% if  user.is_authenticated %}
@@ -21,7 +21,7 @@
                     <div class="com_cr_cont">
                         {{ form|crispy }}
                     </div>
-                    <button class="btn btn-op float-right" name="com_cr_bt">Wyślij komentarz</button>
+                    <button class="btn btn-op float-end" name="com_cr_bt">Wyślij komentarz</button>
                 </div>
                 <div class="clearfix"></div>
             </form>
@@ -31,11 +31,11 @@
                 {% for com in comment %}        
                     <div class="box_com ">
                         <div class="com_aut">           
-                            <img class="com_img float-left" src="{{ com.author.profile.image.url }}">
-                            <div class="com_nick float-left"><a href="{% url 'user-inf' com.author %}">{{com.author}}</a></div>
+                            <img class="com_img float-start" src="{{ com.author.profile.image.url }}">
+                            <div class="com_nick float-start"><a href="{% url 'user-inf' com.author %}">{{com.author}}</a></div>
 
                             {% if com.author == user %}
-                            <div class="dropleft float-right">
+                            <div class="dropleft float-end">
                                 <a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </a>
@@ -50,7 +50,7 @@
                                 </div>
                                 {% endif %}
 
-                            <div class="com_date float-right">{{com.date_posted}}</div>
+                            <div class="com_date float-end">{{com.date_posted}}</div>
                         </div>
                         <div class="com_cont">
                             

@@ -3,14 +3,17 @@ html {
   box-sizing: border-box;
 }
 
-body
-{
+body {
 	font-family: 'Sen', sans-serif;
 	background-color: #1B2021;
 	/*color: #dbdbdb;*/
 	position: relative;
   	padding-bottom: 6rem;
   	min-height: 100%;
+}
+
+a {
+	text-decoration: none;
 }
 
 .main-container {
@@ -180,7 +183,7 @@ h2
 }
 
 .side-menu{
-	min-height: 900px;
+	border-radius: 10px;
 	padding: 0;
 }
 .new-btn{
@@ -216,11 +219,10 @@ h2
 
 .social{
 	width: 100%;
-	/*color: #fff;*/
-	font-size: 23px;
+	font-size: 16px;
+	color: white;
 	padding: 10px;
 	text-align: center;
-	margin-top: 10px;
 }
 
 .sic{
@@ -228,8 +230,8 @@ h2
 }
 
 .fb{
-	background-color: #3C5A99;
-	border: none;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 }
 .ftr-fb:hover{
 	background-color: #3C5A99;
@@ -237,7 +239,6 @@ h2
 }
 
 .fb:hover{
-	background-color: #3C5A99;
 }
 
 .dc{
@@ -268,18 +269,18 @@ h2
 
 .on-air{
 	padding: 15px;
-	margin-top: 10px;
 }
 
 #clock{
-	font-size: 20px;
+	font-size: 16px;
 	text-align: center;
-	margin-bottom: 10px;
 }
 #schedule{
-/*color: #667ac1;*/
-font-size: 26px;
-text-align: center;
+	/*color: #667ac1;*/
+	font-size: 26px;
+	text-align: center;
+	margin-bottom: 0;
+	margin-top: -4px;
 }
 .series{
 	text-align: center;
@@ -421,13 +422,13 @@ margin: 0 5px;
 	padding-top: 3px;
 	text-align: center;
 }
-.sch_pos{
+.schedule-series{
 	display: block;
-  padding: 2px 0;
+	text-align: center;
+	color: white;
+  	margin: 6px 0;
 }
-.sch_pos_time{
-/*color: #fff;*/
-}
+
 .ep-players{
 	display: inline-block;
 	margin: 10px 2.5px;

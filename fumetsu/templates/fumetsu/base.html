@@ -25,8 +25,7 @@
 
 
 	<!-- Font Awesome -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
-	<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/fb9c73f96c.js" crossorigin="anonymous"></script>
 
 	<!-- Google Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Sen&display=swap" rel="stylesheet">
@@ -41,7 +40,7 @@
 
 <!-- Navbar -->
 <header class="site-header">
-    <nav class="navbar navbar-expand-md" style="background-color: var(--bs-content-bg); border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
+    <nav class="navbar navbar-expand-md bg-dark" style="background-color: var(--bs-content-bg); border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
         <div class="container-fluid justify-content-center">
             <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
                 <img class="d-inline-block align-text-top my-1" src="{% static 'fumetsu/img/logo.png' %}" height="36"/>
@@ -105,7 +104,7 @@
 
 	<!-- Slajder -->
 
-	<section class="karuzela container-fluid d-none d-md-block">
+{% comment %}	<section class="karuzela container-fluid d-none d-md-block">
 		<div id="karuzela" class="carousel slide" data-ride="carousel">
   			<div class="carousel-inner">
     			<div class="carousel-item active">
@@ -113,7 +112,7 @@
     			</div>
     		</div>
   		</div>
-	</section>
+	</section>{% endcomment %}
 
 	<!-- Najnowsze Odcinki -->
 
@@ -121,18 +120,18 @@
 			<div class="row">
 				<div class="col-12">
 					
-					<div class="col-lg-3 side-menu alt-bg float-right d-none d-lg-block">
-						<a href="https://www.facebook.com/fumetsusubs/" target="_blank"><div class="social fb"><div></div><i class="fab fa-facebook-f"></i> Bądź na bieżąco!</div></a>
-						<a href="https://discord.gg/t5phVKT" target="_blank"><div class="social dc"><i class="fab fa-discord"></i> Dołącz do nas!</div></a>
+					<div class="col-lg-3 side-menu bg-dark float-end d-none d-lg-block">
+						<a href="https://www.facebook.com/fumetsusubs/" target="_blank"><div class="social fb text-bg-primary"><div></div><i class="fab fa-facebook-f"></i> Bądź na bieżąco!</div></a>
+						<a href="https://discord.gg/t5phVKT" target="_blank"><div class="social dc text-bg-secondary"><i class="fab fa-discord"></i> Dołącz do nas!</div></a>
 						<div class="on-air">
 							<div id="clock"></div>
 
 							<p id="schedule">Harmonogram</p>
 
-							{% for hh in harmon %}
-							<a href="{% url 'anime-nm' hh.key_map.web_name %}">
-							<div class="sch_pos">
-								<b>{{hh.key_map.title}}</b><div class="sch_pos_time">{{hh.day}} {{hh.content}}</div></div>
+							{% for series in harmon %}
+							<a href="{% url 'anime-nm' series.key_map.web_name %}">
+							<div class="schedule-series">
+								<div class="fs-5 text-primary">{{series.key_map.title}}</div><div>{{series.day}}, {{series.content}}</div></div>
 							{% endfor %}
 							</a>
 						</div>		
@@ -159,12 +158,12 @@
 <footer class="ftr container-fluid">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
-            <div class="float-left">
-                <a href="https://www.facebook.com/fumetsusubs/" target="_blank"><div class="float-left ftr-ico ftr-fb"><i class="fab fa-facebook-f"></i></div></a>
-                <a href="https://discord.gg/t5phVKT" target="_blank"><div class="float-left ftr-ico ftr-dc"><i class="fab fa-discord"></i></div></a>
-                <a href="https://patronite.pl/fumetsu" target="_blank"><div class="float-left ftr-ico ftr-pt"><img src="{% static 'fumetsu/img/patronite.png' %}" class="pt"></div></a>
+            <div class="float-start">
+                <a href="https://www.facebook.com/fumetsusubs/" target="_blank"><div class="float-start ftr-ico ftr-fb"><i class="fab fa-facebook-f"></i></div></a>
+                <a href="https://discord.gg/t5phVKT" target="_blank"><div class="float-start ftr-ico ftr-dc"><i class="fab fa-discord"></i></div></a>
+                <a href="https://patronite.pl/fumetsu" target="_blank"><div class="float-start ftr-ico ftr-pt"><img src="{% static 'fumetsu/img/patronite.png' %}" class="pt"></div></a>
             </div>
-            <div class="float-right p-2 d-none d-md-block">© Fumetsu 2020 All Rights Reserved</div>
+            <div class="float-end p-2 d-none d-md-block">© Fumetsu 2020 All Rights Reserved</div>
         </div>
     </div>
 </footer>

@@ -4,7 +4,7 @@
 
     {% for post in posts %}
 
-        <div class="col-12 col-lg-8 new-ep alt-bg float-left">
+        <div class="col-12 col-lg-8 new-ep alt-bg float-start">
             <a href="{% url 'ep-nm' post.key_map_ep.key_map.web_name post.key_map_ep.ep_nr %}">
             <h4>Anime: {{ post.key_map_ep.key_map }}</h4>
             <p>odc: {{ post.key_map_ep.ep_title}}</p>

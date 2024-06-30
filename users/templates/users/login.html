@@ -1,7 +1,7 @@
 {% extends "fumetsu/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="col-12 col-md-9 col-lg-8 float-left">
+<div class="col-12 col-md-9 col-lg-8 float-start">
 	<div class="content-section">
 		<form method="POST">
 			{% csrf_token %}
@@ -20,11 +20,11 @@
 			</div>
 		</form>
 		<div class="border-top pt-3">
-			<small class="text-muted float-right ml-2">
+			<small class="text-muted float-end ml-2">
 				Zapomniałeś hasła?
 				<a class="ml-1" href="{% url 'password_reset' %}">Przypomij</a>
 			</small>
-			<small class="text-muted float-right">
+			<small class="text-muted float-end">
 				Nie masz konta?
 				<a class="ml-1" href="{% url 'register' %}">Rejestracja</a>
 			</small>

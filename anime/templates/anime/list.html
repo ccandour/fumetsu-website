@@ -3,15 +3,15 @@
 {% load crispy_forms_tags %}
 {% block content %}
 {{test}}
-<div class="col-12 col-md-9 col-lg-8 float-left">  
+<div class="col-12 col-md-9 col-lg-8 float-start">
           Szukaj
   <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="float-left">{{ filter.name }}</div>
+        <div class="float-start">{{ filter.name }}</div>
 
-        <button class="btn-none float-right" name="upd_urls" type="submit"><div class="ser"><i class="fas fa-search"></i></div></button>
-        <button class="btn-none float-right" name="ses_cl"><div class="ser"><i class="fas fa-times"></i></div></button>
-        <a class="btn-none float-right" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <button class="btn-none float-end" name="upd_urls" type="submit"><div class="ser"><i class="fas fa-search"></i></div></button>
+        <button class="btn-none float-end" name="ses_cl"><div class="ser"><i class="fas fa-times"></i></div></button>
+        <a class="btn-none float-end" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
             Tagi
         </a>
         <div class="clearfix"></div>
@@ -35,7 +35,7 @@
   </form>
 
 </div>
-<div class="col-12 col-lg-8 float-left anime-list">
+<div class="col-12 col-lg-8 float-start anime-list">
 	<h2 >Lista Anime</h2>
     {% if not_found %}
         {{not_found}}
@@ -43,7 +43,7 @@
     	{% for post in an_list %}
             {% if ses_bool %}
                 {% for pos in post %}
-            		<div class="col-6 col-md-4 col-lg-3 ser-col float-left">
+            		<div class="col-6 col-md-4 col-lg-3 ser-col float-start">
             			<div class="series">
                             <a href="{% url 'anime-nm' pos.key_map.web_name %}">
                                 <img class="ser-img" src="{{ pos.image.url }}">
@@ -59,7 +59,7 @@
                 	</div>
                 {% endfor %}
             {% else %}
-                <div class="col-6 col-md-4 col-lg-3 ser-col float-left">
+                <div class="col-6 col-md-4 col-lg-3 ser-col float-start">
                     <div class="series">
                         <a href="{% url 'anime-nm' post.key_map.web_name %}">
                             <img class="ser-img" src="{{ post.image.url }}">
@@ -77,7 +77,7 @@
     	{% endfor %}
     {% endif %}
 </div>
-<div class="col-12 col-lg-8 float-left">    
+<div class="col-12 col-lg-8 float-start">
     <div class="text-center controls">
     <form method="POST">
         {% csrf_token %}

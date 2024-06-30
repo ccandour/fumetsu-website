@@ -6,23 +6,23 @@
   {% if user.is_authenticated%}
 	<form method="POST">
 		{% csrf_token %}
-		<button class="btn-none float-right pd-2" type="submit" name="ply_error">zgłoś player</button>
+		<button class="btn-none float-end pd-2" type="submit" name="ply_error">zgłoś player</button>
 	</form>
   {% endif %}
 	<br/>
 
-	<div class="col-12 col-lg-8 float-left text-center">
+	<div class="col-12 col-lg-8 float-start text-center">
 	<a href="{% url 'anime-nm' anime_nm.web_name %}"><h2>{{anime_nm.title}}</h2></a>
 	 <h5>Odcinek {{odc_html|floatformat}}</h5>
 	{% if prev %}
-		<a class="float-left contrl" href="{% url 'ep-nm' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i> POPRZEDNI</a>
+		<a class="float-start contrl" href="{% url 'ep-nm' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i> POPRZEDNI</a>
 	{% endif %}
 
 	{% if next %}
-		<a class="float-right contrl" href="{% url 'ep-nm' next.key_map.web_name next.ep_nr %}">NASTĘPNY <i class="fas fa-chevron-right"></i></a>
+		<a class="float-end contrl" href="{% url 'ep-nm' next.key_map.web_name next.ep_nr %}">NASTĘPNY <i class="fas fa-chevron-right"></i></a>
 	{% endif %}
 	</div>
-	<div class="col-12 col-lg-8 float-left">
+	<div class="col-12 col-lg-8 float-start">
 		<div class="d-flex justify-content-center">
 		{% for links in link %}
 			<div class="ep-players ">
@@ -47,7 +47,7 @@
 	{% endfor %}
 	</div>
 
-		<div class="col-12 col-lg-8 float-left">
+		<div class="col-12 col-lg-8 float-start">
 			<div class="comments">
 			<h5>Sekcja komentarzy:</h5>
 			{% if  user.is_authenticated %}
@@ -57,7 +57,7 @@
 					<div class="com_cr_cont">
 						{{ com_ed|crispy }}
 					</div>
-					<button class="btn btn-op float-right" name="com_cr_bt">Wyślij komentarz</button>
+					<button class="btn btn-op float-end" name="com_cr_bt">Wyślij komentarz</button>
 				</div>
 				<div class="clearfix"></div>
 			</form>
@@ -67,15 +67,15 @@
 				{% for com in comment %}		
 			    	<div class="box_com ">
 			    		<div class="com_aut">			
-							<img class="com_img float-left" src="{{ com.author.profile.image.url }}">
-							<div class="com_nick float-left">
+							<img class="com_img float-start" src="{{ com.author.profile.image.url }}">
+							<div class="com_nick float-start">
 								<a href="{% url 'user-inf' com.author.profile.web_name %}" style="color:{{com.color}}">
 									{{com.author.profile.nick}}
 								</a>
 							</div>
 
 							{% if com.author == user %}
-							<div class="dropleft float-right">
+							<div class="dropleft float-end">
 								<a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="fas fa-ellipsis-v"></i>
 								</a>
@@ -89,7 +89,7 @@
 							        </div>
 								</div>
 								{% endif %}
-							<div class="com_date float-right d-none d-sm-block">{{com.date_posted}}</div>
+							<div class="com_date float-end d-none d-sm-block">{{com.date_posted}}</div>
 						</div>
 						<div class="com_cont">
 							

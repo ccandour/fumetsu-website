@@ -4,7 +4,7 @@
 {% load utils_extras %}
 {% block content %}
 
-		<div class="col-12 col-lg-8 col-pd-0 ep-info float-left">
+		<div class="col-12 col-lg-8 col-pd-0 ep-info float-start">
 			<div class="d-block d-md-none">
 				<div class="col-12 text-center">
 					<img class="ser-m-img" src="{{ posts.image.url }}">
@@ -31,7 +31,7 @@
 			</div>
 				<p>{{posts.content}}</p>
          {% if napisy and user.is_authenticated %}
-	    <a class="float-right" href="/media/{{napisy}}">Napisy</a>
+	    <a class="float-end" href="/media/{{napisy}}">Napisy</a>
     {% endif %}
 			</div>
 
@@ -40,20 +40,20 @@
 		<div clas='ep_box'>
 			{% for e in ep %}
 	    		<a class="epis" href="{% url 'ep-nm' posts.web_name e.ep_nr %}">
-					<div class="col-12 col-lg-8 {% if forloop.counter0|divisibleby:2 %}alt-bg{% endif %} episodes float-left">
-		    			<div class="float-left">
+					<div class="col-12 col-lg-8 {% if forloop.counter0|divisibleby:2 %}alt-bg{% endif %} episodes float-start">
+		    			<div class="float-start">
 		    				{% if user|has_group:"Informator" or user|has_group:"Uploader" or user|has_group:"content_creator" %}
 								id: {{ e.ep_nr|floatformat }} 
 							{% endif %}
 							Odcinek: {{ e.ep_title|floatformat }}
 						</div>
-		    			<div class="float-right d-none d-md-block">{{ e.date_postsed|date:"d.m.o" }}</div>
+		    			<div class="float-end d-none d-md-block">{{ e.date_postsed|date:"d.m.o" }}</div>
                <div>{{e.title}}</div>                              
 		    		</div>
 				</a>
 			
 			{% endfor %}
- 	<div class="col-12 col-lg-8 float-left">   
+ 	<div class="col-12 col-lg-8 float-start">
   {% for family in family_anime %}
    <div class="col-6 col-md-3 other">
 		  <a href="{% url 'anime-nm' family.key_map.web_name %}">
@@ -65,7 +65,7 @@
 	{% endfor %}
 		</div>
    </div>
-		<div class="col-12 col-lg-8 float-left">
+		<div class="col-12 col-lg-8 float-start">
 			<div class="comments">
 			<h5>Sekcja komentarzy:</h5>
 			{% if user.is_authenticated %}
@@ -75,7 +75,7 @@
 					<div class="com_cr_cont">
 						{{ form|crispy }}
 					</div>
-					<button class="btn btn-op float-right" name="com_cr_bt">Wyślij komentarz</button>
+					<button class="btn btn-op float-end" name="com_cr_bt">Wyślij komentarz</button>
 				</div>
 				<div class="clearfix"></div>
 			</form>
@@ -85,15 +85,15 @@
 				{% for com in comment %}
 			    	<div class="box_com ">
 			    		<div class="com_aut">			
-							<img class="com_img float-left" src="{{ com.author.profile.image.url }}">
-							<div class="com_nick float-left">
+							<img class="com_img float-start" src="{{ com.author.profile.image.url }}">
+							<div class="com_nick float-start">
 								<a href="{% url 'user-inf' com.author.profile.web_name %}" style="color:{{com.color}}">
 									{{com.author.profile.nick}}
 								</a>
 							</div>
 
 							{% if com.author == user %}
-							<div class="dropleft float-right">
+							<div class="dropleft float-end">
 								<a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="fas fa-ellipsis-v"></i>
 								</a>
@@ -108,7 +108,7 @@
 								</div>
 								{% endif %}
 
-							<div class="com_date float-right d-none d-md-block">{{com.date_posted}}</div>
+							<div class="com_date float-end d-none d-md-block">{{com.date_posted}}</div>
 						</div>
 						<div class="com_cont">
 							
