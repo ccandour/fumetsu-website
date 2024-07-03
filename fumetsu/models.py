@@ -27,15 +27,16 @@ class Season(models.Model):
 
 class Anime_list(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-	key_map = models.ForeignKey(Key_map, on_delete=models.CASCADE)
 	id_anime = models.IntegerField()
 	content = models.TextField()
 	image = models.ImageField(default='av_default.gif', upload_to='anime_avatar')
 	image_bg = models.ImageField(default='anime_bg.jpg', upload_to='anime_avatar')
 	napisy = models.FileField(upload_to='archiwum/', blank=True)
+	title = models.CharField(max_length=100, null=True, blank=True)
+	web_name = models.CharField(max_length=100, null=True, blank=True)
 
 	def __str__(self):
-		return f'{self.key_map}'
+		return f'{self.web_name}'
 
 	def save(self, *args, **kwargs):
 		super().save(*args, **kwargs)
@@ -50,7 +51,7 @@ class Anime_list(models.Model):
 
 class Harmonogram(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-	key_map = models.ForeignKey(Key_map, on_delete=models.CASCADE)
+	key_map = models.ForeignKey(Anime_list, on_delete=models.CASCADE)
 	content = models.TextField()
 	day = models.IntegerField(
 		default=1,
@@ -62,7 +63,7 @@ class Harmonogram(models.Model):
 
 class Series_comment(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-	key_map = models.ForeignKey(Key_map, on_delete=models.CASCADE, null=True)
+	key_map = models.ForeignKey(Anime_list, on_delete=models.CASCADE, null=True)
 	author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	date_posted = models.DateTimeField(default=timezone.now)
 	content = models.CharField(max_length=254)

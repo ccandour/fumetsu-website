@@ -1,14 +1,14 @@
 from django.db import models
 import uuid
 from django.utils import timezone
-from fumetsu.models import Key_map
+from fumetsu.models import Key_map, Anime_list
 from django_cleanup import cleanup
 from PIL import Image
 from django.contrib.auth.models import User
 
 class Odc_name(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    key_map = models.ForeignKey(Key_map, on_delete=models.CASCADE, null=True)
+    key_map = models.ForeignKey(Anime_list, on_delete=models.CASCADE, null=True)
     ep_nr = models.IntegerField(null=True, blank=True)
     ep_title = models.FloatField()
     title = models.TextField()
@@ -47,7 +47,7 @@ class Post(models.Model):
 
 class Anime_url(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    key_map = models.ForeignKey(Key_map, on_delete=models.CASCADE, null=True)
+    key_map = models.ForeignKey(Anime_list, on_delete=models.CASCADE, null=True)
     odc_nm = models.ForeignKey(Odc_name, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=100)#opis dla adminów na str
     web_site = models.CharField(max_length=100)#jpdl jaki ze mnie geniusz to jest nazwa playera
@@ -68,7 +68,7 @@ class Tags_map(models.Model):
 class Tags(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     tags_map = models.ForeignKey(Tags_map, on_delete=models.CASCADE, null=True)
-    key_map = models.ForeignKey(Key_map, on_delete=models.CASCADE, null=True)
+    key_map = models.ForeignKey(Anime_list, on_delete=models.CASCADE, null=True)
 
 
     def __str__(self):

@@ -11,7 +11,7 @@
 
         <button class="btn-none float-end" name="upd_urls" type="submit"><div class="ser"><i class="fas fa-search"></i></div></button>
         <button class="btn-none float-end" name="ses_cl"><div class="ser"><i class="fas fa-times"></i></div></button>
-        <a class="btn-none float-end" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <a class="btn-none float-end" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
             Tagi
         </a>
         <div class="clearfix"></div>
@@ -40,19 +40,20 @@
     {% if not_found %}
         {{not_found}}
     {% else %}
-    	{% for post in an_list %}
+    	{% for post in posts %}
+            <h2>{{ post.title }}</h2>
             {% if ses_bool %}
                 {% for pos in post %}
             		<div class="col-6 col-md-4 col-lg-3 ser-col float-start">
             			<div class="series">
-                            <a href="{% url 'anime-nm' pos.key_map.web_name %}">
+                            <a href="{% url 'anime-nm' pos.web_name %}">
                                 <img class="ser-img" src="{{ pos.image.url }}">
                                  {% if pos.key_map.title|length <= 35 %}
-                                <div class="series-title">{{ pos.key_map.title}}</div>
+                                <div class="series-title">{{ pos.title}}</div>
                             {% elif pos.key_map.title|length > 50 %}
-                                <div class="series-title-s">{{ pos.key_map.title}}</div>
+                                <div class="series-title-s">{{ pos.title}}</div>
                             {% elif pos.key_map.title|length > 35 %}
-                                <div class="series-title-m">{{ pos.key_map.title}}</div>
+                                <div class="series-title-m">{{ pos.title}}</div>
                             {% endif %}
                             </a>
                         </div>
@@ -61,14 +62,14 @@
             {% else %}
                 <div class="col-6 col-md-4 col-lg-3 ser-col float-start">
                     <div class="series">
-                        <a href="{% url 'anime-nm' post.key_map.web_name %}">
+                        <a href="{% url 'anime-nm' post.web_name %}">
                             <img class="ser-img" src="{{ post.image.url }}">
                             {% if post.key_map.title|length <= 35 %}
-                                <div class="series-title">{{ post.key_map.title}}</div>
+                                <div class="series-title">{{ post.title}}</div>
                             {% elif post.key_map.title|length > 50 %}
-                                <div class="series-title-s">{{ post.key_map.title}}</div>
+                                <div class="series-title-s">{{ post.title}}</div>
                             {% elif post.key_map.title|length > 35 %}
-                                <div class="series-title-m">{{ post.key_map.title}}</div>
+                                <div class="series-title-m">{{ post.title}}</div>
                             {% endif %}
                         </a>
                     </div>

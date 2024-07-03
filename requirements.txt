@@ -95,3 +95,4 @@ WTForms
 yarl
 zipp
 crispy-bootstrap5
+AnilistPython

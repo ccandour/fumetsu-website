@@ -11,25 +11,32 @@
 				</div>
 			</div>			
 			<div class="d-none d-md-block">
-				<div class="col-12 ser-b-col">
-					<img class="ser-img" src="{{ posts.image_bg.url }}">
+            <div class ="d-flex flex-row">
+{#				<div class="col-12 ser-b-col">#}
+{#					<img class="ser-img" src="{{ posts.image_bg.url }}">#}
 				<div class="col-3 ser-c-col">
 					<img class="ser-cover" src="{{ posts.image.url }}">
+{#				</div>#}
 				</div>
-				</div>
-			</div>
-			<div class="clearfix"></div>
-			<div class="col-12 col-pd-0">
-			<h2>{{posts.key_map.title}}</h2>
+                <div>
+                    <h2>{{posts.key_map.title}}</h2>
 
-			<div id="tags">
-				Tagi:
-				{% for tag in tags %}
-	    			{{ tag }},
-				
-				{% endfor %}
+                    <div id="tags">
+                        Tagi:
+                        {% for tag in tags %}
+                            {% if forloop.last %}
+                                {{ tag }}
+                            {% else %}
+                                {{ tag }},
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
 			</div>
-				<p>{{posts.content}}</p>
+            <p>{{posts.content}}</p>
          {% if napisy and user.is_authenticated %}
 	    <a class="float-end" href="/media/{{napisy}}">Napisy</a>
     {% endif %}
