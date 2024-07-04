@@ -26,6 +26,12 @@ class Anime_list(models.Model):
     napisy = models.FileField(upload_to='archiwum/', blank=True)
     title = models.CharField(max_length=100, null=True, blank=True)
     web_name = models.CharField(max_length=100, null=True, blank=True)
+    name_romaji = models.CharField(max_length=100, null=True, blank=True)
+    name_english = models.CharField(max_length=100, null=True, blank=True)
+    format = models.CharField(max_length=100, null=True, blank=True)
+    status = models.CharField(max_length=100, null=True, blank=True)
+    episode_count = models.IntegerField(null=True, blank=True)
+    anilist_id = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return f'{self.web_name}'
