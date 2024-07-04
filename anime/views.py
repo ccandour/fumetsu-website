@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from fumetsu.models import Anime_list, Series_comment, Key_map, Season
+from fumetsu.models import Anime_list, Series_comment, Season
 from django.shortcuts import get_object_or_404
 from django.views.generic import (
     ListView

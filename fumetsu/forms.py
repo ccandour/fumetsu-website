@@ -63,8 +63,8 @@ class Form_upload_edit_t(forms.ModelForm):
         fields = ['ep_title','title','napisy','ch_box']
 
 class SeasonForm(forms.ModelForm):
-    anime_f = forms.ModelChoiceField(queryset=Key_map.objects.all(),label=_('Jakie anime:'))
-    anime_d = forms.ModelChoiceField(queryset=Key_map.objects.all(),label=_('do jakiego anime'))
+    anime_f = forms.ModelChoiceField(queryset=Anime_list.objects.all(),label=_('Jakie anime:'))
+    anime_d = forms.ModelChoiceField(queryset=Anime_list.objects.all(),label=_('do jakiego anime'))
     description_s = forms.CharField(widget=forms.Textarea(),label=_('powiazanie miedzy drugim a pierwszym'))
 
     class Meta:
@@ -111,7 +111,7 @@ class AnimeEdFormTag(forms.ModelForm):
 class AnimeEdFormKey(forms.ModelForm):
 
     class Meta:
-        model = Key_map
+        model = Anime_list
         fields = ['title']        
 
 class Form_ch_url(forms.ModelForm):
@@ -242,5 +242,5 @@ class CreateComment(forms.ModelForm):
 class EditUrl(forms.ModelForm):
 
     class Meta:
-        model = Key_map
+        model = Anime_list
         fields = ['web_name']

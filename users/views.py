@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 import os
 from django.shortcuts import get_object_or_404
 
-from fumetsu.models import Series_comment, Key_map
+from fumetsu.models import Series_comment
 from django.views.generic.base import TemplateView
 from anime.forms import *
 from .forms import *

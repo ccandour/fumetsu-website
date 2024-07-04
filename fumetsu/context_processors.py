@@ -1,10 +1,10 @@
 def harmon(request):
-    from .models import Harmonogram, Key_map
+    from .models import Harmonogram, Anime_list
     """
     harmon_html = Harmonogram.objects.all()
     key = []
     for ff in harmon_html:
-        g = Key_map.objects.filter(id_anime=ff.id_anime)[0]
+        g = Anime_list.objects.filter(id_anime=ff.id_anime)[0]
         ff.title= g.title
         ff.web_name = g.web_name
         key.append(ff)

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Info_bd, Anime_list ,Key_map, Post_comment
+from .models import Info_bd, Anime_list, Post_comment
 from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 
@@ -175,11 +175,11 @@ class Cre_series(ListView):
 
             if form_p.is_valid():
                 try:
-                    idd = (Key_map.objects.all().order_by('-id_anime').first().id_anime + 1 )
+                    idd = (Anime_list.objects.all().order_by('-id_anime').first().id_anime + 1 )
                 except:
                     idd = 0
 
-                f_k = Key_map()
+                f_k = Anime_list()
                 f_k.id_anime = idd
                 f_k.title = form_p.cleaned_data.get('title')
                 web_name = ''.join(e for e in f_k.title if e.isalnum())
@@ -251,7 +251,7 @@ class Cre_ani(TemplateView):
         context['form_season'] = SeasonForm()
         
         try:
-            k_m = get_object_or_404(Key_map, web_name = self.request.session['key_map'])
+            k_m = get_object_or_404(Anime_list, web_name = self.request.session['key_map'])
         except:
             pass
 
@@ -297,7 +297,7 @@ class Cre_ani(TemplateView):
             urls_form = ex(request.POST)
 
             if urls_form.is_valid():
-                Key_mp = get_object_or_404(Key_map, web_name = self.request.session['key_map'])
+                Key_mp = get_object_or_404(Anime_list, web_name = self.request.session['key_map'])
                 for form in urls_form:
                     urls_post = form.save(commit=False)
                     if form.cleaned_data.get('ch_box'):
@@ -362,7 +362,7 @@ class Cre_ani(TemplateView):
         if form.is_valid():
             if 'add_post' in request.POST:
                 try:
-                    self.request.session['key_map'] = get_object_or_404(Key_map, title=form.cleaned_data.get('key_map').title).web_name
+                    self.request.session['key_map'] = get_object_or_404(Anime_list, title=form.cleaned_data.get('key_map').title).web_name
                     self.request.session['urls_ep'] = form.cleaned_data.get('ep_title')
                     test = Odc_name.objects.filter(key_map = form.cleaned_data.get('key_map'), ep_title = form.cleaned_data.get('ep_title')).first()
                     messages.success(request, test)
@@ -392,8 +392,8 @@ class Cre_ani(TemplateView):
         elif form_season.is_valid():
             if 'season_post' in request.POST:
                 if form_season.cleaned_data['anime_f'] != form_season.cleaned_data['anime_d']:
-                    key_anime_f = get_object_or_404(Key_map, title = form_season.cleaned_data['anime_f'])
-                    key_anime_s = get_object_or_404(Key_map, title = form_season.cleaned_data['anime_d'])
+                    key_anime_f = get_object_or_404(Anime_list, title = form_season.cleaned_data['anime_f'])
+                    key_anime_s = get_object_or_404(Anime_list, title = form_season.cleaned_data['anime_d'])
                     f_season = form_season.save(commit=False)
                     f_season.id_anime_f = key_anime_f.id_anime
                     f_season.id_anime_s = key_anime_s.id_anime
@@ -408,7 +408,7 @@ class Cre_ani(TemplateView):
 
         elif form_ch.is_valid():#wyświetlanie odc do poprawy
             if 'check_urls' in request.POST:
-                Key_mp = get_object_or_404(Key_map, title = form.cleaned_data.get('key_map').title)
+                Key_mp = get_object_or_404(Anime_list, title = form.cleaned_data.get('key_map').title)
                 self.request.session['key_map'] = Key_mp.web_name
                 
                 messages.success(request, "Wybierz odc.")
@@ -445,14 +445,14 @@ class Ed_an(TemplateView):
 
 
         try:
-            key_mp = get_object_or_404(Key_map, web_name = self.request.session['key_map'])
+            key_mp = get_object_or_404(Anime_list, web_name = self.request.session['key_map'])
             ex = modelformset_factory(Anime_list, extra=0, form=AnimeEdForm)
             context['form_an'] = ex(queryset=Anime_list.objects.filter(
                 key_map = key_mp)
             )
 
-            ex_k = modelformset_factory(Key_map, extra=0, form=AnimeEdFormKey)
-            context['form_key'] = ex_k(queryset=Key_map.objects.filter(
+            ex_k = modelformset_factory(Anime_list, extra=0, form=AnimeEdFormKey)
+            context['form_key'] = ex_k(queryset=Anime_list.objects.filter(
                 web_name = key_mp.web_name)
             )
 
@@ -491,8 +491,8 @@ class Ed_an(TemplateView):
             if form_url.is_valid():
                 f_url = form_url.save(commit=False)
                 web_name = ''.join(e for e in f_url.web_name if e.isalnum())
-                if not Key_map.objects.filter(web_name = web_name).first():
-                    query_url = Key_map.objects.filter(web_name = self.request.session['key_map']).first()
+                if not Anime_list.objects.filter(web_name = web_name).first():
+                    query_url = Anime_list.objects.filter(web_name = self.request.session['key_map']).first()
                     query_url.web_name = web_name
                     query_url.save()
                     self.request.session['key_map'] = web_name
@@ -505,7 +505,7 @@ class Ed_an(TemplateView):
                 ext = modelformset_factory(Tags, extra=2, form=AnimeEdFormTag)
                 at_form = ext(request.POST)
                 if at_form.is_valid():
-                    Key_mp = get_object_or_404(Key_map, web_name = self.request.session['key_map'])
+                    Key_mp = get_object_or_404(Anime_list, web_name = self.request.session['key_map'])
                     for form in at_form:
                         at_f = form.save(commit=False)
                         if form.cleaned_data.get('ch_box'):
@@ -519,7 +519,7 @@ class Ed_an(TemplateView):
                 messages.success(request, "Nie udało się poprawić tagów.")
         elif 'upd_nm' in request.POST:
             try:
-                exk = modelformset_factory(Key_map, extra=0, form=AnimeEdFormKey)
+                exk = modelformset_factory(Anime_list, extra=0, form=AnimeEdFormKey)
                 k_form = exk(request.POST)
                 if k_form.is_valid():
                     po_k = k_form[0].save(commit=False)
@@ -536,7 +536,7 @@ class Ed_an(TemplateView):
         elif 'check_urls' in request.POST:
             form = LinkForm(request.POST)
             if form.is_valid():
-                Key_mp = get_object_or_404(Key_map, title = form.cleaned_data.get('key_map').title)
+                Key_mp = get_object_or_404(Anime_list, title = form.cleaned_data.get('key_map').title)
                 if Key_mp:
                     self.request.session['key_map'] = Key_mp.web_name
                 else:

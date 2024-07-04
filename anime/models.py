@@ -1,7 +1,7 @@
 from django.db import models
 import uuid
 from django.utils import timezone
-from fumetsu.models import Key_map, Anime_list
+from fumetsu.models import Anime_list
 from django_cleanup import cleanup
 from PIL import Image
 from django.contrib.auth.models import User
