@@ -19,8 +19,18 @@
     {#				</div>#}
                     </div>
                     <div>
-                        <h2 class="text-start">{{posts.name_english}}</h2>
-                        <h5>{{posts.name_romaji}}</h5>
+                       <h2 class="text-start">{{posts.name_english}}
+                        <a href="https://anilist.co/anime/{{posts.anilist_id}}" target="_blank">
+                            <img class="d-inline-block align-middle rounded-1" height="24em" src="{% static 'fumetsu/img/anilist_icon.svg' %}"></img>
+                        </a>
+                        </h2>
+                           <h5>{{posts.name_romaji}}</h5>
+                        <div id="tags" class="mb-2">
+                            {% for tag in tags %}
+                                <button class="btn btn-secondary">{{ tag }}</button>
+                            {% endfor %}
+
+                        </div>
                         <div>Rodzaj: {{ posts.format }}</div>
                         <div>Status:
                             {% if posts.status == 'AIRING' %}
@@ -31,19 +41,6 @@
                                 Nie wydane
                             {% endif %}
                         <div>Ilość odcinków: {{ posts.episode_count }}</div>
-
-                        <div id="tags">
-                            Tagi:
-                            {% for tag in tags %}
-                                {% if forloop.last %}
-                                    {{ tag }}
-                                {% else %}
-                                    {{ tag }},
-                                {% endif %}
-
-                            {% endfor %}
-
-                        </div>
                     </div>
                 </div>
 			</div>
