@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from fumetsu.models import Anime_list, Series_comment, Season
+from fumetsu.models import Anime_list, Series_comment, Season, Url_redirects
 from django.shortcuts import get_object_or_404
 from django.views.generic import (
     ListView
@@ -18,6 +18,18 @@ from django.forms import modelformset_factory
 from fumetsu.ban import check_ban, Nap_time, Is_member, Get_color
 from django.contrib.auth import logout
 import math
+
+def redirect_legacy_anime(request, anime_name, ep=None):
+    if ep:
+        # Redirect old url to new url using url_redirects and append episode number
+        url_redirect = Url_redirects.objects.filter(old_url=anime_name).first()
+        if url_redirect:
+            return redirect(f'ep-nm', anime_name=url_redirect.new_url, ep=ep)
+    else:
+        # Redirect old url to new url using url_redirects
+        url_redirect = Url_redirects.objects.filter(old_url=anime_name).first()
+        if url_redirect:
+            return redirect(f'anime-nm', url_redirect.new_url)
 
 
 class Anime_content(TemplateView):
@@ -233,7 +245,7 @@ class List(TemplateView):
 
         # Set default values for session variables
         self.request.session.setdefault('ile_pozycji', 12)
-        self.request.session.setdefault('page', 0)
+        self.request.session.setdefault('page', 1)
         total_anime_count = Anime_list.objects.all().count()
         context['page_max'] = math.ceil(total_anime_count / self.request.session['ile_pozycji'])
 

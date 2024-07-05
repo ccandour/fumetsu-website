@@ -9,34 +9,45 @@
 				<div class="col-12 text-center">
 					<img class="ser-m-img" src="{{ posts.image.url }}">
 				</div>
-			</div>			
+			</div>
 			<div class="d-none d-md-block">
-            <div class ="d-flex flex-row">
-{#				<div class="col-12 ser-b-col">#}
-{#					<img class="ser-img" src="{{ posts.image_bg.url }}">#}
-				<div class="col-3 ser-c-col">
-					<img class="ser-cover" src="{{ posts.image.url }}">
-{#				</div>#}
-				</div>
-                <div>
-                    <h2>{{posts.key_map.title}}</h2>
-
-                    <div id="tags">
-                        Tagi:
-                        {% for tag in tags %}
-                            {% if forloop.last %}
-                                {{ tag }}
-                            {% else %}
-                                {{ tag }},
+                <div class ="d-flex flex-row">
+    {#				<div class="col-12 ser-b-col">#}
+    {#					<img class="ser-img" src="{{ posts.image_bg.url }}">#}
+                    <div class="col-3 ser-c-col">
+                        <img class="ser-cover" src="{{ posts.image.url }}">
+    {#				</div>#}
+                    </div>
+                    <div>
+                        <h2 class="text-start">{{posts.name_english}}</h2>
+                        <h5>{{posts.name_romaji}}</h5>
+                        <div>Rodzaj: {{ posts.format }}</div>
+                        <div>Status:
+                            {% if posts.status == 'AIRING' %}
+                                Wychodzi
+                            {% elif posts.status == 'FINISHED' %}
+                                Zakończone
+                            {% elif posts.status == 'NOT_YET_RELEASED' %}
+                                Nie wydane
                             {% endif %}
+                        <div>Ilość odcinków: {{ posts.episode_count }}</div>
 
-                        {% endfor %}
+                        <div id="tags">
+                            Tagi:
+                            {% for tag in tags %}
+                                {% if forloop.last %}
+                                    {{ tag }}
+                                {% else %}
+                                    {{ tag }},
+                                {% endif %}
 
+                            {% endfor %}
+
+                        </div>
                     </div>
                 </div>
-            </div>
 			</div>
-            <p>{{posts.content}}</p>
+            <p class="mt-4">{{posts.content}}</p>
          {% if napisy and user.is_authenticated %}
 	    <a class="float-end" href="/media/{{napisy}}">Napisy</a>
     {% endif %}
@@ -63,9 +74,9 @@
  	<div class="col-12 col-lg-8 float-start">
   {% for family in family_anime %}
    <div class="col-6 col-md-3 other">
-		  <a href="{% url 'anime-nm' family.key_map.web_name %}">
+		  <a href="{% url 'anime-nm' family.web_name %}">
       <img class="oth-img" src="{{ family.image.url }}">     
-    			{{family.key_map.title}}
+    			{{family.title}}
 			    <div class="series-title-s">{{family.desc}}</div>
 		  </a>
    </div>

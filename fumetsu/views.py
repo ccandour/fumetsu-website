@@ -23,6 +23,9 @@ from django.contrib.auth import logout
 
 from django.db.models import Q
 
+from django.http import Http404, HttpResponseRedirect
+from django.urls import reverse
+
 
 class Home(ListView):
     model = Post
@@ -34,24 +37,24 @@ class Home(ListView):
         context['info'] = Info_bd.objects.all().order_by('-date_posted')[:3]
         return context
 
+
 class about(ListView):
     model = Post
     template_name = 'fumetsu/about.html'
 
     def get_context_data(self, **kwargs):
-
-
         context = super().get_context_data(**kwargs)
         return context
+
 
 class google_auth(ListView):
     model = Post
     template_name = 'fumetsu/google5299714afc51785a.html'
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
         return context
+
 
 class Info(ListView):
     model = Post
@@ -59,12 +62,12 @@ class Info(ListView):
     queryset = Info_bd.objects.all().order_by('-date_posted')
     template_name = 'fumetsu/info.html'
 
+
 class Info_d(ListView):
     model = Post
     template_name = 'fumetsu/info_d.html'
 
     def get_context_data(self, **kwargs):
-
 
         context = super().get_context_data(**kwargs)
         post_h = Info_bd.objects.filter(idd=self.kwargs['pkk']).first()
@@ -79,7 +82,7 @@ class Info_d(ListView):
         if form.is_valid():
             if 'com_cr_bt' in request.POST:
                 if len(form.cleaned_data.get('content')) > 9:
-                    k_m = get_object_or_404(Info_bd, idd = self.kwargs['pkk'])
+                    k_m = get_object_or_404(Info_bd, idd=self.kwargs['pkk'])
                     f_save = form.save(commit=False)
                     f_save.post_map = k_m
                     f_save.author = request.user
@@ -91,7 +94,7 @@ class Info_d(ListView):
             elif 'com_up_bt' in request.POST:
                 if len(form.cleaned_data.get('content')) > 9:
                     idd = request.POST.get("idd", "")
-                    t_save = Post_comment.objects.filter(id = idd).first()
+                    t_save = Post_comment.objects.filter(id=idd).first()
                     if t_save.author == request.user and idd:
                         f_save = form.save(commit=False)
 
@@ -99,21 +102,21 @@ class Info_d(ListView):
                         t_save.date_posted = datetime.now()
                         t_save.save()
                 messages.success(request, f'Poprawiono komentarz')
-                
+
 
         elif 'com_up_del' in request.POST:
             idd = request.POST.get("idd", "")
-            t_save = Post_comment.objects.filter(id = idd).first()
+            t_save = Post_comment.objects.filter(id=idd).first()
             if t_save.author == request.user and idd:
                 t_save.delete()
                 messages.success(request, f'Usunięto komentarz')
             else:
-                messages.error(request, f'Nie udało się usunąć konta')#coś tu się zjebało DRUPAT!!!
-
+                messages.error(request, f'Nie udało się usunąć konta')  #coś tu się zjebało DRUPAT!!!
 
         return redirect('fumetsu-infod', self.kwargs['pkk'])
 
-#działa 
+
+#działa
 class Cre_series(ListView):
     model = Post
     template_name = 'fumetsu/cre_series.html'
@@ -129,9 +132,9 @@ class Cre_series(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = SeriersForm() 
-        context['tags_add'] = Tags_add() 
-        context['tags_del'] = Tags_del() 
+        context['form'] = SeriersForm()
+        context['tags_add'] = Tags_add()
+        context['tags_del'] = Tags_del()
 
         try:
             ex = modelformset_factory(Harmonogram, extra=2, form=HarmonForm)
@@ -157,25 +160,23 @@ class Cre_series(ListView):
                     elif form.cleaned_data.get('day') > 7:
                         pass
                     elif form.cleaned_data.get('key_map'):
-                        if form.cleaned_data.get('content'):                           
+                        if form.cleaned_data.get('content'):
                             harmon_post.save()
 
                     del harmon_post
-                    
 
-            
             messages.success(request, "Zmieniono harmonogram")
-            
+
             return redirect('Cre-ser')
 
         except:
-            form_p = SeriersForm(request.POST,request.FILES)
+            form_p = SeriersForm(request.POST, request.FILES)
             form_t = Tags_add(request.POST)
             form_td = Tags_del(request.POST)
 
             if form_p.is_valid():
                 try:
-                    idd = (Anime_list.objects.all().order_by('-id_anime').first().id_anime + 1 )
+                    idd = (Anime_list.objects.all().order_by('-id_anime').first().id_anime + 1)
                 except:
                     idd = 0
 
@@ -186,37 +187,35 @@ class Cre_series(ListView):
                 f_k.web_name = web_name
                 f_k.save()
 
-
                 f_cr = form_p.save(commit=False)
-                f_cr.id_anime = idd 
+                f_cr.id_anime = idd
                 f_cr.key_map = f_k
                 f_cr.save()
-                    
 
                 for ta in form_p.cleaned_data.get('Tags'):
                     f_t = Tags()
                     ids = Tags_map.objects.filter(title=ta).first()
                     f_t.tags_map = ids
-                    f_t.key_map = f_k #chyba tu
+                    f_t.key_map = f_k  #chyba tu
                     f_t.save()
                     del f_t
 
                 messages.success(request, "Dodano anime.")
-            elif form_td.is_valid():#popraw usuń tag
-                q_t = Tags_map.objects.filter(title__iexact = form_td.cleaned_data.get('title')).first()
+            elif form_td.is_valid():  #popraw usuń tag
+                q_t = Tags_map.objects.filter(title__iexact=form_td.cleaned_data.get('title')).first()
                 #f_t = form_td.save(commit=False)
                 if form_td.cleaned_data.get('new_title'):
                     q_t.title = form_td.cleaned_data.get('new_title')
                     q_t.save()
                     messages.success(request, "poprawiono tag.")
-                else:  
+                else:
                     q_t.delete()
                     messages.success(request, "Usunięto tag.")
 
-            elif form_t.is_valid():#nowy tag
+            elif form_t.is_valid():  #nowy tag
                 f_t = form_t.save(commit=False)
                 if form_t.cleaned_data.get('title'):
-                    if not Tags_map.objects.filter(title__iexact = form_t.cleaned_data.get('title')):
+                    if not Tags_map.objects.filter(title__iexact=form_t.cleaned_data.get('title')):
                         f_t.save()
                         messages.success(request, "Dodano tag.")
                     else:
@@ -225,13 +224,13 @@ class Cre_series(ListView):
                     messages.success(request, "Podaj tag.")
             else:
                 messages.success(request, "cosik się popsuło. Jeszcze raz.")
-           
+
             return redirect('Cre-ser')
 
 
 #to działa w 100%
-class Cre_ani(TemplateView): 
-    template_name = 'fumetsu/cre_ani.html' 
+class Cre_ani(TemplateView):
+    template_name = 'fumetsu/cre_ani.html'
 
     def get_user(self, *args, **kwargs):
         return (self.request.user.groups.filter(name='Uploader').exists())
@@ -242,24 +241,23 @@ class Cre_ani(TemplateView):
         else:
             return redirect('fumetsu-home')
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form_up'] = Form_upload()
         context['form_ep_ch'] = LinkForm()
         context['form_ch_ep'] = LinkFormEp()
         context['form_season'] = SeasonForm()
-        
+
         try:
-            k_m = get_object_or_404(Anime_list, web_name = self.request.session['key_map'])
+            k_m = get_object_or_404(Anime_list, web_name=self.request.session['key_map'])
         except:
             pass
 
         try:
             ex = modelformset_factory(Anime_url, extra=2, form=Form_ch_url)
             context['form_ep_fix'] = ex(queryset=Anime_url.objects.filter(
-                key_map = k_m, 
-                ep_nr = self.request.session['urls_ep'])
+                key_map=k_m,
+                ep_nr=self.request.session['urls_ep'])
             )
         except:
             pass
@@ -267,44 +265,45 @@ class Cre_ani(TemplateView):
         try:
             ex_e = modelformset_factory(Post, extra=0, form=Form_upload_edit)
             ex_f = ex_e(queryset=Post.objects.filter(
-                odc_nm__key_map = k_m, 
-                odc_nm__ep_nr = self.request.session['urls_ep'])
+                odc_nm__key_map=k_m,
+                odc_nm__ep_nr=self.request.session['urls_ep'])
             )
-            
+
             context['form_upload_edit'] = ex_f
             ex_o = modelformset_factory(Odc_name, extra=0, form=Form_upload_edit_t)
             ex_o = ex_o(queryset=Odc_name.objects.filter(
-                key_map = k_m, 
-                ep_nr = self.request.session['urls_ep'])
+                key_map=k_m,
+                ep_nr=self.request.session['urls_ep'])
             )
             context['form_upload_edit_t'] = ex_o
-            context['napisy'] = Odc_name.objects.filter(key_map=k_m,ep_nr=self.request.session['urls_ep']).first().napisy
-        except :
+            context['napisy'] = Odc_name.objects.filter(key_map=k_m,
+                                                        ep_nr=self.request.session['urls_ep']).first().napisy
+        except:
             pass
             #daj jakieś info ze nie ma
-            
+
         return context
 
-
     def post(self, request, *args, **kwargs):
-        form = Form_upload(request.POST,request.FILES)
+        form = Form_upload(request.POST, request.FILES)
         form_ch = LinkForm(request.POST)
         form_ch_ep = LinkFormEp(request.POST)
-        
+
         #popraw linka
         try:
             ex = modelformset_factory(Anime_url, extra=3, form=Form_ch_url)
             urls_form = ex(request.POST)
 
             if urls_form.is_valid():
-                Key_mp = get_object_or_404(Anime_list, web_name = self.request.session['key_map'])
+                Key_mp = get_object_or_404(Anime_list, web_name=self.request.session['key_map'])
                 for form in urls_form:
                     urls_post = form.save(commit=False)
                     if form.cleaned_data.get('ch_box'):
                         urls_post.delete()
                     elif form.cleaned_data.get('link'):
                         urls_post.key_map = Key_mp
-                        urls_post.odc_nm = Odc_name.objects.filter(key_map=Key_mp,ep_nr=self.request.session['urls_ep']).first()
+                        urls_post.odc_nm = Odc_name.objects.filter(key_map=Key_mp,
+                                                                   ep_nr=self.request.session['urls_ep']).first()
                         urls_post.title = f"Anime: {Key_mp.title} i odc: {self.request.session['urls_ep']}"
                         urls_post.web_site = form.cleaned_data.get('web_site')
                         urls_post.ep_nr = self.request.session['urls_ep']
@@ -321,7 +320,7 @@ class Cre_ani(TemplateView):
 
         try:
             ex = modelformset_factory(Post, extra=0, form=Form_upload_edit)
-            urls_form = ex(request.POST,request.FILES)
+            urls_form = ex(request.POST, request.FILES)
 
             if urls_form.is_valid():
                 if urls_form[0].cleaned_data.get('ch_box'):
@@ -339,7 +338,7 @@ class Cre_ani(TemplateView):
 
         try:
             ex_o = modelformset_factory(Odc_name, extra=0, form=Form_upload_edit_t)
-            urls_form_t = ex_o(request.POST,request.FILES)
+            urls_form_t = ex_o(request.POST, request.FILES)
 
             if urls_form_t.is_valid():
                 if urls_form_t[0].cleaned_data.get('ch_box'):
@@ -356,44 +355,48 @@ class Cre_ani(TemplateView):
             pass
 
         #dodaj odc to juz dziala 25.12
-        form = Form_upload(request.POST,request.FILES)
+        form = Form_upload(request.POST, request.FILES)
         form_season = SeasonForm(request.POST)
-        
+
         if form.is_valid():
             if 'add_post' in request.POST:
                 try:
-                    self.request.session['key_map'] = get_object_or_404(Anime_list, title=form.cleaned_data.get('key_map').title).web_name
+                    self.request.session['key_map'] = get_object_or_404(Anime_list, title=form.cleaned_data.get(
+                        'key_map').title).web_name
                     self.request.session['urls_ep'] = form.cleaned_data.get('ep_title')
-                    test = Odc_name.objects.filter(key_map = form.cleaned_data.get('key_map'), ep_title = form.cleaned_data.get('ep_title')).first()
+                    test = Odc_name.objects.filter(key_map=form.cleaned_data.get('key_map'),
+                                                   ep_title=form.cleaned_data.get('ep_title')).first()
                     messages.success(request, test)
                     if not test:
 
                         f_cr = form.save(commit=False)
                         try:
-                            last_ep_nr = Odc_name.objects.filter(key_map = form.cleaned_data.get('key_map')).latest('ep_nr').ep_nr
-                            f_cr.ep_nr = last_ep_nr+1
+                            last_ep_nr = Odc_name.objects.filter(key_map=form.cleaned_data.get('key_map')).latest(
+                                'ep_nr').ep_nr
+                            f_cr.ep_nr = last_ep_nr + 1
                         except:
                             f_cr.ep_nr = 1
 
                         form.save()
 
                         f_post = Post()
-                        f_post.odc_nm = Odc_name.objects.filter(key_map = form.cleaned_data.get('key_map'), ep_title = form.cleaned_data.get('ep_title')).first()
+                        f_post.odc_nm = Odc_name.objects.filter(key_map=form.cleaned_data.get('key_map'),
+                                                                ep_title=form.cleaned_data.get('ep_title')).first()
                         f_post.content = form.cleaned_data.get('content')
                         f_post.image = form.cleaned_data.get('image')
                         f_post.save()
-                        
+
                     else:
                         messages.success(request, "Ten odc już istneje")
-                except :
+                except:
                     messages.success(request, "nie stworzono posta")
             return redirect('Cre-ani')
-            
+
         elif form_season.is_valid():
             if 'season_post' in request.POST:
                 if form_season.cleaned_data['anime_f'] != form_season.cleaned_data['anime_d']:
-                    key_anime_f = get_object_or_404(Anime_list, title = form_season.cleaned_data['anime_f'])
-                    key_anime_s = get_object_or_404(Anime_list, title = form_season.cleaned_data['anime_d'])
+                    key_anime_f = get_object_or_404(Anime_list, title=form_season.cleaned_data['anime_f'])
+                    key_anime_s = get_object_or_404(Anime_list, title=form_season.cleaned_data['anime_d'])
                     f_season = form_season.save(commit=False)
                     f_season.id_anime_f = key_anime_f.id_anime
                     f_season.id_anime_s = key_anime_s.id_anime
@@ -406,11 +409,11 @@ class Cre_ani(TemplateView):
                     f_season.save()
                     messages.success(request, "Dodano powiazanie.")
 
-        elif form_ch.is_valid():#wyświetlanie odc do poprawy
+        elif form_ch.is_valid():  #wyświetlanie odc do poprawy
             if 'check_urls' in request.POST:
-                Key_mp = get_object_or_404(Anime_list, title = form.cleaned_data.get('key_map').title)
+                Key_mp = get_object_or_404(Anime_list, title=form.cleaned_data.get('key_map').title)
                 self.request.session['key_map'] = Key_mp.web_name
-                
+
                 messages.success(request, "Wybierz odc.")
 
 
@@ -421,12 +424,13 @@ class Cre_ani(TemplateView):
 
         else:
             messages.success(request, "cosik się popsuło. Jeszcze raz.")
-            
+
         return redirect('Cre-ani')
 
+
 #teraz tu
-class Ed_an(TemplateView): 
-    template_name = 'fumetsu/edit_an.html' 
+class Ed_an(TemplateView):
+    template_name = 'fumetsu/edit_an.html'
 
     def get_user(self, *args, **kwargs):
         return (self.request.user.groups.filter(name='Uploader').exists())
@@ -443,22 +447,21 @@ class Ed_an(TemplateView):
         context['form_an_ch'] = LinkForm()
         context['form_an_url'] = EditUrl()
 
-
         try:
-            key_mp = get_object_or_404(Anime_list, web_name = self.request.session['key_map'])
+            key_mp = get_object_or_404(Anime_list, web_name=self.request.session['key_map'])
             ex = modelformset_factory(Anime_list, extra=0, form=AnimeEdForm)
             context['form_an'] = ex(queryset=Anime_list.objects.filter(
-                key_map = key_mp)
+                key_map=key_mp)
             )
 
             ex_k = modelformset_factory(Anime_list, extra=0, form=AnimeEdFormKey)
             context['form_key'] = ex_k(queryset=Anime_list.objects.filter(
-                web_name = key_mp.web_name)
+                web_name=key_mp.web_name)
             )
 
             ex_t = modelformset_factory(Tags, extra=2, form=AnimeEdFormTag)
             context['form_tag'] = ex_t(queryset=Tags.objects.filter(
-                key_map = key_mp)
+                key_map=key_mp)
             )
 
             context['ed_an'] = key_mp
@@ -474,7 +477,7 @@ class Ed_an(TemplateView):
         if 'upd_dis' in request.POST:
             try:
                 ex = modelformset_factory(Anime_list, extra=0, form=AnimeEdForm)
-                an_form = ex(request.POST,request.FILES)
+                an_form = ex(request.POST, request.FILES)
 
                 if an_form.is_valid():
                     an_form.save()
@@ -491,8 +494,8 @@ class Ed_an(TemplateView):
             if form_url.is_valid():
                 f_url = form_url.save(commit=False)
                 web_name = ''.join(e for e in f_url.web_name if e.isalnum())
-                if not Anime_list.objects.filter(web_name = web_name).first():
-                    query_url = Anime_list.objects.filter(web_name = self.request.session['key_map']).first()
+                if not Anime_list.objects.filter(web_name=web_name).first():
+                    query_url = Anime_list.objects.filter(web_name=self.request.session['key_map']).first()
                     query_url.web_name = web_name
                     query_url.save()
                     self.request.session['key_map'] = web_name
@@ -505,7 +508,7 @@ class Ed_an(TemplateView):
                 ext = modelformset_factory(Tags, extra=2, form=AnimeEdFormTag)
                 at_form = ext(request.POST)
                 if at_form.is_valid():
-                    Key_mp = get_object_or_404(Anime_list, web_name = self.request.session['key_map'])
+                    Key_mp = get_object_or_404(Anime_list, web_name=self.request.session['key_map'])
                     for form in at_form:
                         at_f = form.save(commit=False)
                         if form.cleaned_data.get('ch_box'):
@@ -536,20 +539,21 @@ class Ed_an(TemplateView):
         elif 'check_urls' in request.POST:
             form = LinkForm(request.POST)
             if form.is_valid():
-                Key_mp = get_object_or_404(Anime_list, title = form.cleaned_data.get('key_map').title)
+                Key_mp = get_object_or_404(Anime_list, title=form.cleaned_data.get('key_map').title)
                 if Key_mp:
                     self.request.session['key_map'] = Key_mp.web_name
                 else:
                     messages.success(request, "Nie znaleziono takiego odc.")
                     try:
-                       del self.request.session['key_map']
+                        del self.request.session['key_map']
                     except:
                         pass
 
         return redirect('ed-an')
 
-class Cre_info(TemplateView): 
-    template_name = 'fumetsu/cre_info.html' 
+
+class Cre_info(TemplateView):
+    template_name = 'fumetsu/cre_info.html'
 
     def get_user(self, *args, **kwargs):
         return (self.request.user.groups.filter(name='Informator').exists())
@@ -560,7 +564,6 @@ class Cre_info(TemplateView):
         else:
             return redirect('fumetsu-home')
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = InfoForm()
@@ -570,21 +573,18 @@ class Cre_info(TemplateView):
         try:
             ex = modelformset_factory(Info_bd, extra=0, form=InfoForm_change)
             context['form_change'] = ex(queryset=Info_bd.objects.filter(
-                id = self.request.session['post_change'])
+                id=self.request.session['post_change'])
             )
         except:
             pass
 
-        
-
-            
         return context
 
     def post(self, request, *args, **kwargs):
 
         try:
             ex = modelformset_factory(Info_bd, extra=0, form=InfoForm_change)
-            an_form = ex(request.POST,request.FILES)
+            an_form = ex(request.POST, request.FILES)
             if an_form.is_valid():
                 an_form.save()
                 messages.success(request, "Poprawiono posta.")
@@ -593,7 +593,7 @@ class Cre_info(TemplateView):
                 messages.success(request, "Nie poprawiono posta.")
                 return redirect('Cre-info')
         except:
-            form = InfoForm(request.POST,request.FILES)
+            form = InfoForm(request.POST, request.FILES)
             Form_pref = InfoForm_pref(request.POST)
 
             if form.is_valid():
@@ -608,11 +608,12 @@ class Cre_info(TemplateView):
                 messages.success(request, "Dodano posta.")
                 return redirect('fumetsu-infod', idd)
             elif Form_pref.is_valid():
-                self.request.session['post_change'] = form.cleaned_data.get('title')#daje id
+                self.request.session['post_change'] = form.cleaned_data.get('title')  #daje id
                 return redirect('Cre-info')
             else:
                 messages.success(request, "cosik się popsuło. Jeszcze raz.")
                 return redirect('Cre-info')
+
 
 class Link_error(TemplateView):
     model = Player_valid
@@ -632,7 +633,6 @@ class Link_error(TemplateView):
         context = super().get_context_data(**kwargs)
         context['posts'] = Player_valid.objects.all()
 
-
         return context
 
     def post(self, request, *args, **kwargs):
@@ -640,6 +640,5 @@ class Link_error(TemplateView):
         od_nm = Player_valid.objects.filter(key_map_ep__key_map__id_anime=request.POST.get("hrfd", "")).first()
         od_nm.delete()
         messages.success(request, f'Usunięto skarge')
-
 
         return redirect('lnk-err')

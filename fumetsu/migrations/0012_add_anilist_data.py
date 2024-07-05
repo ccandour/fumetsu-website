@@ -33,31 +33,31 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # migrations.AddField(
-        #     model_name='anime_list',
-        #     name='episode_count',
-        #     field=models.IntegerField(blank=True, null=True),
-        # ),
-        # migrations.AddField(
-        #     model_name='anime_list',
-        #     name='format',
-        #     field=models.CharField(blank=True, max_length=100, null=True),
-        # ),
-        # migrations.AddField(
-        #     model_name='anime_list',
-        #     name='name_english',
-        #     field=models.CharField(blank=True, max_length=100, null=True),
-        # ),
-        # migrations.AddField(
-        #     model_name='anime_list',
-        #     name='name_romaji',
-        #     field=models.CharField(blank=True, max_length=100, null=True),
-        # ),
-        # migrations.AddField(
-        #     model_name='anime_list',
-        #     name='status',
-        #     field=models.CharField(blank=True, max_length=100, null=True),
-        # ),
+        migrations.AddField(
+            model_name='anime_list',
+            name='episode_count',
+            field=models.IntegerField(blank=True, null=True),
+        ),
+        migrations.AddField(
+            model_name='anime_list',
+            name='format',
+            field=models.CharField(blank=True, max_length=100, null=True),
+        ),
+        migrations.AddField(
+            model_name='anime_list',
+            name='name_english',
+            field=models.CharField(blank=True, max_length=100, null=True),
+        ),
+        migrations.AddField(
+            model_name='anime_list',
+            name='name_romaji',
+            field=models.CharField(blank=True, max_length=100, null=True),
+        ),
+        migrations.AddField(
+            model_name='anime_list',
+            name='status',
+            field=models.CharField(blank=True, max_length=100, null=True),
+        ),
         migrations.AddField(
             model_name='anime_list',
             name='anilist_id',

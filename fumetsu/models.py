@@ -26,6 +26,7 @@ class Anime_list(models.Model):
     napisy = models.FileField(upload_to='archiwum/', blank=True)
     title = models.CharField(max_length=100, null=True, blank=True)
     web_name = models.CharField(max_length=100, null=True, blank=True)
+    # Anilist properties
     name_romaji = models.CharField(max_length=100, null=True, blank=True)
     name_english = models.CharField(max_length=100, null=True, blank=True)
     format = models.CharField(max_length=100, null=True, blank=True)
@@ -104,3 +105,8 @@ class Post_comment(models.Model):
 
     def __str__(self):
         return (f'post {self.author}, {self.content} do anime {self.post_map}.')
+
+class Url_redirects(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    old_url = models.CharField(max_length=100)
+    new_url = models.CharField(max_length=100)
