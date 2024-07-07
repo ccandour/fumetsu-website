@@ -279,6 +279,7 @@ class List(TemplateView):
             context['posts'] = an_list[start_index:end_index]
 
             context['search'] = True
+
             context['tags'] = self.request.session['tags']
             context['tags_nm'] = self.request.session['tags_nm']
 

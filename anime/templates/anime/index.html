@@ -12,7 +12,7 @@
 				</div>
 			</div>
 {#            Desktop version#}
-			<div class="d-none d-md-block">
+			<div class="d-none d-md-block col-8">
                 <div class ="d-flex flex-row">
                     <div class="me-4">
                         <img class="ser-cover" src="{{ posts.cover_image }}">
@@ -52,7 +52,7 @@
 		</div>
 
         <h5>Odcinki:</h5>
-		<div class="d-flex flex-row flex-wrap gap-2">
+		<div class="d-flex flex-row flex-wrap gap-2 col-8">
 			{% for e in ep %}
 	    		<a href="{% url 'ep-nm' posts.web_name e.ep_nr %}">
                     <button class="btn btn-outline-primary ep-btn"><b>{{ e.ep_nr|floatformat}}</b></button>

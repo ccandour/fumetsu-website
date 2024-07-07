@@ -571,3 +571,15 @@ margin: 0 5px;
 	width: 40px;
 	align-content: center;
 }
+
+.list-card {
+	width: 100%;
+}
+
+.list-card img {
+  /* change the height to whatever you want */
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  width: 100%;
+}
