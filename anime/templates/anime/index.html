@@ -4,19 +4,18 @@
 {% load utils_extras %}
 {% block content %}
 
-		<div class="col-12 col-lg-8 col-pd-0 ep-info float-start">
+		<div>
+{#            Mobile version#}
 			<div class="d-block d-md-none">
 				<div class="col-12 text-center">
-					<img class="ser-m-img" src="{{ posts.image.url }}">
+					<img class="ser-m-img" src="{{ posts.cover_image }}">
 				</div>
 			</div>
+{#            Desktop version#}
 			<div class="d-none d-md-block">
                 <div class ="d-flex flex-row">
-    {#				<div class="col-12 ser-b-col">#}
-    {#					<img class="ser-img" src="{{ posts.image_bg.url }}">#}
-                    <div class="col-3 ser-c-col">
-                        <img class="ser-cover" src="{{ posts.image.url }}">
-    {#				</div>#}
+                    <div class="me-4">
+                        <img class="ser-cover" src="{{ posts.cover_image }}">
                     </div>
                     <div>
                        <h2 class="text-start">{{posts.name_english}}
@@ -52,27 +51,19 @@
 
 		</div>
 
-		<div clas='ep_box'>
+        <h5>Odcinki:</h5>
+		<div class="d-flex flex-row flex-wrap gap-2">
 			{% for e in ep %}
-	    		<a class="epis" href="{% url 'ep-nm' posts.web_name e.ep_nr %}">
-					<div class="col-12 col-lg-8 {% if forloop.counter0|divisibleby:2 %}alt-bg{% endif %} episodes float-start">
-		    			<div class="float-start">
-		    				{% if user|has_group:"Informator" or user|has_group:"Uploader" or user|has_group:"content_creator" %}
-								id: {{ e.ep_nr|floatformat }} 
-							{% endif %}
-							Odcinek: {{ e.ep_title|floatformat }}
-						</div>
-		    			<div class="float-end d-none d-md-block">{{ e.date_postsed|date:"d.m.o" }}</div>
-               <div>{{e.title}}</div>                              
-		    		</div>
+	    		<a href="{% url 'ep-nm' posts.web_name e.ep_nr %}">
+                    <button class="btn btn-outline-primary ep-btn"><b>{{ e.ep_nr|floatformat}}</b></button>
 				</a>
-			
 			{% endfor %}
+        </div>
  	<div class="col-12 col-lg-8 float-start">
   {% for family in family_anime %}
    <div class="col-6 col-md-3 other">
 		  <a href="{% url 'anime-nm' family.web_name %}">
-      <img class="oth-img" src="{{ family.image.url }}">     
+      <img class="oth-img" src="{{ family.cover_image }}">
     			{{family.title}}
 			    <div class="series-title-s">{{family.desc}}</div>
 		  </a>

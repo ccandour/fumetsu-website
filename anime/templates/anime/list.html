@@ -46,7 +46,7 @@
             		<div class="col-6 col-md-4 col-lg-3 ser-col float-start">
             			<div class="series">
                             <a href="{% url 'anime-nm' pos.web_name %}">
-                                <img class="ser-img" src="{{ pos.image.url }}">
+                                <img class="ser-img" src="{{ pos.cover_image }}">
                                  {% if pos.key_map.title|length <= 35 %}
                                 <div class="series-title">{{ pos.title}}</div>
                             {% elif pos.key_map.title|length > 50 %}
@@ -62,7 +62,7 @@
                 <div class="col-6 col-md-4 col-lg-3 ser-col float-start">
                     <div class="series">
                         <a href="{% url 'anime-nm' post.web_name %}">
-                            <img class="ser-img" src="{{ post.image.url }}">
+                            <img class="ser-img" src="{{ post.cover_image }}">
                             {% if post.key_map.title|length <= 35 %}
                                 <div class="series-title">{{ post.title}}</div>
                             {% elif post.key_map.title|length > 50 %}

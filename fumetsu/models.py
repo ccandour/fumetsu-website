@@ -33,6 +33,7 @@ class Anime_list(models.Model):
     status = models.CharField(max_length=100, null=True, blank=True)
     episode_count = models.IntegerField(null=True, blank=True)
     anilist_id = models.CharField(max_length=100, null=True, blank=True)
+    cover_image = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return f'{self.web_name}'
