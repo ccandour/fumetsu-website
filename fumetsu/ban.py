@@ -26,7 +26,7 @@ def check_ban(user):
     q_user = Profile.objects.filter(user=user)
 
     q_users = q_user.filter(Q(ban__isnull=True) | Q(ban__gt=now))
-    if q_users.count() > 0 and q_user.first().ban != None:
+    if q_users.count() > 0 and q_user.first().ban is not None:
         return True  # ma bana
     else:
         return False

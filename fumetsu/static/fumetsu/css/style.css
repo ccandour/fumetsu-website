@@ -369,7 +369,7 @@ margin: 0 5px;
 	height: 75px;
 	width: 75px;
 	object-fit: cover;
-	margin-right: 10px;
+	border-radius: 6px;
 	/*border-radius: 100%;*/
 }
 

@@ -87,16 +87,21 @@
 			</form>
 			{% endif %}
 			</div>
-			<div id="Section_comm">
+			<div id="Section_comm" class="d-flex flex-column gap-4">
 				{% for com in comment %}
-			    	<div class="box_com ">
-			    		<div class="com_aut">			
-							<img class="com_img float-start" src="{{ com.author.profile.image.url }}">
-							<div class="com_nick float-start">
-								<a href="{% url 'user-inf' com.author.profile.web_name %}" style="color:{{com.color}}">
-									{{com.author.profile.nick}}
-								</a>
-							</div>
+			    		<div class="d-flex flex-row">
+							<img class="com_img me-3" src="{{ com.author.profile.image.url }}">
+
+							<div class="d-flex flex-column">
+                                <div class="d-flex flex-row gap-2 align-items-center">
+                                    <a href="{% url 'user-inf' com.author.profile.web_name %}" style="color:{{com.color}}">
+                                        <div class="fs-5 fw-semibold">{{com.author.profile.nick}}</div>
+                                    </a>
+                                    {{com.date_posted}}
+                                </div>
+                                {{com.content}}
+                                <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
+                            </div>
 
 							{% if com.author == user %}
 							<div class="dropleft float-end">
@@ -114,17 +119,8 @@
 								</div>
 								{% endif %}
 
-							<div class="com_date float-end d-none d-md-block">{{com.date_posted}}</div>
+							<div class="com_date float-end d-none d-md-block"></div>
 						</div>
-						<div class="com_cont">
-							
-							<div class="com_val">
-								
-								<br>{{com.content}}
-							</div>		
-							<input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
-						</div>
-					</div>	
 				{% endfor %}
 			</div>
 

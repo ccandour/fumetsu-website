@@ -833,8 +833,8 @@
 
 	/* Purple */
 
-	--bs-purple-hue: 288;
-	--bs-purple-saturation: 80%;
+	--bs-purple-hue: 270;
+	--bs-purple-saturation: 60%;
 	--bs-purple-100-hsl: var(--bs-purple-hue), var(--bs-purple-saturation), 90%;
 	--bs-purple-200-hsl: var(--bs-purple-hue), var(--bs-purple-saturation), 80%;
 	--bs-purple-300-hsl: var(--bs-purple-hue), var(--bs-purple-saturation), 70%;
