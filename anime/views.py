@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from fumetsu.models import Anime_list, Series_comment, Season, Url_redirects
+from fumetsu.models import Anime_list, Series_comment, Url_redirects, Relation
 from django.shortcuts import get_object_or_404
 from django.views.generic import (
     ListView
@@ -57,13 +57,13 @@ class Anime_content(TemplateView):
         except:
             pass
 
-        id_an_html = []
-        id_an_f = Season.objects.filter(id_anime_f=ani.id_anime)
-        for id_an in id_an_f:
-            an_list_ses = Anime_list.objects.filter(id_anime=id_an.id_anime_s).first()
-            an_list_ses.desc = id_an_f[0].description
-            id_an_html.append(an_list_ses)
-        context['family_anime'] = id_an_html
+        relations = []
+        db_relations = Relation.objects.filter(parent_series_id=ani.anilist_id)
+        for relation in db_relations:
+            related_series = Anime_list.objects.filter(anilist_id=relation.child_series_id).first()
+            relation_tuple = (related_series, relation.type)
+            relations.append(relation_tuple)
+        context['relations'] = relations
 
         comment = Series_comment.objects.filter(key_map_id=ani).order_by('-date_posted')
         for comm in comment:

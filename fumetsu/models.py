@@ -7,14 +7,14 @@ from django_cleanup import cleanup
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
-class Season(models.Model):
+class Relation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    id_anime_f = models.IntegerField()
-    id_anime_s = models.IntegerField()
-    description = models.TextField(null=True)
+    child_series_id = models.CharField(max_length=100, null=True, blank=True)
+    parent_series_id = models.CharField(max_length=100, null=True, blank=True)
+    type = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
-        return f'id pierwsze: {self.id_anime_f} |  ->  | id_d: {self.id_anime_s} | -> | opis: {self.description}'
+        return f'child: {self.child_series_id} |  ->  | parent: {self.parent_series_id} | -> | type: {self.type}'
 
 
 class Anime_list(models.Model):

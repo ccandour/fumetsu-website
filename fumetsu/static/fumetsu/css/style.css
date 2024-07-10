@@ -577,7 +577,17 @@ margin: 0 5px;
 }
 
 .list-card img {
-  /* change the height to whatever you want */
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  width: 100%;
+}
+
+.relations-card {
+	  width: 100%;
+}
+
+.relations-card img {
   height: 120px;
   object-fit: cover;
   display: block;

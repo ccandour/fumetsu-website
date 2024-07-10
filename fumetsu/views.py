@@ -246,7 +246,7 @@ class Cre_ani(TemplateView):
         context['form_up'] = Form_upload()
         context['form_ep_ch'] = LinkForm()
         context['form_ch_ep'] = LinkFormEp()
-        context['form_season'] = SeasonForm()
+        # context['form_season'] = SeasonForm()
 
         try:
             k_m = get_object_or_404(Anime_list, web_name=self.request.session['key_map'])
@@ -356,7 +356,7 @@ class Cre_ani(TemplateView):
 
         #dodaj odc to juz dziala 25.12
         form = Form_upload(request.POST, request.FILES)
-        form_season = SeasonForm(request.POST)
+        # form_season = SeasonForm(request.POST)
 
         if form.is_valid():
             if 'add_post' in request.POST:
@@ -392,22 +392,22 @@ class Cre_ani(TemplateView):
                     messages.success(request, "nie stworzono posta")
             return redirect('Cre-ani')
 
-        elif form_season.is_valid():
-            if 'season_post' in request.POST:
-                if form_season.cleaned_data['anime_f'] != form_season.cleaned_data['anime_d']:
-                    key_anime_f = get_object_or_404(Anime_list, title=form_season.cleaned_data['anime_f'])
-                    key_anime_s = get_object_or_404(Anime_list, title=form_season.cleaned_data['anime_d'])
-                    f_season = form_season.save(commit=False)
-                    f_season.id_anime_f = key_anime_f.id_anime
-                    f_season.id_anime_s = key_anime_s.id_anime
-
-                    f_season_s = Season()
-                    f_season_s.id_anime_f = key_anime_s.id_anime
-                    f_season_s.id_anime_s = key_anime_f.id_anime
-                    f_season_s.description = form_season.cleaned_data['description_s']
-                    f_season_s.save()
-                    f_season.save()
-                    messages.success(request, "Dodano powiazanie.")
+        # elif form_season.is_valid():
+        #     if 'season_post' in request.POST:
+        #         if form_season.cleaned_data['anime_f'] != form_season.cleaned_data['anime_d']:
+        #             key_anime_f = get_object_or_404(Anime_list, title=form_season.cleaned_data['anime_f'])
+        #             key_anime_s = get_object_or_404(Anime_list, title=form_season.cleaned_data['anime_d'])
+        #             f_season = form_season.save(commit=False)
+        #             f_season.id_anime_f = key_anime_f.id_anime
+        #             f_season.id_anime_s = key_anime_s.id_anime
+        #
+        #             f_season_s = Season()
+        #             f_season_s.id_anime_f = key_anime_s.id_anime
+        #             f_season_s.id_anime_s = key_anime_f.id_anime
+        #             f_season_s.description = form_season.cleaned_data['description_s']
+        #             f_season_s.save()
+        #             f_season.save()
+        #             messages.success(request, "Dodano powiazanie.")
 
         elif form_ch.is_valid():  #wyświetlanie odc do poprawy
             if 'check_urls' in request.POST:

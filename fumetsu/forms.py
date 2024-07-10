@@ -62,18 +62,18 @@ class Form_upload_edit_t(forms.ModelForm):
         model = Odc_name
         fields = ['ep_title','title','napisy','ch_box']
 
-class SeasonForm(forms.ModelForm):
-    anime_f = forms.ModelChoiceField(queryset=Anime_list.objects.all(),label=_('Jakie anime:'))
-    anime_d = forms.ModelChoiceField(queryset=Anime_list.objects.all(),label=_('do jakiego anime'))
-    description_s = forms.CharField(widget=forms.Textarea(),label=_('powiazanie miedzy drugim a pierwszym'))
-
-    class Meta:
-        model = Season
-        fields = ['anime_f','anime_d','description','description_s']
-
-        labels = {
-            'description': _('powiazanie miedzy pierwszym a drugim'),
-        }
+# class SeasonForm(forms.ModelForm):
+#     anime_f = forms.ModelChoiceField(queryset=Anime_list.objects.all(),label=_('Jakie anime:'))
+#     anime_d = forms.ModelChoiceField(queryset=Anime_list.objects.all(),label=_('do jakiego anime'))
+#     description_s = forms.CharField(widget=forms.Textarea(),label=_('powiazanie miedzy drugim a pierwszym'))
+#
+#     class Meta:
+#         model = Relation
+#         fields = ['anime_f','anime_d','description','description_s']
+#
+#         labels = {
+#             'description': _('powiazanie miedzy pierwszym a drugim'),
+#         }
 
 
 class LinkForm(forms.ModelForm):
