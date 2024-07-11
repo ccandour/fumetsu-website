@@ -7,6 +7,7 @@ from django.views.generic import (
     ListView
 )
 
+from utils.utils import translate_tag
 from .forms import *
 from .models import *
 
@@ -72,11 +73,11 @@ class Anime_content(TemplateView):
 
         context['ep'] = Odc_name.objects.filter(key_map_id=ani).order_by('ep_title')
 
-        kurwa = Tags.objects.filter(key_map_id=ani).only("tags_map")
+        kurwa = Tags.objects.filter(anime_anilist_id=ani.anilist_id).only("label")
 
         list_tags = []
         for tag in kurwa:
-            list_tags.append(tag.tags_map)
+            list_tags.append(translate_tag(tag.label))
         context['tags'] = list_tags
 
         context['com_ed'] = CreateComment()
@@ -220,7 +221,7 @@ from django.contrib.auth import logout
 from django.db.models import Count
 import math
 from .models import Anime_list, Tags
-from .forms import QueryTags
+# from .forms import QueryTags
 from fumetsu.ban import check_ban
 
 
@@ -240,7 +241,7 @@ class List(TemplateView):
             print(f"Error checking ban: {e}")
 
         context = super().get_context_data(**kwargs)
-        context['filter'] = QueryTags()
+        # context['filter'] = QueryTags()
         context['ses_bool'] = False
 
         # Set default values for session variables
@@ -249,75 +250,84 @@ class List(TemplateView):
         total_anime_count = Anime_list.objects.all().count()
         context['page_max'] = math.ceil(total_anime_count / self.request.session['ile_pozycji'])
 
-        # Both tags and search query
-        if 'tags' in self.request.session and 'tags_nm' in self.request.session:
-            an_list = []
-
-            # Get all tags-series pairs that match the selected tags
-            tags_l = Tags.objects.filter(
-                key_map__title__contains=self.request.session['tags_nm'],
-                tags_map__title__in=self.request.session['tags']
-            )
-
-            # Make a dictionary with anime series ids and the number of tags that match the selected tags
-            anime_l = tags_l.values('key_map').annotate(Count('id')).order_by().filter(
-                id__count__gt=len(self.request.session['tags']) - 1)
-
-            # Add the series to the list
-            for ani in anime_l:
-                anime_id = ani['key_map']
-                anime_instance = Anime_list.objects.filter(id=anime_id).first()
-                if anime_instance:
-                    an_list.append(anime_instance)
-
-            if self.request.session['page'] * self.request.session['ile_pozycji'] > len(an_list):
-                self.request.session['page'] = 0
-
-            # Get the series for current page
-            start_index = self.request.session['page'] * self.request.session['ile_pozycji']
-            end_index = (self.request.session['page'] + 1) * self.request.session['ile_pozycji']
-            context['posts'] = an_list[start_index:end_index]
-
-            context['search'] = True
-
-            context['tags'] = self.request.session['tags']
-            context['tags_nm'] = self.request.session['tags_nm']
-
-        # Only tags
-        elif 'tags' in self.request.session:
-            an_list = []
-
-            # Get all tags-series pairs that match the selected tags
-            tags_l = Tags.objects.filter(tags_map__title__in=self.request.session['tags'])
-
-            # Make a dictionary with anime series ids and the number of tags that match the selected tags
-            anime_l = tags_l.values('key_map').annotate(Count('id')).order_by().filter(
-                id__count__gt=len(self.request.session['tags']) - 1)
-
-            # Add the series to the list
-            for ani in anime_l:
-                anime_id = ani['key_map']
-                anime_instance = Anime_list.objects.filter(id=anime_id).first()
-                if anime_instance:
-                    an_list.append(anime_instance)
-
-            if self.request.session['page'] * self.request.session['ile_pozycji'] > len(an_list):
-                self.request.session['page'] = 0
-
-            # Get the series for current page
-            start_index = self.request.session['page'] * self.request.session['ile_pozycji']
-            end_index = (self.request.session['page'] + 1) * self.request.session['ile_pozycji']
-            context['posts'] = an_list[start_index:end_index]
-
-            context['search'] = True
-            context['tags'] = self.request.session['tags']
+        # # Both tags and search query
+        # if 'tags' in self.request.session and 'tags_nm' in self.request.session:
+        #     an_list = []
+        #
+        #     # Get all tags-series pairs that match the selected tags
+        #     tags_l = Tags.objects.filter(
+        #         key_map__title__contains=self.request.session['tags_nm'],
+        #         tags_map__title__in=self.request.session['tags']
+        #     )
+        #
+        #     # Make a dictionary with anime series ids and the number of tags that match the selected tags
+        #     anime_l = tags_l.values('key_map').annotate(Count('id')).order_by().filter(
+        #         id__count__gt=len(self.request.session['tags']) - 1)
+        #
+        #     # Add the series to the list
+        #     for ani in anime_l:
+        #         anime_id = ani['key_map']
+        #         anime_instance = Anime_list.objects.filter(id=anime_id).first()
+        #         if anime_instance:
+        #             an_list.append(anime_instance)
+        #
+        #     if self.request.session['page'] * self.request.session['ile_pozycji'] > len(an_list):
+        #         self.request.session['page'] = 0
+        #
+        #     # Get the series for current page
+        #     start_index = self.request.session['page'] * self.request.session['ile_pozycji']
+        #     end_index = (self.request.session['page'] + 1) * self.request.session['ile_pozycji']
+        #     context['posts'] = an_list[start_index:end_index]
+        #
+        #     context['search'] = True
+        #
+        #     context['tags'] = self.request.session['tags']
+        #     context['tags_nm'] = self.request.session['tags_nm']
+        #
+        # # Only tags
+        # elif 'tags' in self.request.session:
+        #     an_list = []
+        #
+        #     # Get all tags-series pairs that match the selected tags
+        #     tags_l = Tags.objects.filter(tags_map__title__in=self.request.session['tags'])
+        #
+        #     # Make a dictionary with anime series ids and the number of tags that match the selected tags
+        #     anime_l = tags_l.values('key_map').annotate(Count('id')).order_by().filter(
+        #         id__count__gt=len(self.request.session['tags']) - 1)
+        #
+        #     # Add the series to the list
+        #     for ani in anime_l:
+        #         anime_id = ani['key_map']
+        #         anime_instance = Anime_list.objects.filter(id=anime_id).first()
+        #         if anime_instance:
+        #             an_list.append(anime_instance)
+        #
+        #     if self.request.session['page'] * self.request.session['ile_pozycji'] > len(an_list):
+        #         self.request.session['page'] = 0
+        #
+        #     # Get the series for current page
+        #     start_index = self.request.session['page'] * self.request.session['ile_pozycji']
+        #     end_index = (self.request.session['page'] + 1) * self.request.session['ile_pozycji']
+        #     context['posts'] = an_list[start_index:end_index]
+        #
+        #     context['search'] = True
+        #     context['tags'] = self.request.session['tags']
 
         # Only search query
-        elif 'tags_nm' in self.request.session:
+        if 'tags_nm' in self.request.session:
             # Get all the series that contain the search query in their title
             start_index = self.request.session['page'] * self.request.session['ile_pozycji']
             end_index = (self.request.session['page'] + 1) * self.request.session['ile_pozycji']
-            context['posts'] = Anime_list.objects.filter(title__contains=self.request.session['tags_nm'])[start_index:end_index]
+            trimmed_db_anime = Anime_list.objects.filter(title__contains=self.request.session['tags_nm'])[start_index:end_index]
+
+            anime_with_tags = []
+            for anime in trimmed_db_anime:
+                # Add the tags to the series
+                tags = Tags.objects.filter(anime_anilist_id=anime.anilist_id)
+                translated_tags = list(map(lambda tag: translate_tag(tag.label), tags))
+                anime_with_tags.append((anime, translated_tags))
+
+            context['posts'] = anime_with_tags
 
             context['search'] = True
             context['tags_nm'] = self.request.session['tags_nm']
@@ -325,7 +335,16 @@ class List(TemplateView):
             # Get the series for current page
             start_index = self.request.session['page'] * self.request.session['ile_pozycji']
             end_index = (self.request.session['page'] + 1) * self.request.session['ile_pozycji']
-            context['posts'] = Anime_list.objects.all()[start_index:end_index]
+            trimmed_db_anime = Anime_list.objects.all()[start_index:end_index]
+
+            anime_with_tags = []
+            for anime in trimmed_db_anime:
+                # Add the tags to the series
+                tags = Tags.objects.filter(anime_anilist_id=anime.anilist_id)
+                translated_tags = list(map(lambda tag: translate_tag(tag.label), tags))
+                anime_with_tags.append((anime, translated_tags))
+
+            context['posts'] = anime_with_tags
 
         context['page'] = self.request.session['page']
 

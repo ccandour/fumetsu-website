@@ -67,12 +67,12 @@ class Tags_map(models.Model):
         
 class Tags(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    tags_map = models.ForeignKey(Tags_map, on_delete=models.CASCADE, null=True)
-    key_map = models.ForeignKey(Anime_list, on_delete=models.CASCADE, null=True)
+    anime_anilist_id = models.CharField(max_length=100)
+    label = models.CharField(max_length=100)
 
 
     def __str__(self):
-        return ( f'anime: {self.key_map} o tagu: {self.tags_map}.')
+        return ( f'tag {self.label} dla anime {self.anime_anilist_id}.')
 
 
 class Episode_comment(models.Model):

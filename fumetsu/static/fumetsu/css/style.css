@@ -584,12 +584,14 @@ margin: 0 5px;
 }
 
 .relations-card {
-	  width: 100%;
+  	width: 100%;
+	height: 240px;
+
 }
 
 .relations-card img {
-  height: 120px;
-  object-fit: cover;
-  display: block;
-  width: 100%;
+  	height: 120px;
+  	object-fit: cover;
+  	display: block;
+  	width: 100%;
 }

@@ -58,20 +58,31 @@
 				</a>
 			{% endfor %}
         </div>
+        {% if relations %}
         <h5>Powiązane:</h5>
         <div class="d-flex flex-row flex-wrap gap-2 col-8">
             {% for relation in relations %}
                 <a href="{% url 'anime-nm' relation.0.web_name %}">
-                <div class="card relations-card" style="width: 10rem;">
+                <div class="card relations-card text-center" style="width: 10rem;">
                     <img src="{{ relation.0.cover_image }}" class="card-img-top" alt="Relation Cover Image">
-                     <div class="card-body">
-                        <h6 class="card-title">{{relation.0.name_english}}</h6>
-                        <p class="card-text">{{relation.1}}</p>
+                     <div class="card-body d-flex flex-column">
+                        <h6 class="card-title ">{{relation.0.name_english}}</h6>
+                        <p class="card-text mt-auto ms-auto me-auto">
+                            {% if relation.1 == 'SIDE_STORY'%}
+                            POBOCZNE
+                            {% elif relation.1 == 'SPIN_OFF'%}
+                            SPIN-OFF
+                            {% else%}
+                            {{relation.1}}</p>
+                            {% endif %}
                       </div>
                 </div>
                 </a>
 	        {% endfor %}
 		</div>
+        {% endif %}
+    
+        {% if comment %}
 		<div class="col-12 col-lg-8 float-start">
 			<div class="comments">
 			<h5>Sekcja komentarzy:</h5>
@@ -124,6 +135,7 @@
 						</div>
 				{% endfor %}
 			</div>
+        {% endif %}
 
 
 <div class="modal fade" id="modalComRe" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

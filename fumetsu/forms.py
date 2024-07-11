@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
-from anime.models import Odc_name, Tags_map, Post, Anime_url, Tags
+from anime.models import Odc_name, Post, Anime_url, Tags
 
 from django.forms.models import modelformset_factory
 from django.utils.translation import gettext_lazy as _
@@ -101,12 +101,12 @@ class AnimeEdForm(forms.ModelForm):
             'image': _('Zdjęcie'),
         }
 
-class AnimeEdFormTag(forms.ModelForm):
-    ch_box = forms.BooleanField(label=_('Usuń całkowice odcinek i posta'), required=False)
-
-    class Meta:
-        model = Tags
-        fields = ['tags_map']
+# class AnimeEdFormTag(forms.ModelForm):
+#     ch_box = forms.BooleanField(label=_('Usuń całkowice odcinek i posta'), required=False)
+#
+#     class Meta:
+#         model = Tags
+#         fields = ['tags_map']
 
 class AnimeEdFormKey(forms.ModelForm):
 
@@ -149,30 +149,30 @@ class InfoForm_change(forms.ModelForm):
         model = Info_bd
         fields = ['title','content','image']
 
-class SeriersForm(forms.ModelForm):
-
-    Tags = forms.ModelMultipleChoiceField(queryset=Tags_map.objects.only("title"),
-            widget=forms.CheckboxSelectMultiple())
-
-    title = forms.CharField(
-        label="Tytuł Anime",
-        widget=forms.Textarea(
-            attrs={
-                "placeholder": "Tytuł.",
-                "rows":2,
-                "cols":30
-            }
-        )
-    )
-
-    class Meta:
-        model = Anime_list
-        fields = ['title','content','image','image_bg','Tags']
-
-        labels = {
-            'content': _('Opis Anime'),
-            'image': _('Zdjęcie okładki') 
-        }
+# class SeriersForm(forms.ModelForm):
+#
+#     Tags = forms.ModelMultipleChoiceField(queryset=Tags_map.objects.only("title"),
+#             widget=forms.CheckboxSelectMultiple())
+#
+#     title = forms.CharField(
+#         label="Tytuł Anime",
+#         widget=forms.Textarea(
+#             attrs={
+#                 "placeholder": "Tytuł.",
+#                 "rows":2,
+#                 "cols":30
+#             }
+#         )
+#     )
+#
+#     class Meta:
+#         model = Anime_list
+#         fields = ['title','content','image','image_bg','Tags']
+#
+#         labels = {
+#             'content': _('Opis Anime'),
+#             'image': _('Zdjęcie okładki')
+#         }
 
 class HarmonForm(forms.ModelForm):
 
@@ -187,39 +187,39 @@ class HarmonForm(forms.ModelForm):
         }
 
 
-class Tags_add(forms.ModelForm):
+# class Tags_add(forms.ModelForm):
+#
+#     title = forms.CharField(max_length=128,
+#         label="nazwa tagu.",
+#         required=False,
+#         widget=forms.TextInput(
+#             attrs={
+#                 "placeholder": "nazwa tagu"
+#             }
+#         )
+#     )
+#
+#     class Meta:
+#         model = Tags_map
+#         fields = ['title']
 
-    title = forms.CharField(max_length=128,
-        label="nazwa tagu.",
-        required=False,
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "nazwa tagu"
-            }
-        )
-    )
-
-    class Meta:
-        model = Tags_map
-        fields = ['title']
-
-class Tags_del(forms.ModelForm):
-
-    title = forms.ModelChoiceField(queryset=Tags_map.objects.all())
-
-    new_title = forms.CharField(max_length=128,
-        label="nowa nazwa tagu.",
-        required=False,
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "nazwa tagu"
-            }
-        )
-    )
-
-    class Meta:
-        model = Tags_map
-        fields = ['title','new_title']
+# class Tags_del(forms.ModelForm):
+#
+#     title = forms.ModelChoiceField(queryset=Tags_map.objects.all())
+#
+#     new_title = forms.CharField(max_length=128,
+#         label="nowa nazwa tagu.",
+#         required=False,
+#         widget=forms.TextInput(
+#             attrs={
+#                 "placeholder": "nazwa tagu"
+#             }
+#         )
+#     )
+#
+#     class Meta:
+#         model = Tags_map
+#         fields = ['title','new_title']
 
 class CreateComment(forms.ModelForm):
 

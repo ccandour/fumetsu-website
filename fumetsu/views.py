@@ -15,7 +15,7 @@ from anime.models import Episode_comment
 
 from django.forms import modelformset_factory
 
-from anime.models import Tags_map, Tags, Post, Player_valid
+from anime.models import Tags, Post, Player_valid
 from datetime import datetime
 
 from .ban import check_ban
@@ -117,115 +117,115 @@ class Info_d(ListView):
 
 
 #działa
-class Cre_series(ListView):
-    model = Post
-    template_name = 'fumetsu/cre_series.html'
+# class Cre_series(ListView):
+#     model = Post
+#     template_name = 'fumetsu/cre_series.html'
+#
+#     def get_user(self, *args, **kwargs):
+#         return (self.request.user.groups.filter(name='content_creator').exists())
+#
+#     def dispatch(self, *args, **kwargs):
+#         if self.get_user():
+#             return super(Cre_series, self).dispatch(*args, **kwargs)
+#         else:
+#             return redirect('fumetsu-home')
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['form'] = SeriersForm()
+#         context['tags_add'] = Tags_add()
+#         context['tags_del'] = Tags_del()
+#
+#         try:
+#             ex = modelformset_factory(Harmonogram, extra=2, form=HarmonForm)
+#             context['form_h'] = ex(queryset=Harmonogram.objects.all())
+#
+#         except:
+#             pass
+#
+#         return context
 
-    def get_user(self, *args, **kwargs):
-        return (self.request.user.groups.filter(name='content_creator').exists())
-
-    def dispatch(self, *args, **kwargs):
-        if self.get_user():
-            return super(Cre_series, self).dispatch(*args, **kwargs)
-        else:
-            return redirect('fumetsu-home')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = SeriersForm()
-        context['tags_add'] = Tags_add()
-        context['tags_del'] = Tags_del()
-
-        try:
-            ex = modelformset_factory(Harmonogram, extra=2, form=HarmonForm)
-            context['form_h'] = ex(queryset=Harmonogram.objects.all())
-
-        except:
-            pass
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        try:
-            ex = modelformset_factory(Harmonogram, extra=2, form=HarmonForm)
-            harmon_form = ex(request.POST)
-
-            for form in harmon_form:
-                if form.is_valid():
-                    harmon_post = form.save(commit=False)
-                    if form.cleaned_data.get('ch_box'):
-                        harmon_post.delete()
-                    elif form.cleaned_data.get('day') < 0:
-                        pass
-                    elif form.cleaned_data.get('day') > 7:
-                        pass
-                    elif form.cleaned_data.get('key_map'):
-                        if form.cleaned_data.get('content'):
-                            harmon_post.save()
-
-                    del harmon_post
-
-            messages.success(request, "Zmieniono harmonogram")
-
-            return redirect('Cre-ser')
-
-        except:
-            form_p = SeriersForm(request.POST, request.FILES)
-            form_t = Tags_add(request.POST)
-            form_td = Tags_del(request.POST)
-
-            if form_p.is_valid():
-                try:
-                    idd = (Anime_list.objects.all().order_by('-id_anime').first().id_anime + 1)
-                except:
-                    idd = 0
-
-                f_k = Anime_list()
-                f_k.id_anime = idd
-                f_k.title = form_p.cleaned_data.get('title')
-                web_name = ''.join(e for e in f_k.title if e.isalnum())
-                f_k.web_name = web_name
-                f_k.save()
-
-                f_cr = form_p.save(commit=False)
-                f_cr.id_anime = idd
-                f_cr.key_map = f_k
-                f_cr.save()
-
-                for ta in form_p.cleaned_data.get('Tags'):
-                    f_t = Tags()
-                    ids = Tags_map.objects.filter(title=ta).first()
-                    f_t.tags_map = ids
-                    f_t.key_map = f_k  #chyba tu
-                    f_t.save()
-                    del f_t
-
-                messages.success(request, "Dodano anime.")
-            elif form_td.is_valid():  #popraw usuń tag
-                q_t = Tags_map.objects.filter(title__iexact=form_td.cleaned_data.get('title')).first()
-                #f_t = form_td.save(commit=False)
-                if form_td.cleaned_data.get('new_title'):
-                    q_t.title = form_td.cleaned_data.get('new_title')
-                    q_t.save()
-                    messages.success(request, "poprawiono tag.")
-                else:
-                    q_t.delete()
-                    messages.success(request, "Usunięto tag.")
-
-            elif form_t.is_valid():  #nowy tag
-                f_t = form_t.save(commit=False)
-                if form_t.cleaned_data.get('title'):
-                    if not Tags_map.objects.filter(title__iexact=form_t.cleaned_data.get('title')):
-                        f_t.save()
-                        messages.success(request, "Dodano tag.")
-                    else:
-                        messages.success(request, "Tagi tag już istneje.")
-                else:
-                    messages.success(request, "Podaj tag.")
-            else:
-                messages.success(request, "cosik się popsuło. Jeszcze raz.")
-
-            return redirect('Cre-ser')
+    # def post(self, request, *args, **kwargs):
+    #     try:
+    #         ex = modelformset_factory(Harmonogram, extra=2, form=HarmonForm)
+    #         harmon_form = ex(request.POST)
+    #
+    #         for form in harmon_form:
+    #             if form.is_valid():
+    #                 harmon_post = form.save(commit=False)
+    #                 if form.cleaned_data.get('ch_box'):
+    #                     harmon_post.delete()
+    #                 elif form.cleaned_data.get('day') < 0:
+    #                     pass
+    #                 elif form.cleaned_data.get('day') > 7:
+    #                     pass
+    #                 elif form.cleaned_data.get('key_map'):
+    #                     if form.cleaned_data.get('content'):
+    #                         harmon_post.save()
+    #
+    #                 del harmon_post
+    #
+    #         messages.success(request, "Zmieniono harmonogram")
+    #
+    #         return redirect('Cre-ser')
+    #
+    #     except:
+    #         form_p = SeriersForm(request.POST, request.FILES)
+    #         form_t = Tags_add(request.POST)
+    #         form_td = Tags_del(request.POST)
+    #
+    #         if form_p.is_valid():
+    #             try:
+    #                 idd = (Anime_list.objects.all().order_by('-id_anime').first().id_anime + 1)
+    #             except:
+    #                 idd = 0
+    #
+    #             f_k = Anime_list()
+    #             f_k.id_anime = idd
+    #             f_k.title = form_p.cleaned_data.get('title')
+    #             web_name = ''.join(e for e in f_k.title if e.isalnum())
+    #             f_k.web_name = web_name
+    #             f_k.save()
+    #
+    #             f_cr = form_p.save(commit=False)
+    #             f_cr.id_anime = idd
+    #             f_cr.key_map = f_k
+    #             f_cr.save()
+    #
+    #             # for ta in form_p.cleaned_data.get('Tags'):
+    #             #     f_t = Tags()
+    #             #     ids = Tags_map.objects.filter(title=ta).first()
+    #             #     f_t.tags_map = ids
+    #             #     f_t.key_map = f_k  #chyba tu
+    #             #     f_t.save()
+    #             #     del f_t
+    #
+    #             messages.success(request, "Dodano anime.")
+    #         elif form_td.is_valid():  #popraw usuń tag
+    #             q_t = Tags_map.objects.filter(title__iexact=form_td.cleaned_data.get('title')).first()
+    #             #f_t = form_td.save(commit=False)
+    #             if form_td.cleaned_data.get('new_title'):
+    #                 q_t.title = form_td.cleaned_data.get('new_title')
+    #                 q_t.save()
+    #                 messages.success(request, "poprawiono tag.")
+    #             else:
+    #                 q_t.delete()
+    #                 messages.success(request, "Usunięto tag.")
+    #
+    #         elif form_t.is_valid():  #nowy tag
+    #             f_t = form_t.save(commit=False)
+    #             if form_t.cleaned_data.get('title'):
+    #                 if not Tags_map.objects.filter(title__iexact=form_t.cleaned_data.get('title')):
+    #                     f_t.save()
+    #                     messages.success(request, "Dodano tag.")
+    #                 else:
+    #                     messages.success(request, "Tagi tag już istneje.")
+    #             else:
+    #                 messages.success(request, "Podaj tag.")
+    #         else:
+    #             messages.success(request, "cosik się popsuło. Jeszcze raz.")
+    #
+    #         return redirect('Cre-ser')
 
 
 #to działa w 100%
@@ -429,127 +429,127 @@ class Cre_ani(TemplateView):
 
 
 #teraz tu
-class Ed_an(TemplateView):
-    template_name = 'fumetsu/edit_an.html'
-
-    def get_user(self, *args, **kwargs):
-        return (self.request.user.groups.filter(name='Uploader').exists())
-
-    def dispatch(self, *args, **kwargs):
-        if self.get_user():
-            return super(Ed_an, self).dispatch(*args, **kwargs)
-        else:
-            return redirect('fumetsu-home')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        context['form_an_ch'] = LinkForm()
-        context['form_an_url'] = EditUrl()
-
-        try:
-            key_mp = get_object_or_404(Anime_list, web_name=self.request.session['key_map'])
-            ex = modelformset_factory(Anime_list, extra=0, form=AnimeEdForm)
-            context['form_an'] = ex(queryset=Anime_list.objects.filter(
-                key_map=key_mp)
-            )
-
-            ex_k = modelformset_factory(Anime_list, extra=0, form=AnimeEdFormKey)
-            context['form_key'] = ex_k(queryset=Anime_list.objects.filter(
-                web_name=key_mp.web_name)
-            )
-
-            ex_t = modelformset_factory(Tags, extra=2, form=AnimeEdFormTag)
-            context['form_tag'] = ex_t(queryset=Tags.objects.filter(
-                key_map=key_mp)
-            )
-
-            context['ed_an'] = key_mp
-
-
-        except:
-            pass
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-
-        if 'upd_dis' in request.POST:
-            try:
-                ex = modelformset_factory(Anime_list, extra=0, form=AnimeEdForm)
-                an_form = ex(request.POST, request.FILES)
-
-                if an_form.is_valid():
-                    an_form.save()
-                    messages.success(request, "Poprawiono anime.")
-                    return redirect('ed-an')
-                else:
-                    messages.success(request, "nie udało się poprawić anime.")
-                    return redirect('ed-an')
-            except:
-                pass
-
-        elif 'ed_url' in request.POST:
-            form_url = EditUrl(request.POST)
-            if form_url.is_valid():
-                f_url = form_url.save(commit=False)
-                web_name = ''.join(e for e in f_url.web_name if e.isalnum())
-                if not Anime_list.objects.filter(web_name=web_name).first():
-                    query_url = Anime_list.objects.filter(web_name=self.request.session['key_map']).first()
-                    query_url.web_name = web_name
-                    query_url.save()
-                    self.request.session['key_map'] = web_name
-                    messages.success(request, "poprawiono url anime.")
-                else:
-                    messages.success(request, "Taki url istnieje.")
-
-        elif 'upd_tg' in request.POST:
-            try:
-                ext = modelformset_factory(Tags, extra=2, form=AnimeEdFormTag)
-                at_form = ext(request.POST)
-                if at_form.is_valid():
-                    Key_mp = get_object_or_404(Anime_list, web_name=self.request.session['key_map'])
-                    for form in at_form:
-                        at_f = form.save(commit=False)
-                        if form.cleaned_data.get('ch_box'):
-                            at_f.delete()
-                        elif form.cleaned_data.get('tags_map') is not None:
-                            at_f.key_map = Key_mp
-                            at_f.save()
-                            del at_f
-                    messages.success(request, "Poprawiono Tagi.")
-            except:
-                messages.success(request, "Nie udało się poprawić tagów.")
-        elif 'upd_nm' in request.POST:
-            try:
-                exk = modelformset_factory(Anime_list, extra=0, form=AnimeEdFormKey)
-                k_form = exk(request.POST)
-                if k_form.is_valid():
-                    po_k = k_form[0].save(commit=False)
-                    if request.POST.get("zmiana", ""):
-                        web_name = ''.join(e for e in po_k.title if e.isalnum())
-                        po_k.web_name = web_name
-                        self.request.session['key_map'] = web_name
-                    po_k.save()
-                    messages.success(request, "Poprawiono nazwę.")
-                else:
-                    messages.success(request, "Nie udało się poprawić nazwy.")
-            except:
-                pass
-        elif 'check_urls' in request.POST:
-            form = LinkForm(request.POST)
-            if form.is_valid():
-                Key_mp = get_object_or_404(Anime_list, title=form.cleaned_data.get('key_map').title)
-                if Key_mp:
-                    self.request.session['key_map'] = Key_mp.web_name
-                else:
-                    messages.success(request, "Nie znaleziono takiego odc.")
-                    try:
-                        del self.request.session['key_map']
-                    except:
-                        pass
-
-        return redirect('ed-an')
+# class Ed_an(TemplateView):
+#     template_name = 'fumetsu/edit_an.html'
+#
+#     def get_user(self, *args, **kwargs):
+#         return (self.request.user.groups.filter(name='Uploader').exists())
+#
+#     def dispatch(self, *args, **kwargs):
+#         if self.get_user():
+#             return super(Ed_an, self).dispatch(*args, **kwargs)
+#         else:
+#             return redirect('fumetsu-home')
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#
+#         context['form_an_ch'] = LinkForm()
+#         context['form_an_url'] = EditUrl()
+#
+#         try:
+#             key_mp = get_object_or_404(Anime_list, web_name=self.request.session['key_map'])
+#             ex = modelformset_factory(Anime_list, extra=0, form=AnimeEdForm)
+#             context['form_an'] = ex(queryset=Anime_list.objects.filter(
+#                 key_map=key_mp)
+#             )
+#
+#             ex_k = modelformset_factory(Anime_list, extra=0, form=AnimeEdFormKey)
+#             context['form_key'] = ex_k(queryset=Anime_list.objects.filter(
+#                 web_name=key_mp.web_name)
+#             )
+#
+#             ex_t = modelformset_factory(Tags, extra=2, form=AnimeEdFormTag)
+#             context['form_tag'] = ex_t(queryset=Tags.objects.filter(
+#                 key_map=key_mp)
+#             )
+#
+#             context['ed_an'] = key_mp
+#
+#
+#         except:
+#             pass
+#
+#         return context
+#
+#     def post(self, request, *args, **kwargs):
+#
+#         if 'upd_dis' in request.POST:
+#             try:
+#                 ex = modelformset_factory(Anime_list, extra=0, form=AnimeEdForm)
+#                 an_form = ex(request.POST, request.FILES)
+#
+#                 if an_form.is_valid():
+#                     an_form.save()
+#                     messages.success(request, "Poprawiono anime.")
+#                     return redirect('ed-an')
+#                 else:
+#                     messages.success(request, "nie udało się poprawić anime.")
+#                     return redirect('ed-an')
+#             except:
+#                 pass
+#
+#         elif 'ed_url' in request.POST:
+#             form_url = EditUrl(request.POST)
+#             if form_url.is_valid():
+#                 f_url = form_url.save(commit=False)
+#                 web_name = ''.join(e for e in f_url.web_name if e.isalnum())
+#                 if not Anime_list.objects.filter(web_name=web_name).first():
+#                     query_url = Anime_list.objects.filter(web_name=self.request.session['key_map']).first()
+#                     query_url.web_name = web_name
+#                     query_url.save()
+#                     self.request.session['key_map'] = web_name
+#                     messages.success(request, "poprawiono url anime.")
+#                 else:
+#                     messages.success(request, "Taki url istnieje.")
+#
+#         elif 'upd_tg' in request.POST:
+#             try:
+#                 ext = modelformset_factory(Tags, extra=2, form=AnimeEdFormTag)
+#                 at_form = ext(request.POST)
+#                 if at_form.is_valid():
+#                     Key_mp = get_object_or_404(Anime_list, web_name=self.request.session['key_map'])
+#                     for form in at_form:
+#                         at_f = form.save(commit=False)
+#                         if form.cleaned_data.get('ch_box'):
+#                             at_f.delete()
+#                         elif form.cleaned_data.get('tags_map') is not None:
+#                             at_f.key_map = Key_mp
+#                             at_f.save()
+#                             del at_f
+#                     messages.success(request, "Poprawiono Tagi.")
+#             except:
+#                 messages.success(request, "Nie udało się poprawić tagów.")
+#         elif 'upd_nm' in request.POST:
+#             try:
+#                 exk = modelformset_factory(Anime_list, extra=0, form=AnimeEdFormKey)
+#                 k_form = exk(request.POST)
+#                 if k_form.is_valid():
+#                     po_k = k_form[0].save(commit=False)
+#                     if request.POST.get("zmiana", ""):
+#                         web_name = ''.join(e for e in po_k.title if e.isalnum())
+#                         po_k.web_name = web_name
+#                         self.request.session['key_map'] = web_name
+#                     po_k.save()
+#                     messages.success(request, "Poprawiono nazwę.")
+#                 else:
+#                     messages.success(request, "Nie udało się poprawić nazwy.")
+#             except:
+#                 pass
+#         elif 'check_urls' in request.POST:
+#             form = LinkForm(request.POST)
+#             if form.is_valid():
+#                 Key_mp = get_object_or_404(Anime_list, title=form.cleaned_data.get('key_map').title)
+#                 if Key_mp:
+#                     self.request.session['key_map'] = Key_mp.web_name
+#                 else:
+#                     messages.success(request, "Nie znaleziono takiego odc.")
+#                     try:
+#                         del self.request.session['key_map']
+#                     except:
+#                         pass
+#
+#         return redirect('ed-an')
 
 
 class Cre_info(TemplateView):
