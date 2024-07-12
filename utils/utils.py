@@ -1,5 +1,8 @@
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import QuerySet
 from slugify import slugify
 
+from anime.models import Tags
 from fumetsu.models import Anime_list
 
 
@@ -38,3 +41,18 @@ def translate_tag(tag):
         return 'Nadnaturalne'
     else:
         return tag
+
+class AnimeSeriesJSONEncoder(DjangoJSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Anime_list):
+            tags = list(Tags.objects.filter(anime_anilist_id=obj.anilist_id).values_list('label', flat=True))
+            return {
+                "name_english": (obj.name_english.replace('"', '\\"') if obj.name_english else obj.name_romaji.replace('"', '\\"')),
+                "name_romaji": obj.name_romaji.replace('"', '\\"'),
+                "cover_image": obj.cover_image,
+                "tags": tags,
+                "web_name": obj.web_name,
+                "format": obj.format,
+            }
+        else:
+            return super().default(obj)

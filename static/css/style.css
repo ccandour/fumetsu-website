@@ -590,7 +590,7 @@ margin: 0 5px;
 }
 
 .relations-card img {
-  	height: 120px;
+  	min-height: 120px;
   	object-fit: cover;
   	display: block;
   	width: 100%;

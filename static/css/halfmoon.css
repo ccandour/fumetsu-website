@@ -833,8 +833,8 @@
 
 	/* Purple */
 
-	--bs-purple-hue: 270;
-	--bs-purple-saturation: 60%;
+	--bs-purple-hue: 280;
+	--bs-purple-saturation: 50%;
 	--bs-purple-100-hsl: var(--bs-purple-hue), var(--bs-purple-saturation), 90%;
 	--bs-purple-200-hsl: var(--bs-purple-hue), var(--bs-purple-saturation), 80%;
 	--bs-purple-300-hsl: var(--bs-purple-hue), var(--bs-purple-saturation), 70%;
@@ -1634,7 +1634,7 @@
 	--bs-secondary-color: hsl(var(--bs-secondary-color-hsl));
 	--bs-tertiary-color-hsl: var(--bs-color-hue), var(--bs-color-saturation), 65%;
 	--bs-tertiary-color: hsl(var(--bs-tertiary-color-hsl));
-	--bs-heading-color: inherit;
+	--bs-heading-color: var(--bs-primary-300);
 
 	/* Background */
 
@@ -1828,7 +1828,7 @@
 	--bs-secondary-color: hsl(var(--bs-secondary-color-hsl));
 	--bs-tertiary-color-hsl: var(--bs-color-hue), var(--bs-color-saturation), 35%;
 	--bs-tertiary-color: hsl(var(--bs-tertiary-color-hsl));
-	--bs-heading-color: inherit;
+	--bs-heading-color: var(--bs-primary-300);
 
 	/* Background */
 
@@ -6993,7 +6993,7 @@ fieldset:disabled .btn {
 	--bs-card-spacer-y: 1rem;
 	--bs-card-spacer-x: 1rem;
 	--bs-card-title-spacer-y: 0.5rem;
-	--bs-card-title-color: ;
+	--bs-card-title-color: var(--bs-primary-300);
 	--bs-card-subtitle-color: ;
 	--bs-card-border-width: var(--bs-border-width);
 	--bs-card-border-color: var(--bs-content-border-color);

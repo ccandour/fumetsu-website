@@ -11,13 +11,14 @@
 	<link rel="Shortcut icon" href="" />
 
     <!-- Halfmoon CSS -->
-    <link href="{% static 'fumetsu/css/halfmoon.css' %}" rel="stylesheet">
+    <link href="{% static 'css/halfmoon.css' %}" rel="stylesheet">
 
     <!-- Halfmoon modern core theme -->
-    <link href="{% static 'fummesu/css/halfmoon.modern.css' %}" rel="stylesheet">
+    <link href="{% static 'css/halfmoon_modern.css' %}" rel="stylesheet">
 
 	<!--CSS-->
-    <link href="{% static 'fumetsu/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
     <!--JS-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -31,7 +32,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Sen&display=swap" rel="stylesheet">
  
    <!-- logo web -->
-	<link rel="shortcut icon" type="image/x-icon" href="{% static 'fumetsu/img/favicon.png' %}" />
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %}" />
 
 
 </head>
@@ -43,7 +44,7 @@
     <nav class="navbar navbar-expand-md bg-dark" style="background-color: var(--bs-content-bg); border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
         <div class="container-fluid justify-content-center">
             <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
-                <img class="d-inline-block align-text-top my-1" src="{% static 'fumetsu/img/logo.png' %}" height="36"/>
+                <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36"/>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fas fa-bars"></span>
@@ -131,7 +132,7 @@
 							{% for series in harmon %}
 							<a href="{% url 'anime-nm' series.key_map.web_name %}">
 							<div class="schedule-series">
-								<div class="fs-5 text-primary">{{series.key_map.title}}</div><div>{{series.day}}, {{series.content}}</div></div>
+								<div class="fs-5 text-primary-emphasis">{{series.key_map.title}}</div><div>{{series.day}}, {{series.content}}</div></div>
 							{% endfor %}
 							</a>
 						</div>
@@ -170,8 +171,8 @@
 	
 
 <!-- js -->
-<script src="{% static 'fumetsu/js/script.js' %}"></script>
-<script src="{% static 'fumetsu/js/web_ep.js' %}"></script>
+<script src="{% static '/js/script.js' %}"></script>
+<script src="{% static '/js/web_ep.js' %}"></script>
 
 </body>
 </html>

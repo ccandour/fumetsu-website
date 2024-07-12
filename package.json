@@ -1,0 +1,17 @@
+{
+  "name": "django-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccandour/django-project.git"
+  },
+  "private": true,
+  "dependencies": {
+    "json5": "^2.2.3"
+  }
+}

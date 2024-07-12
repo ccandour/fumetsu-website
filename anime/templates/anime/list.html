@@ -9,7 +9,7 @@
     <div class="d-flex flex-column align-items-center mb-5">
     <div class="d-flex flex-row col-md-9 gap-2">
         {% csrf_token %}
-        <input type="text" class="form-control form-control-lg w-sm-100" placeholder="Nazwa anime" aria-label="Large input example">
+        <input id="search-box" type="text" class="form-control form-control-lg w-sm-100" placeholder="Nazwa anime" aria-label="Large input example">
 
         <button class="btn-none float-end" name="upd_urls" type="submit"><div class="ser"><i class="fas fa-search"></i></div></button>
         <button class="btn-none float-end" name="ses_cl"><div class="ser"><i class="fas fa-times"></i></div></button>
@@ -40,34 +40,7 @@
 
 </div>
 <!-- Actual list of anime -->
-<div class=" d-flex flex-column col-12 col-lg-8 anime-list gap-3">
-    {% if not_found %}
-        {{not_found}}
-    {% else %}
-    	{% for post in posts %}
-            <a href="{% url 'anime-nm' post.0.web_name %}">
-            <div class="card list-card overflow-hidden">
-                <div class="row g-0">
-                    <div class="col-sm-2">
-                        <img src="{{ post.0.cover_image }}" alt="...">
-                    </div>
-                    <div class="col-sm-10">
-                        <div class="card-body">
-                            <h5 class="card-title mb-1">{{ post.0.name_english }}</h5>
-                            <div class="card-text mb-2">{{ post.0.name_romaji }}</div>
-                            <div class="d-flex flex-row">
-                                    {% for tag in post.1 %}
-                                        <button class="btn btn-secondary me-1">{{ tag }}</button>
-                                    {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </a>
-    	{% endfor %}
-    {% endif %}
-</div>
+<div id="box" class=" d-flex flex-column col-12 col-lg-8 anime-list gap-3"></div>
 <div class="col-12 col-lg-8 float-start">
     <div class="text-center controls">
     <form method="POST">
@@ -94,4 +67,52 @@
         {% endif %}
     </form>
 </div>
+
+<script>
+    let filtered_series = [];
+    
+    addEventListener('DOMContentLoaded', filterSeries)
+    
+    const input = document.getElementById("search-box");
+    input.oninput = filterSeries; // Call the function on input
+    
+    function filterSeries() {
+        const data = '{{ qs_json }}';
+        const sanitizedData = data.replace(/&quot;/g, '\"').replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t");
+        const parsed_data = JSON.parse(sanitizedData);
+    
+        box.innerHTML = "";
+        filtered_series = parsed_data.filter(series =>
+            series.name_english.toLowerCase().includes(input.value.toLowerCase()) ||
+            series.name_romaji.toLowerCase().includes(input.value.toLowerCase())
+        );
+    
+        if (filtered_series.length > 0) {
+            filtered_series.map(series => {
+                const animeUrl = `/anime/${series.web_name}/`; // Construct the URL
+                box.innerHTML += `
+                    <a href="${animeUrl}">
+                    <div class="card list-card overflow-hidden">
+                        <div class="row g-0">
+                            <div class="col-sm-2">
+                                <img src="${series.cover_image}" alt="...">
+                            </div>
+                            <div class="col-sm-10">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-1">${series.name_english}</h5>
+                                    <div class="card-text mb-2">${series.name_romaji}</div>
+                                    <div class="d-flex flex-row">
+                                        ${series.tags.map(tag => `<button class="btn btn-secondary me-1">${tag}</button>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                `;
+            });
+        }
+    }
+       
+</script>
 {% endblock content %}

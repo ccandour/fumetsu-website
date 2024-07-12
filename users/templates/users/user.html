@@ -4,7 +4,7 @@
 {% load utils_extras %}
 {% block content %}
 
-<script src="{% static 'fumetsu/js/web_ep.js' %}"></script>
+<script src="{% static 'fumetsu/../../../static/js/web_ep.js' %}"></script>
 <div class="col-12 col-lg-8 float-start">
 	<img class="user-img float-start mb-3" src="{{ f_user.profile.image.url  }}">
     {% if user|has_group:"Moderator" %}   
