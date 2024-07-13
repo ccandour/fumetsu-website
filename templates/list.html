@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block scripts %}
+    <script src="{% static '/js/search.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block content %}
+<div class="col-12 col-md-9 col-lg-8 float-start">
+	<h2 class="mb-5" >Lista Anime</h2>
+    <div class="d-flex flex-column align-items-center mb-4">
+        <form id="search-form" class="d-flex flex-row gap-4 align-items-center" autocomplete="off" class="w-md-50">
+            {% csrf_token %}
+            <input id="search-input" type="text" class="form-control form-control-lg w-sm-100" placeholder="Nazwa anime">
+            <!-- First dropdown -->
+            <div class="dropdown">
+                <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" data-bs-offset="0, 10">
+                    Filtruj
+                </button>
+                <ul id="tags-filter" class="dropdown-menu">
+                    <li><h6 class="dropdown-header">Gatunki</h6></li>
+                    {% for tag in tags %}
+                    <li class="dropdown-item">
+                        <label class="form-check-label" for="tags-{{ forloop.counter }}">{{ tag }}</label>
+                        <input class="form-check-input float-end" type="checkbox" value="" id="tags-{{ forloop.counter }}">
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </form>
+    </div>
+</div>
+<!-- Actual list of anime -->
+<div id="results-box" class=" infinite-container d-flex flex-column col-12 col-lg-8 anime-list gap-3"></div>
+
+{#<div class="col-12 col-lg-8 float-start">#}
+{#    <div class="text-center controls">#}
+{#    <form method="POST">#}
+{#        {% csrf_token %}#}
+{#        {% if page|add:"-1" > 0 %}#}
+{#        <button class="btn btn-op" name="page_ch" value={{page|add:"-1"}}><i class="fas fa-chevron-left"></i></button>#}
+{#        {% endif %}#}
+{##}
+{#        {% if page|add:"-2" > 0 %}#}
+{#        <button class="btn btn-op" name="page_ch" value="1">1</button>#}
+{#        {% endif %}#}
+{#        {% if page|add:"-1" > 0 %}#}
+{#        <button class="btn btn-op" name="page_ch" value={{page|add:"-1"}}>{{page|add:"-1"}}</button>#}
+{#        {% endif %}#}
+{#        <div class="btn btn-current">{{page}}</div>#}
+{#        {% if page|add:"+1" <= page_max %}#}
+{#        <button class="btn btn-op" name="page_ch" value={{page|add:"+1"}}>{{page|add:"+1"}}</button>#}
+{#        {% endif %}#}
+{#        {% if page|add:"+2" <= page_max %}#}
+{#        <button class="btn btn-op" name="page_ch" value={{page|add:"+2"}}>{{page|add:"+2"}}</button>#}
+{#        {% endif %}#}
+{#        {% if page|add:"+1" <= page_max %}#}
+{#        <button class="btn btn-op" name="page_ch" value={{page|add:"+1"}}><i class="fas fa-chevron-right"></i></button>#}
+{#        {% endif %}#}
+{#    </form>#}
+{#</div>#}
+
+
+{#<script src="/js/jquery.waypoints.js"></script>#}
+{#<script src="/js/infinite.js"></script>#}
+{#<script>#}
+{#    var infinite = new Waypoint.Infinite({#}
+{#        element: $('.infinite-container')[0],#}
+{#        offset: 'bottom-in-view',#}
+{#        onBeforePageLoad: function () {#}
+{#            $('.anime-list').append('<div class="loading">Loading...</div>');#}
+{#        },#}
+{#        onAfterPageLoad: function ($items) {#}
+{#            $('.anime-list .loading').remove();#}
+{#        }#}
+{#    });#}
+{#</script>#}
+{% endblock content %}

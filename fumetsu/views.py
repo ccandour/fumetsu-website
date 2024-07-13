@@ -29,7 +29,7 @@ from django.urls import reverse
 
 class Home(ListView):
     model = Post
-    template_name = 'fumetsu/index.html'
+    template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -40,7 +40,7 @@ class Home(ListView):
 
 class about(ListView):
     model = Post
-    template_name = 'fumetsu/about.html'
+    template_name = 'about.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -60,7 +60,7 @@ class Info(ListView):
     model = Post
     context_object_name = 'posts'
     queryset = Info_bd.objects.all().order_by('-date_posted')
-    template_name = 'fumetsu/info.html'
+    template_name = 'info.html'
 
 
 class Info_d(ListView):

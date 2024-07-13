@@ -46,6 +46,8 @@ class AnimeSeriesJSONEncoder(DjangoJSONEncoder):
     def default(self, obj):
         if isinstance(obj, Anime_list):
             tags = list(Tags.objects.filter(anime_anilist_id=obj.anilist_id).values_list('label', flat=True))
+            tags = [translate_tag(tag) for tag in tags]
+
             return {
                 "name_english": (obj.name_english.replace('"', '\\"') if obj.name_english else obj.name_romaji.replace('"', '\\"')),
                 "name_romaji": obj.name_romaji.replace('"', '\\"'),

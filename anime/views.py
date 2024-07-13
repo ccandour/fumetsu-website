@@ -1,4 +1,7 @@
+import sys
+
 from django.core.serializers.json import DjangoJSONEncoder
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
@@ -15,12 +18,42 @@ from .models import *
 from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 from datetime import datetime
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.forms import modelformset_factory
 
 from fumetsu.ban import check_ban, Nap_time, Is_member, Get_color
 from django.contrib.auth import logout
 import math
+
+def search_anime(request):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        search_text = request.POST.get('search_text')
+        tags = request.POST.getlist('tags[]')
+
+        if len(search_text) > 0:
+            # Search for anime series with the given search text
+            query_set = Anime_list.objects.filter(
+                Q(name_english__icontains=search_text) |
+                Q(name_romaji__icontains=search_text)
+            )
+        else:
+            query_set = Anime_list.objects.all()
+        if any(tag.strip() for tag in tags):
+            # Check if the series has all the selected tags
+            for series in query_set:
+                series_tags = Tags.objects.filter(anime_anilist_id=series.anilist_id).values('label')
+                series_tags = [translate_tag(tag['label']) for tag in series_tags]
+                if not set(tags).issubset(set(series_tags)):
+                    query_set = query_set.exclude(anilist_id=series.anilist_id)
+
+        # Return appropriate json response
+        if len(query_set) > 0:
+            response = json.loads(json.dumps(list(query_set), cls=AnimeSeriesJSONEncoder))
+        else:
+            response = 'No anime found.'
+
+        return JsonResponse({'data': response})
+    return JsonResponse({})
 
 def redirect_legacy_anime(request, anime_name, ep=None):
     if ep:
@@ -37,7 +70,7 @@ def redirect_legacy_anime(request, anime_name, ep=None):
 
 class Anime_content(TemplateView):
     model = Anime_list
-    template_name = 'anime/index.html'
+    template_name = 'series.html'
     fields = ['content']
 
     def get_context_data(self, **kwargs):
@@ -125,7 +158,7 @@ class Anime_content(TemplateView):
 class Anime_episode(TemplateView):
     model = Anime_list
     context_object_name = 'posts'
-    template_name = 'anime/ep.html'
+    template_name = 'ep.html'
     fields = ['content']
 
     def dispatch(self, *args, **kwargs):
@@ -231,7 +264,7 @@ import json
 class List(ListView):
     model = Anime_list
     context_object_name = 'posts'
-    template_name = 'anime/list.html'
+    template_name = 'list.html'
     fields = ['content']
 
     def get_context_data(self, **kwargs):
@@ -245,6 +278,10 @@ class List(ListView):
 
         context = super().get_context_data(**kwargs)
         context['qs_json'] = json.dumps(list(Anime_list.objects.all()), cls=AnimeSeriesJSONEncoder)
+
+        tags = set(list(Tags.objects.all().values_list('label', flat=True)))
+        tags = sorted([translate_tag(tag) for tag in tags])
+        context['tags'] = tags
 
 
         return context

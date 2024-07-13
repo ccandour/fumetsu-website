@@ -1,6 +1,11 @@
-{% extends "fumetsu/base.html" %}
+{% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+
+{% block scripts %}
+    <script src="{% static '/js/web_ep.js' %}"></script>
+{% endblock scripts %}
+
 {% block content %}
 
   {% if user.is_authenticated%}
