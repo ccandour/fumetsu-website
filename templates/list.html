@@ -3,6 +3,8 @@
 {% load crispy_forms_tags %}
 
 {% block scripts %}
+    <script src="{% static '/js/jquery.waypoints.js' %}"></script>
+    <script src="{% static '/js/infinite.js' %}"></script>
     <script src="{% static '/js/search.js' %}" defer></script>
 {% endblock scripts %}
 
@@ -34,6 +36,8 @@
 </div>
 <!-- Actual list of anime -->
 <div id="results-box" class=" infinite-container d-flex flex-column col-12 col-lg-8 anime-list gap-3"></div>
+<!-- Invisible button to trigger infinite scrolling -->
+<button id="infinite-trigger" class="d-none infinite-more-link"></button>
 
 {#<div class="col-12 col-lg-8 float-start">#}
 {#    <div class="text-center controls">#}
