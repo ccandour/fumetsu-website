@@ -12,7 +12,7 @@
 				</div>
 			</div>
 {#            Desktop version#}
-			<div class="d-none d-md-block col-8">
+			<div class="d-none d-md-block col-9">
                 <div class ="d-flex flex-row">
                     <div class="me-4">
                         <img class="ser-cover" src="{{ posts.cover_image }}">
@@ -51,7 +51,7 @@
 		</div>
 
         <h5>Odcinki:</h5>
-		<div class="d-flex flex-row flex-wrap gap-2 col-8 mb-4">
+		<div class="d-flex flex-row flex-wrap gap-2 col-9 mb-4">
 			{% for e in ep %}
 	    		<a href="{% url 'ep-nm' posts.web_name e.ep_nr %}">
                     <button class="btn btn-outline-primary ep-btn"><b>{{ e.ep_nr|floatformat}}</b></button>
@@ -60,7 +60,7 @@
         </div>
         {% if relations %}
         <h5>Powiązane:</h5>
-        <div class="d-flex flex-row flex-wrap gap-2 col-8">
+        <div class="d-flex flex-row flex-wrap gap-2 col-9">
             {% for relation in relations %}
                 <a href="{% url 'anime-nm' relation.0.web_name %}">
                 <div class="card relations-card text-center" style="width: 10rem;">
@@ -83,7 +83,7 @@
         {% endif %}
     
         {% if comment %}
-		<div class="col-12 col-lg-8 float-start">
+		<div class="col-12 col-lg-9 float-start">
 			<div class="comments">
 			<h5>Sekcja komentarzy:</h5>
 			{% if user.is_authenticated %}

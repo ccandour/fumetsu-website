@@ -8,105 +8,129 @@
 
 {% block content %}
 
-  {% if user.is_authenticated%}
-	<form method="POST">
-		{% csrf_token %}
-		<button class="btn-none float-end pd-2" type="submit" name="ply_error">zgłoś player</button>
-	</form>
-  {% endif %}
-	<br/>
+{#  {% if user.is_authenticated%}#}
+{#	<form method="POST">#}
+{#		{% csrf_token %}#}
+{#		<button class="btn-none float-end pd-2" type="submit" name="ply_error">zgłoś player</button>#}
+{#	</form>#}
+{#  {% endif %}#}
+{#	<br/>#}
+{##}
 
-	<div class="col-12 col-lg-8 float-start text-center">
-	<a href="{% url 'anime-nm' anime_nm.web_name %}"><h2>{{anime_nm.title}}</h2></a>
-	 <h5>Odcinek {{odc_html|floatformat}}</h5>
-	{% if prev %}
-		<a class="float-start contrl" href="{% url 'ep-nm' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i> POPRZEDNI</a>
-	{% endif %}
+<!-- Title and Episode Navigation -->
+<div class="col-12 col-md-9 col-lg-9 mb-3">
+<div class="d-flex flex-column align-items-center">
+    <a href="{% url 'anime-nm' anime_nm.web_name %}"><h2>{{anime_nm.title}}</h2></a>
+    <h5>
+        {% if prev %}
+            <a class="ps-4" href="{% url 'ep-nm' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i></a>
+        {% else %}
+            <i class="fas fa-chevron-left control-disabled ps-4"></i></a>
+        {% endif %}
+         Odcinek {{odc_html|floatformat}}
+        {% if next %}
+            <a class="pe-4" href="{% url 'ep-nm' next.key_map.web_name next.ep_nr %}"><i class="fas fa-chevron-right"></i></a>
+        {% else %}
+            <i class="fas fa-chevron-right control-disabled pe-4"></i>
+        {% endif %}
+     </h5>
+</div>
+</div>
 
-	{% if next %}
-		<a class="float-end contrl" href="{% url 'ep-nm' next.key_map.web_name next.ep_nr %}">NASTĘPNY <i class="fas fa-chevron-right"></i></a>
-	{% endif %}
-	</div>
-	<div class="col-12 col-lg-8 float-start">
-		<div class="d-flex justify-content-center">
-		{% for links in link %}
-			<div class="ep-players ">
-				<button class="btn-ply btn btn-op" value="{{forloop.counter}}">
-					{{links.web_site}}
-				</button>
-			</div>
-		{% endfor %}
-			{% if napisy and user.is_authenticated %}
-			<div class="ep-players ">
-				<button class="btn-ply btn btn-op" value="-">
-					<a href="/media/{{napisy}}">Napisy</a>
-				</button>
-			</div>
+<!-- Tabs -->
+<div class="card col-12 col-md-9 col-lg-9">
+    <div class="card-body">
+        <!-- Tab controls -->
+        <nav>
+            <div class="nav nav-justified nav-tabs px-5 gap-3" id="js-tabs-2" role="tablist">
+                {% for player in link %}
+                    {% if forloop.counter == 1 %}
+                    <button class="nav-link active player-btn fw-bold fs-5 py-2" id="nav-{{player.web_site}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{player.web_site}}" type="button" role="tab" aria-controls="nav-{{player.web_site}}" aria-selected="true">{{player.web_site}}</button>
+                    {% else %}
+                    <button class="nav-link player-btn fw-bold fs-5 py-2" id="nav-{{player.web_site}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{player.web_site}}" type="button" role="tab" aria-controls="nav-{{player.web_site}}" aria-selected="false">{{player.web_site}}</button>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </nav>
+        <!-- Tab content (players) -->
+        <div class="tab-content rounded-3 bg-body-secondary mt-3" style="height: 598px" id="js-tabs-content-2">
+            {% for player in link %}
+                {% if forloop.counter == 1 %}
+                <div class="tab-pane active" id="nav-{{player.web_site}}" role="tabpanel" aria-labelledby="nav-{{player.web_site}}-tab" tabindex="0">
+                    <div class="">
+                        <div class="video_cont">
+                            <iframe src="{{player.link}}" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="tab-pane fade" id="nav-{{player.web_site}}" role="tabpanel" aria-labelledby="nav-{{player.web_site}}-tab" tabindex="0">
+                    <div class="">
+                        <div class="video_cont">
+                            <iframe src="{{player.link}}" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
-			{% endif %}
-	</div>
-	{% for links in link %}
-	<div class="video_cont">
-		<iframe src="{{links.link}}" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>	
-	</div>
-	{% endfor %}
-	</div>
+{% if comment %}
+    <div class="col-12 col-lg-9 float-start">
+        <div class="comments">
+        <h5>Sekcja komentarzy:</h5>
+        {% if user.is_authenticated %}
+        <form method="POST">
+            {% csrf_token %}
+            <div class="box_cr_com">
+                <div class="com_cr_cont">
+                    {{ form|crispy }}
+                </div>
+                <button class="btn btn-op float-end" name="com_cr_bt">Wyślij komentarz</button>
+            </div>
+            <div class="clearfix"></div>
+        </form>
+        {% endif %}
+        </div>
+        <div id="Section_comm" class="d-flex flex-column gap-4">
+            {% for com in comment %}
+                    <div class="d-flex flex-row">
+                        <img class="com_img me-3" src="{{ com.author.profile.image.url }}">
 
-		<div class="col-12 col-lg-8 float-start">
-			<div class="comments">
-			<h5>Sekcja komentarzy:</h5>
-			{% if  user.is_authenticated %}
-			<form method="POST">
-				{% csrf_token %}
-				<div class="box_cr_com">
-					<div class="com_cr_cont">
-						{{ com_ed|crispy }}
-					</div>
-					<button class="btn btn-op float-end" name="com_cr_bt">Wyślij komentarz</button>
-				</div>
-				<div class="clearfix"></div>
-			</form>
-			{% endif %}
-			</div>
-			<div id="Section_comm">
-				{% for com in comment %}		
-			    	<div class="box_com ">
-			    		<div class="com_aut">			
-							<img class="com_img float-start" src="{{ com.author.profile.image.url }}">
-							<div class="com_nick float-start">
-								<a href="{% url 'user-inf' com.author.profile.web_name %}" style="color:{{com.color}}">
-									{{com.author.profile.nick}}
-								</a>
-							</div>
+                        <div class="d-flex flex-column">
+                            <div class="d-flex flex-row gap-2 align-items-center">
+                                <a href="{% url 'user-inf' com.author.profile.web_name %}" style="color:{{com.color}}">
+                                    <div class="fs-5 fw-semibold">{{com.author.profile.nick}}</div>
+                                </a>
+                                {{com.date_posted}}
+                            </div>
+                            {{com.content}}
+                            <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
+                        </div>
 
-							{% if com.author == user %}
-							<div class="dropleft float-end">
-								<a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<i class="fas fa-ellipsis-v"></i>
-								</a>
-							        <div class="dropdown-menu com_edit" aria-labelledby="navbarDropdown">
-										<div class="text-center">
-										<a href="" class="bt_com_sh" data-toggle="modal" data-target="#modalComRe">Edytuj</a>
-										</div>
-										<div class="text-center">
-										<a href="" class="bt_com_del" data-toggle="modal" data-target="#modalComDel">Usuń</a>
-										</div>
-							        </div>
-								</div>
-								{% endif %}
-							<div class="com_date float-end d-none d-sm-block">{{com.date_posted}}</div>
-						</div>
-						<div class="com_cont">
-							
-							<div class="com_val">
-								
-								<br>{{com.content}}
-							</div>		
-							<input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
-						</div>
-					</div>	
-				{% endfor %}
-			</div>
+                        {% if com.author == user %}
+                        <div class="dropleft float-end">
+                            <a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                                <div class="dropdown-menu com_edit" aria-labelledby="navbarDropdown">
+                                    <div class="text-center">
+                                        <a href="" class="bt_com_sh" data-toggle="modal" data-target="#modalComRe">Edytuj</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a href="" class="bt_com_del" data-toggle="modal" data-target="#modalComDel">Usuń</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                        <div class="com_date float-end d-none d-md-block"></div>
+                    </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 		
 <div class="modal fade" id="modalComRe" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">

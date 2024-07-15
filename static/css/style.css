@@ -6,7 +6,6 @@ html {
 body {
 	font-family: 'Sen', sans-serif;
 	/*color: #dbdbdb;*/
-	position: relative;
   	padding-bottom: 6rem;
   	min-height: 100%;
 }
@@ -15,11 +14,8 @@ a {
 	text-decoration: none;
 }
 
-.main-container {
-  margin: 0 auto;
-  padding-top: 64px;
-  max-width: 640px;
-  width: 94%;
+.container {
+	max-width: none;
 }
 
 .ftr {
@@ -48,8 +44,8 @@ a {
 	padding: 2.5px 17px;
 }
 
-.navbar{
-	padding: 4px 16px !important;
+.navbar {
+	padding-inline: 12vw;
 }
 .menu
 {
@@ -171,9 +167,9 @@ h2
 }
 
 
-.newsy{
-	margin-top: 35px;
-	padding: 4px 16px !important;
+.content-section {
+	margin: 40px 12vw 0 12vw;
+	width: auto;
 }
 
 .new-img{
@@ -222,7 +218,7 @@ h2
 	width: 100%;
 	font-size: 16px;
 	color: white;
-	padding: 10px;
+	padding: 10px 40px;
 	text-align: center;
 }
 
@@ -344,10 +340,6 @@ h2
 	display: inline-block;
 }
 
-.video_cont{
-	display: none;
-}
-
 .user-img{
 	height: 200px;
 	width: 200px;
@@ -432,19 +424,19 @@ margin: 0 5px;
 }
 
 .video_cont {
-  overflow: hidden;
-  padding-top: 56.25%;
-  position: relative;
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
 }
 
 .video_cont iframe {
-   border: 0;
-   height: 100%;
-   left: 0;
-   position: absolute;
-   top: 0;
-   width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
+
 .modal-content{
    /*background-color: #23262E;*/
    text-align: center;
@@ -534,6 +526,10 @@ margin: 0 5px;
 
 .epis:visited, .contrl:visited{
 /*color: #919191;*/
+}
+
+.control-disabled{
+	color: rgba(99, 99, 99, 0.65);
 }
 
 #consent-popup {

@@ -1,13 +1,5 @@
 $(document).ready(function(){
 
-	$(".btn-ply").click(function() {
-		$(".video_cont").css("display","none")
-		var ind = $(this).val() - 1;
-		$(".video_cont").eq(ind).show();
-
-	});
-
-
 	$(".bt_com_sh").click(function() {
 		var th = $(".box_com").has(this)
 		var t = $(".com_val", th).text().trim();
