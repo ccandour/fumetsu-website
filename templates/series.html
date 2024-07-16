@@ -2,6 +2,11 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% load utils_extras %}
+
+{% block scripts %}
+    <script src="{% static '/js/search_by_tag.js' %}"></script>
+{% endblock scripts %}
+
 {% block content %}
 
 		<div>
@@ -26,7 +31,9 @@
                            <h5>{{posts.name_romaji}}</h5>
                         <div id="tags" class="mb-2">
                             {% for tag in tags %}
-                                <button class="btn btn-secondary">{{ tag }}</button>
+                                <a href="/anime/?tags={{ tag|lower }}">
+                                    <button class="btn btn-secondary tag-btn">{{ tag }}</button>
+                                </a>
                             {% endfor %}
 
                         </div>

@@ -18,7 +18,7 @@ def translate_status(status):
     else:
         return status
 
-def translate_tag(tag):
+def tag_label_to_polish(tag):
     if tag == 'Action':
         return 'Akcja'
     elif tag == 'Adventure':
@@ -42,11 +42,36 @@ def translate_tag(tag):
     else:
         return tag
 
+def tag_label_to_english(tag):
+    if tag == 'Akcja':
+        return 'Action'
+    elif tag == 'Przygodowe':
+        return 'Adventure'
+    elif tag == 'Komedia':
+        return 'Comedy'
+    elif tag == 'Dramat':
+        return 'Drama'
+    elif tag == 'Muzyka':
+        return 'Music'
+    elif tag == 'Kryminał':
+        return 'Mystery'
+    elif tag == 'Romans':
+        return 'Romance'
+    elif tag == 'Psychologiczne':
+        return 'Psychological'
+    elif tag == 'Sportowe':
+        return 'Sports'
+    elif tag == 'Nadnaturalne':
+        return 'Supernatural'
+    else:
+        return tag
+
+
+
 class AnimeSeriesJSONEncoder(DjangoJSONEncoder):
     def default(self, obj):
         if isinstance(obj, Anime_list):
-            tags = list(Tags.objects.filter(anime_anilist_id=obj.anilist_id).values_list('label', flat=True))
-            tags = [translate_tag(tag) for tag in tags]
+            tags = list(Tags.objects.filter(anime_anilist_id=obj.anilist_id).values_list('label_polish', flat=True))
 
             return {
                 "name_english": (obj.name_english.replace('"', '\\"') if obj.name_english else obj.name_romaji.replace('"', '\\"')),

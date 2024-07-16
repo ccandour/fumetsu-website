@@ -11,7 +11,7 @@ from django.views.generic import (
     ListView
 )
 
-from utils.utils import translate_tag, AnimeSeriesJSONEncoder
+from utils.utils import tag_label_to_polish, AnimeSeriesJSONEncoder
 from .forms import *
 from .models import *
 
@@ -41,8 +41,7 @@ def search_anime(request):
         if any(tag.strip() for tag in tags):
             # Check if the series has all the selected tags
             for series in query_set:
-                series_tags = Tags.objects.filter(anime_anilist_id=series.anilist_id).values('label')
-                series_tags = [translate_tag(tag['label']) for tag in series_tags]
+                series_tags = Tags.objects.filter(anime_anilist_id=series.anilist_id).values_list('label_polish', flat=True)
                 if not set(tags).issubset(set(series_tags)):
                     query_set = query_set.exclude(anilist_id=series.anilist_id)
 
@@ -112,7 +111,7 @@ class Anime_content(TemplateView):
 
         list_tags = []
         for tag in kurwa:
-            list_tags.append(translate_tag(tag.label))
+            list_tags.append(tag_label_to_polish(tag.label))
         context['tags'] = list_tags
 
         context['com_ed'] = CreateComment()
@@ -277,11 +276,12 @@ class List(ListView):
             print(f"Error checking ban: {e}")
 
         context = super().get_context_data(**kwargs)
-        context['qs_json'] = json.dumps(list(Anime_list.objects.all()), cls=AnimeSeriesJSONEncoder)
 
-        tags = set(list(Tags.objects.all().values_list('label', flat=True)))
-        tags = sorted([translate_tag(tag) for tag in tags])
-        context['tags'] = tags
+        context['qs_json'] = json.dumps(list(Anime_list.objects.all()), cls=AnimeSeriesJSONEncoder)
+        context['tags'] = sorted(set(list(Tags.objects.all().values_list('label_polish', flat=True))))
+
+        context['search_term'] = self.request.GET.get('search')
+        context['search_tags'] = [tag.strip().title() for tag in self.request.GET.get('tags').replace('+', ' ').split()] if self.request.GET.get('tags') else []
 
 
         return context
@@ -297,7 +297,7 @@ class List(ListView):
             self.request.session['page'] = 0
             self.request.session.pop('tags_nm', None)
             self.request.session.pop('tags', None)
-            return redirect("fumetsu-list")
+            return redirect("anime-list")
 
         # Change the number of items per page
         elif 'page_12' in request.POST:
@@ -333,4 +333,4 @@ class List(ListView):
             messages.error(request, 'Nie podałeś nic do wyszukiwania')
             print("Form is not valid")
 
-        return redirect("fumetsu-list")
+        return redirect("anime-list")

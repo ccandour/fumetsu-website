@@ -6,9 +6,11 @@ from .views import List, Anime_content, Anime_episode, redirect_legacy_anime, se
 
 register_converter(converters.AnimeSlug, 'anime_slug')
 register_converter(converters.AnimeUrlConverter, 'legacy_anime_slug')
+register_converter(converters.SearchTerm, 'search_term')
+register_converter(converters.TagsString, 'tags_string')
 
 urlpatterns = [
-    path('anime/', List.as_view(), name='fumetsu-list'),
+    path('anime/', List.as_view(), name='anime-list'),
     path('anime/search/', search_anime, name='search'),
     path('anime/<anime_slug:anime_name>/', Anime_content.as_view(), name='anime-nm'),
     path('anime/<legacy_anime_slug:anime_name>/', redirect_legacy_anime, name='legacy-anime-nm'),

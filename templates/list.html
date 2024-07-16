@@ -2,7 +2,10 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+
 {% block scripts %}
+    {{ search_term|json_script:"search-term" }}
+    {{ search_tags|json_script:"search-tags" }}
     <script src="{% static '/js/jquery.waypoints.js' %}"></script>
     <script src="{% static '/js/infinite.js' %}"></script>
     <script src="{% static '/js/search.js' %}" defer></script>
@@ -12,7 +15,7 @@
 <div class="col-12 col-md-7 col-lg-9">
 	<h2 class="mb-5" >Lista Anime</h2>
     <div class="d-flex flex-column align-items-center mb-4">
-        <form id="search-form" class="d-flex flex-row gap-4 align-items-center" autocomplete="off" class="w-md-50">
+        <form id="search-form" class="d-flex flex-row gap-4 w-md-50 align-items-center" autocomplete="off">
             {% csrf_token %}
             <input id="search-input" type="text" class="form-control form-control-lg w-sm-100" placeholder="Nazwa anime">
             <!-- First dropdown -->

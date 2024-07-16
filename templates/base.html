@@ -56,7 +56,7 @@
                         <a class="nav-link active menu-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active menu-link" href="{% url 'fumetsu-list' %}">Anime</a>
+                        <a class="nav-link active menu-link" href="{% url 'anime-list' %}">Anime</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="{% url 'fumetsu-info' %}">Aktualności</a>
@@ -117,9 +117,10 @@
             {% for series in harmon %}
             <a href="{% url 'anime-nm' series.key_map.web_name %}">
             <div class="schedule-series">
-                <div class="fs-5 text-primary-emphasis">{{series.key_map.title}}</div><div>{{series.day}}, {{series.content}}</div></div>
-            {% endfor %}
+                <div class="fs-5 text-primary-emphasis">{{series.key_map.title}}</div><div>{{series.day}}, {{series.content}}</div>
+            </div>
             </a>
+            {% endfor %}
         </div>
     </section>
 
@@ -149,7 +150,7 @@
 {#</footer>#}
 {#	#}
 {#<div id="consent-popup" class="hidden text-center">#}
-{#    Ta strona wykorzystuje pliki cookie. Korzystając z niej, akceptujesz je. <a id="accept" href=""><button class="btn btn-op ml-4">Rozumiem</button></a>#}
+{#    Ta strona wykorzystuje pliki cookie. Korzystając z ni1ej, akceptujesz je. <a id="accept" href=""><button class="btn btn-op ml-4">Rozumiem</button></a>#}
 {#</div>#}
 
 </body>

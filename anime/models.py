@@ -69,6 +69,7 @@ class Tags(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     anime_anilist_id = models.CharField(max_length=100)
     label = models.CharField(max_length=100)
+    label_polish = models.CharField(max_length=100)
 
 
     def __str__(self):

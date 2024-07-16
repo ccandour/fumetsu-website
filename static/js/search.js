@@ -5,12 +5,38 @@ const searchInput = document.getElementById('search-input')
 const tagsFilter = document.getElementById('tags-filter')
 const resultsBox = document.getElementById('results-box')
 const infiniteTrigger = document.getElementById('infinite-trigger')
-
 const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
+
 let infiniteViewpoint
 let series = []
+let scriptFlag = false
 
 const sendSearchData = (searchTerm, selectedTags) => {
+
+    // Change the URL to reflect the search term
+    let newUrl = `/anime/`
+    if (searchTerm.length > 0) {
+        newUrl += `?search=${searchTerm.toLowerCase().replaceAll(' ', '-')}`
+    }
+
+    // Add tags to the URL
+    if (selectedTags.length > 0 && searchTerm.length > 0) {
+        newUrl += '&tags='
+        for (let tag of selectedTags) {
+            newUrl += tag.toLowerCase() + '+'
+        }
+        newUrl = newUrl.slice(0, -1)
+    }
+    if (selectedTags.length > 0 && searchTerm.length === 0) {
+        newUrl += `?tags=`
+        for (let tag of selectedTags) {
+            newUrl += tag.toLowerCase() + '+'
+        }
+        newUrl = newUrl.slice(0, -1)
+    }
+
+    window.history.replaceState({}, '', newUrl)
+
     $.ajax({
          type: 'POST',
          url: 'search/',
@@ -68,6 +94,22 @@ const getSelectedTags = () => {
     return selectedTags
 }
 
+const selectTags = (tags) => {
+    const listItems = $("#tags-filter li");
+    listItems.each(function(idx, li) {
+        const checkbox = $(li).find(":checkbox");
+        const label = $(li).find("label");
+        if (tags.includes(label.text())) {
+            checkbox.prop("checked", true);
+        }
+    })
+
+}
+
+const insertSearchQuery = (searchTerm) => {
+    searchInput.value = searchTerm
+}
+
 const renderSeries = (data) => {
     data.forEach(series => {
          const animeUrl = `/anime/${series.web_name}/`; // Construct the URL
@@ -83,7 +125,7 @@ const renderSeries = (data) => {
                         <h5 class="card-title mb-1">${series.name_english}</h5>
                         <div class="card-text mb-2">${series.name_romaji}</div>
                         <div class="d-flex flex-row">
-                            ${series.tags.map(tag => `<button class="btn btn-secondary me-1">${tag}</button>`).join('')}
+                            ${series.tags.map(tag => `<button class="btn btn-secondary me-1 tag">${tag}</button>`).join('')}
                         </div>
                     </div>
                 </div>
@@ -94,18 +136,35 @@ const renderSeries = (data) => {
      })
 }
 
-// Initial load
-document.addEventListener("DOMContentLoaded", () => {
-    sendSearchData('', '')
+// Initial load before page load
+addEventListener("DOMContentLoaded", (event) => {
+    let searchTerm = JSON.parse(document.getElementById('search-term').textContent);
+    let selectedTags = JSON.parse(document.getElementById('search-tags').textContent);
+    if (searchTerm == null) {
+        searchTerm = ''
+    }
+    if (selectedTags == null) {
+        selectedTags = []
+    }
+
+    // Without the flag search runs twice
+    scriptFlag = true
+    insertSearchQuery(searchTerm)
+    selectTags(selectedTags)
+    scriptFlag = false
+
+    sendSearchData(searchTerm, selectedTags)
 })
 
 // Event listener for tags filter
 tagsFilter.onchange = e => {
+    if (scriptFlag) return
     sendSearchData(searchInput.value, getSelectedTags())
 }
 
 // Event listener for search input
 searchInput.oninput = e => {
+    if (scriptFlag) return
     sendSearchData(e.target.value, getSelectedTags())
 }
 
