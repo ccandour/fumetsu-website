@@ -64,6 +64,7 @@
 	--bs-primary-100-hsl: var(--bs-purple-100-hsl);
 	--bs-primary-200-hsl: var(--bs-purple-200-hsl);
 	--bs-primary-300-hsl: var(--bs-purple-300-hsl);
+	--bs-primary-350-hsl: var(--bs-purple-350-hsl);
 	--bs-primary-400-hsl: var(--bs-purple-400-hsl);
 	--bs-primary-500-hsl: var(--bs-purple-500-hsl);
 	--bs-primary-600-hsl: var(--bs-purple-600-hsl);
@@ -73,6 +74,7 @@
 	--bs-primary-100: var(--bs-purple-100);
 	--bs-primary-200: var(--bs-purple-200);
 	--bs-primary-300: var(--bs-purple-300);
+	--bs-primary-350: var(--bs-purple-350);
 	--bs-primary-400: var(--bs-purple-400);
 	--bs-primary-500: var(--bs-purple-500);
 	--bs-primary-600: var(--bs-purple-600);
@@ -157,6 +159,7 @@
 	--bs-primary-100-hsl: var(--bs-purple-100-hsl);
 	--bs-primary-200-hsl: var(--bs-purple-200-hsl);
 	--bs-primary-300-hsl: var(--bs-purple-300-hsl);
+	--bs-primary-350-hsl: var(--bs-purple-350-hsl);
 	--bs-primary-400-hsl: var(--bs-purple-400-hsl);
 	--bs-primary-500-hsl: var(--bs-purple-500-hsl);
 	--bs-primary-600-hsl: var(--bs-purple-600-hsl);
@@ -166,6 +169,7 @@
 	--bs-primary-100: var(--bs-purple-100);
 	--bs-primary-200: var(--bs-purple-200);
 	--bs-primary-300: var(--bs-purple-300);
+	--bs-primary-350: var(--bs-purple-350);
 	--bs-primary-400: var(--bs-purple-400);
 	--bs-primary-500: var(--bs-purple-500);
 	--bs-primary-600: var(--bs-purple-600);

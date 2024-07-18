@@ -393,9 +393,6 @@ margin: 0 5px;
 	font-size: 12px;
 }
 
-.comments{
-	margin: 30px 0;
-}
 .com_edit{
 	width: 50px !important;
 }
@@ -564,16 +561,34 @@ margin: 0 5px;
 }
 
 .ep-btn {
-	width: 40px;
+	width: 60px;
+	height: 40px;
 	align-content: center;
+	font-size: medium;
+	color: #b8aec4;
+	border-color: #B8AEC4FF;
+}
+
+.ep-btn:hover {
+	background-color: rgb(177, 82, 229);
+	background-color: rgb(177, 82, 229);
 }
 
 .list-card {
 	width: 100%;
 }
 
+.list-card .card-title {
+	font-size: 22px;
+}
+
+.list-card .card-text {
+	font-size: 16px;
+}
+
+
 .list-card img {
-  height: 120px;
+  height: 140px;
   object-fit: cover;
   display: block;
   width: 100%;
@@ -586,7 +601,7 @@ margin: 0 5px;
 }
 
 .relations-card img {
-  	min-height: 120px;
+  	height: 50%;
   	object-fit: cover;
   	display: block;
   	width: 100%;

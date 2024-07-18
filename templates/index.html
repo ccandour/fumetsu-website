@@ -1,44 +1,27 @@
 {% extends "base.html" %}
 {% load static %}
+{% load poll_extras %}
 {% block content %}
 
 	<h2 class="mb-4" >Najnowsze odcinki</h2>
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4">
 	{% for post in anime %}
         <div class="col mx-sm-auto">
-            <div class="card specific-w-300 w-sm-100 mw-100 h-100 mx-auto bg-dark">
+            <div class="card specific-w-200 w-sm-100 mw-100 h-100 mx-auto">
                 <img src="{{ post.image.url }}" class="card-img-top" alt="Episode thumbnail">
                 <div class="card-body d-flex flex-column">
                     <a href="{% url 'anime-nm' post.odc_nm.key_map.web_name %}">
                         <h5 class="card-title">{{post.odc_nm.key_map.title}}</h5>
                     </a>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">
+                    <h6 class="card-subtitle mb-2 fw-normal text-body-secondary">
                         Odcinek {{post.odc_nm.ep_title|floatformat}} - {{ post.odc_nm.title }}
                     </h6>
-                    <p class="card-text mb-4">{{ post.content|truncatewords:21|safe}}</p>
+                    <p class="card-text mb-4">{{ post.content|trimwords:16}}</p>
                     <a href="{% url 'ep-nm' post.odc_nm.key_map.web_name post.odc_nm.ep_nr %}" class="btn btn-primary btn-lg w-75 w-lg-100 mt-auto ms-auto me-auto">Oglądaj</a>
                 </div>
             </div>
         </div>
-
-
-		{% comment %}<div class="col-12 col-lg-8 new-ep alt-bg float-start">
-			<div>{{ post.odc_nm.date_posted|date:"d.m.o" }}</div>
-			<div class="col-12 offset-sm-1 col-sm-10 offset-md-0 col-md-5 float-start">
-				<img class="new-img" src="{{ post.image.url }}">
-			</div>
-			<div class="col-12 col-md-7 pt-1 float-end">
-				<a href="{% url 'anime-nm' post.odc_nm.key_map.web_name %}"><h4>{{post.odc_nm.key_map.title}}</h4></a>
-            	<p>Odcinek {{post.odc_nm.ep_title|floatformat}} - {{ post.odc_nm.title }}</p>
-				<p>{{ post.content|truncatewords:21|safe}}</p>
-				<br>
-			</div>
-			<a class="new-btn" href="{% url 'ep-nm' post.odc_nm.key_map.web_name post.odc_nm.ep_nr %}">
-				<button type="button" class="btn btn-op new-btn float-end">Oglądaj</button>
-				</a>
-		</div>{% endcomment %}
-
 	{% endfor %}
     </div>
 

@@ -33,7 +33,7 @@ class Home(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['anime'] = Post.objects.all().order_by('-odc_nm__date_posted')[:4]
+        context['anime'] = Post.objects.all().order_by('-odc_nm__date_posted')[:12]
         context['info'] = Info_bd.objects.all().order_by('-date_posted')[:3]
         return context
 

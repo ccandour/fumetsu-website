@@ -120,15 +120,17 @@ const renderSeries = (data) => {
                 <div class="col-sm-2">
                     <img src="${series.cover_image}" alt="...">
                 </div>
-                <div class="col-sm-10">
-                    <div class="card-body">
+         
+                    <div class="col-sm-10 ps-4 card-body flex-column d-flex justify-content-center">
+                        <div class="d-flex flex-column pb-1">
                         <h5 class="card-title mb-1">${series.name_english}</h5>
                         <div class="card-text mb-2">${series.name_romaji}</div>
                         <div class="d-flex flex-row">
                             ${series.tags.map(tag => `<button class="btn btn-secondary me-1 tag">${tag}</button>`).join('')}
                         </div>
+                        </div>
                     </div>
-                </div>
+         
             </div>
         </div>
         </a>
