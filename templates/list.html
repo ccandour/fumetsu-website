@@ -13,21 +13,24 @@
 
 {% block content %}
 <div class="col-12 col-md-7 col-lg-9">
-	<h2 class="mb-5" >Lista Anime</h2>
-    <div class="d-flex flex-column align-items-center mb-4">
-        <form id="search-form" class="d-flex flex-row gap-4 w-md-50 align-items-center" autocomplete="off">
+	<h2 class="mb-4" >Lista Anime</h2>
+    <div class="d-flex flex-column align-items-center mb-5">
+        <form id="search-form" class="d-flex flex-row gap-4 w-md-75 align-items-center" autocomplete="off">
             {% csrf_token %}
-            <input id="search-input" type="text" class="form-control form-control-lg w-sm-100" placeholder="Nazwa anime">
-            <!-- First dropdown -->
+            <!-- Search input -->
+            <input id="search-input" type="text" class="form-control focus-ring focus-ring-primary rounded-4 fs-5 px-3" style="height: 50px" placeholder="Szukaj serii...">
+            <!-- Filter dropdown -->
             <div class="dropdown">
-                <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" data-bs-offset="0, 10">
+                <button class="btn btn-secondary btn-lg dropdown-toggle px-3 rounded-4 fs-5" style="height: 50px" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" data-bs-offset="0, 10">
                     Filtruj
                 </button>
-                <ul id="tags-filter" class="dropdown-menu">
+                <ul id="tags-filter" class="dropdown-menu" style="width: 200px">
                     <li><h6 class="dropdown-header">Gatunki</h6></li>
                     {% for tag in tags %}
-                    <li class="dropdown-item">
-                        <label class="form-check-label w-75 text-start d-" for="tags-{{ forloop.counter }}">{{ tag }}</label>
+                    <li class="dropdown-item d-flex flex-row align-items-center justify-content-between" style="height: 35px">
+                        <div class="d-flex flex-row align-items-center w-100" style="height: 35px">
+                            <label class="form-check-label w-100" style="font-size: 16px;" for="tags-{{ forloop.counter }}">{{ tag }}</label>
+                        </div>
                         <input class="form-check-input float-end" type="checkbox" value="" id="tags-{{ forloop.counter }}">
                     </li>
                     {% endfor %}

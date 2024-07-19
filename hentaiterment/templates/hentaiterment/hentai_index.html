@@ -37,7 +37,7 @@
 		    				{% if user|has_group:"Informator" or user|has_group:"Uploader" or user|has_group:"content_creator" %}
 								id: {{ e.ep_nr|floatformat }} 
 							{% endif %}
-							Odcinek: {{ e.ep_title|floatformat }}
+							Odcinek: {{ e.ep_nr|floatformat }}
 						</div>
 		    				{{e.title}}
 		    			<div class="float-end d-none d-md-block">{{ e.date_posted|date:"d.m.o" }}</div>

@@ -80,6 +80,7 @@ class AnimeSeriesJSONEncoder(DjangoJSONEncoder):
                 "tags": tags,
                 "web_name": obj.web_name,
                 "format": obj.format,
+                "rating": obj.rating,
             }
         else:
             return super().default(obj)

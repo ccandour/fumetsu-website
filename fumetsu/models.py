@@ -34,20 +34,10 @@ class Anime_list(models.Model):
     episode_count = models.IntegerField(null=True, blank=True)
     anilist_id = models.CharField(max_length=100, null=True, blank=True)
     cover_image = models.CharField(max_length=100, null=True, blank=True)
+    rating = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.web_name}'
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        size = [1280, 720]  #wymiary
-
-        img = Image.open(self.image.path)
-
-        if img.height > size[0] or img.width > size[1]:
-            img.thumbnail(size)
-            img.save(self.image.path)
 
 
 class Harmonogram(models.Model):

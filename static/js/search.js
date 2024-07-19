@@ -113,7 +113,7 @@ const insertSearchQuery = (searchTerm) => {
 const renderSeries = (data) => {
     data.forEach(series => {
          const animeUrl = `/anime/${series.web_name}/`; // Construct the URL
-         resultsBox.innerHTML += `
+         let seriesHtml = `
         <a href="${animeUrl}" class="infinite-item">
         <div class="card list-card overflow-hidden">
             <div class="row g-0">
@@ -121,20 +121,34 @@ const renderSeries = (data) => {
                     <img src="${series.cover_image}" alt="...">
                 </div>
          
-                    <div class="col-sm-10 ps-4 card-body flex-column d-flex justify-content-center">
-                        <div class="d-flex flex-column pb-1">
+                <div class="col-sm-10 ps-4 card-body flex-row d-flex align-items-center justify-content-between">
+                    <div class="d-flex flex-column pb-1">
                         <h5 class="card-title mb-1">${series.name_english}</h5>
                         <div class="card-text mb-2">${series.name_romaji}</div>
                         <div class="d-flex flex-row">
                             ${series.tags.map(tag => `<button class="btn btn-secondary me-1 tag">${tag}</button>`).join('')}
                         </div>
-                        </div>
                     </div>
+                    <div class="text-bg-success fs-5 me-3 px-2 py-1 rounded-3">${series.rating}</div>
+                </div>
+                
+                   
+                </div>
          
             </div>
         </div>
         </a>
     `
+        if (series.rating > 65) {
+             seriesHtml = seriesHtml.replace('text-bg-success', 'text-bg-success')
+        }
+        else if (series.rating > 50) {
+            seriesHtml = seriesHtml.replace('text-bg-success', 'text-bg-warning')
+        }
+        else {
+            seriesHtml = seriesHtml.replace('text-bg-success', 'text-bg-danger')
+        }
+        resultsBox.innerHTML += seriesHtml
      })
 }
 

@@ -47,7 +47,7 @@ def search_anime(request):
 
         # Return appropriate json response
         if len(query_set) > 0:
-            response = json.loads(json.dumps(list(query_set), cls=AnimeSeriesJSONEncoder))
+            response = json.loads(json.dumps(sorted(list(query_set), key=lambda x: x.rating, reverse=True), cls=AnimeSeriesJSONEncoder))
         else:
             response = 'No anime found.'
 
@@ -182,7 +182,7 @@ class Anime_episode(TemplateView):
         context['com_ed'] = CreateCommentEp()
 
         ep_query = Odc_name.objects.filter(key_map_id=ani, ep_nr=ep).first()
-        context['odc_html'] = ep_query.ep_title
+        context['odc_html'] = ep_query.ep_nr
 
         try:
             if ep_query.napisy:

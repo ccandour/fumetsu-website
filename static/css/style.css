@@ -358,8 +358,8 @@ margin: 0 5px;
 }
 
 .com_img{
-	height: 75px;
-	width: 75px;
+	height: 50px;
+	width: 50px;
 	object-fit: cover;
 	border-radius: 6px;
 	/*border-radius: 100%;*/
@@ -605,4 +605,8 @@ margin: 0 5px;
   	object-fit: cover;
   	display: block;
   	width: 100%;
+}
+
+.focus-ring-primary:focus{
+	border-color: #67428B;
 }
