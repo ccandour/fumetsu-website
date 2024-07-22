@@ -76,7 +76,7 @@ class AnimeSeriesJSONEncoder(DjangoJSONEncoder):
             return {
                 "name_english": (obj.name_english.replace('"', '\\"') if obj.name_english else obj.name_romaji.replace('"', '\\"')),
                 "name_romaji": obj.name_romaji.replace('"', '\\"'),
-                "cover_image": obj.cover_image,
+                "image": obj.image,
                 "tags": tags,
                 "web_name": obj.web_name,
                 "format": obj.format,

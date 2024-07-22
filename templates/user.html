@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load poll_extras %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load utils_extras %}
+{% block content %}
+
+
+
+<div class="d-flex flex-row gap-3 align-items-start col-9 bg-body-secondary card p-3 mb-4">
+	<img class="user-img float-start mt-1" src="{{ f_user.profile.image.url  }}" alt="Profile Picture">
+    <div class="d-flex flex-column">
+        <h3 style="color:{{f_user.color}}">
+            {{ f_user.username }}
+            {% if f_user.is_staff %}
+                <i class="fa-solid fa-screwdriver-wrench fa-2xs" style="color: rgb(181, 121, 210);"></i>
+            {% endif %}
+            {% if f_user.is_superuser %}
+                <i class="fa-solid fa-crown fa-2xs" style="color: #FFD43B;"></i>
+            {% endif %}
+            {% if user.is_authenticated and f_user == user %}
+            <a href="{% url 'profile' %}">
+                <i class="fa-solid fa-pen fa-2xs text-body" aria-hidden="true"></i>
+            </a>
+            {% endif %}
+        </h3>
+        <p>{{ f_user.profile.description|safe}}</p>
+    </div>
+</div>
+
+    <!-- Relations -->
+{% if credits %}
+<div class="card mb-4 p-3 col-9">
+    <h4 class="fw-semibold mb-4 text-body">Moje serie:</h4>
+    <div class="d-flex flex-row overflow-auto gap-3 pb-4">
+        {% for credit in credits %}
+            <a href="{% url 'anime-nm' credit.0.web_name %}">
+            <div class="card relations-card bg-body-secondary text-center" style="width: 10rem;">
+                <img src="{{ credit.0.image }}" class="card-img-top" alt="Relation Cover Image">
+                 <div class="card-body d-flex flex-column">
+                    <h6 class="card-title">
+                        {% if credit.0.name_english|length < 30 %}
+                        {{credit.0.name_english}}
+                        {% else %}
+                        {{credit.0.name_english|slice:":30"|strip}}...
+                        {% endif %}
+                    </h6>
+                    <p class="card-text mt-auto ms-auto me-auto" style="font-size: 0.95rem">
+                        {{ credit.1 }}
+                  </div>
+            </div>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Comments -->
+{% if com_ser or com_ep %}
+<div class="col-12 col-lg-9 card p-3">
+    <h4 class="fw-semibold mb-4 text-body">Komentarze ({{ com_ser|add_two_sizes:com_ep }}):</h4>
+    <div id="Section_comm" class="d-flex flex-column gap-4">
+
+        {% for com in com_ser %}
+            <a href="{% url 'anime-nm' com.key_map.web_name %}">
+                <div class="d-flex flex-row align-items-start">
+                    <img class="com_img me-3 mt-1" src="{{ com.key_map.image }}">
+
+                    <div class="d-flex flex-column text-body">
+                        <div class="d-flex flex-row gap-2">
+                            <h5 class="fw-semibold mb-0">{{com.key_map.name_english}}</h5>
+                            {{com.date_posted}}
+                        </div>
+                        {{com.content}}
+                        <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
+        {% for com in com_ep %}
+            <a href="{% url 'ep-nm' com.key_map_ep.key_map.web_name com.key_map_ep.ep_nr %}">
+                <div class="d-flex flex-row align-items-start">
+                    <img class="com_img me-3 mt-1" src="{{ com.key_map_ep.key_map.image }}">
+
+                    <div class="d-flex flex-column" style="color: rgb(213, 211, 222)">
+                        <div class="d-flex flex-row gap-2">
+                            <h5 class="fw-semibold mb-0">{{com.key_map_ep.key_map.name_english}} – Odcinek {{com.key_map_ep.ep_nr}}</h5>
+                            {{com.date_posted}}
+                        </div>
+                        {{com.content}}
+                        <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock content %}

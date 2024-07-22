@@ -5,12 +5,13 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from fumetsu.models import Anime_list, Series_comment, Url_redirects, Relation
+from fumetsu.models import Anime_list, Series_comment, Url_redirects, Relation, Staff_credits
 from django.shortcuts import get_object_or_404
 from django.views.generic import (
     ListView
 )
 
+from users.models import Profile
 from utils.utils import tag_label_to_polish, AnimeSeriesJSONEncoder
 from .forms import *
 from .models import *
@@ -81,7 +82,7 @@ class Anime_content(TemplateView):
 
         context = super().get_context_data(**kwargs)
         ani = Anime_list.objects.filter(web_name=self.kwargs['anime_name']).first()
-        context['posts'] = ani
+        context['series'] = ani
 
         context['form'] = CreateComment()
 
@@ -99,6 +100,14 @@ class Anime_content(TemplateView):
             relation_tuple = (related_series, relation.type)
             relations.append(relation_tuple)
         context['relations'] = relations
+
+        staff = []
+        db_staff = Staff_credits.objects.filter(series_id=ani.id)
+        for credit in db_staff:
+            staff_member = Profile.objects.filter(id=credit.user_id).first()
+            staff_tuple = (staff_member, credit.role)
+            staff.append(staff_tuple)
+        context['staff'] = staff
 
         comment = Series_comment.objects.filter(key_map_id=ani).order_by('-date_posted')
         for comm in comment:

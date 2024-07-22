@@ -76,30 +76,30 @@ class Form_upload_edit_t(forms.ModelForm):
 #         }
 
 
-class LinkForm(forms.ModelForm):
-
-    class Meta:
-        model = Anime_url
-        fields = ['key_map']
-
-class LinkFormEp(forms.ModelForm):
-
-    class Meta:
-        model = Odc_name
-        fields = ['ep_nr']
-
-
-class AnimeEdForm(forms.ModelForm):
-
-
-    class Meta:
-        model = Anime_list
-        fields = ['content','image','image_bg','napisy']
-
-        labels = {
-            'content': _('Opis anime'),
-            'image': _('Zdjęcie'),
-        }
+# class LinkForm(forms.ModelForm):
+#
+#     class Meta:
+#         model = Anime_url
+#         fields = ['key_map']
+#
+# class LinkFormEp(forms.ModelForm):
+#
+#     class Meta:
+#         model = Odc_name
+#         fields = ['ep_nr']
+#
+#
+# class AnimeEdForm(forms.ModelForm):
+#
+#
+#     class Meta:
+#         model = Anime_list
+#         fields = ['content','image','image_bg','napisy']
+#
+#         labels = {
+#             'content': _('Opis anime'),
+#             'image': _('Zdjęcie'),
+#         }
 
 # class AnimeEdFormTag(forms.ModelForm):
 #     ch_box = forms.BooleanField(label=_('Usuń całkowice odcinek i posta'), required=False)
@@ -108,11 +108,11 @@ class AnimeEdForm(forms.ModelForm):
 #         model = Tags
 #         fields = ['tags_map']
 
-class AnimeEdFormKey(forms.ModelForm):
-
-    class Meta:
-        model = Anime_list
-        fields = ['title']        
+# class AnimeEdFormKey(forms.ModelForm):
+#
+#     class Meta:
+#         model = Anime_list
+#         fields = ['title']
 
 class Form_ch_url(forms.ModelForm):
 

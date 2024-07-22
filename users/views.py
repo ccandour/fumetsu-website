@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 import os
 from django.shortcuts import get_object_or_404
 
-from fumetsu.models import Series_comment
+from fumetsu.models import Series_comment, Staff_credits
 from django.views.generic.base import TemplateView
 from anime.forms import *
 from .forms import *
@@ -16,7 +16,6 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login
 
 from django.contrib.auth.backends import ModelBackend
-
 
 from django.http import HttpResponse
 from django.contrib.sites.shortcuts import get_current_site
@@ -40,9 +39,10 @@ def signup(request):
         if form.is_valid():
             form.cleaned_data['username'] = unidecode.unidecode(form.cleaned_data.get('username'))
             user = form.save(commit=False)
-            if User.objects.filter(email = form.cleaned_data.get('email')).first() or User.objects.filter(username = form.cleaned_data['username']).first():
+            if User.objects.filter(email=form.cleaned_data.get('email')).first() or User.objects.filter(
+                    username=form.cleaned_data['username']).first():
                 messages.success(request, f'Ten email lub nick już istnieje.')
-                return render(request,'users/signup.html', {'form':form})
+                return render(request, 'users/signup.html', {'form': form})
             else:
 
                 user.is_active = False
@@ -50,8 +50,8 @@ def signup(request):
                 user.save()
                 current_site = get_current_site(request)
                 message = render_to_string('users/acc_active_email.html', {
-                    'user':user, 
-                    'domain':current_site.domain,
+                    'user': user,
+                    'domain': current_site.domain,
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                     'token': account_activation_token.make_token(user),
                 })
@@ -59,12 +59,13 @@ def signup(request):
                 to_email = form.cleaned_data.get('email')
                 email = EmailMessage(mail_subject, message, to=[to_email])
                 email.send()
-                return render(request,'users/confirm_email.html')
+                return render(request, 'users/confirm_email.html')
 
     else:
         form = SignupForm()
-    
+
     return render(request, 'users/signup.html', {'form': form})
+
 
 def activate(request, uidb64, token):
     try:
@@ -82,7 +83,6 @@ def activate(request, uidb64, token):
 
 
 def login_cas(request):
-
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
 
@@ -102,7 +102,6 @@ def login_cas(request):
                         users.is_active = True
                         users.save()
 
-
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
@@ -116,38 +115,41 @@ def login_cas(request):
     return render(request, 'users/login.html', {'form': form})
 
 
-
 class profile(TemplateView):
-    template_name = 'users/profile.html'
-
+    template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['p_form'] =  ProfileUpdateForm(instance=self.request.user.profile)
-        context['nick_form'] = UserNameUpdateForm(instance=self.request.user.profile)
+        context['username_form'] = UsernameUpdateForm(instance=self.request.user)
+        context['mail_form'] = MailUpdateForm(instance=self.request.user)
+        context['p_form'] = ProfileUpdateForm(instance=self.request.user.profile)
         context['users'] = self.request.user
-        context['r_valid'] = ["hr", "br", "a", "center"]
-
+        context['r_valid'] = ["<hr>", "<br>", "<a>", "<center>"]
 
         return context
 
     def post(self, request, *args, **kwargs):
 
-        p_form = ProfileUpdateForm(request.POST,
-                                   request.FILES)
+        username_form = UsernameUpdateForm(request.POST)
+        p_form = ProfileUpdateForm(request.POST, request.FILES)
 
-        nick_form = UserNameUpdateForm(request.POST)
-        if nick_form.is_valid():
-            alphanumeric = [character for character in request.POST.get("nick", "") if character.isalnum()]
-            raw_nick = "".join(alphanumeric)
-            if Profile.objects.filter(nick__iexact=raw_nick).count() > 0:
-                #messages.success(request, Profile.objects.filter(nick__iexact=raw_nick))
-                messages.success(request, f'Taki nick już istnieje')
+        if username_form.is_valid():
+            new_username = username_form.cleaned_data.get('username')
+
+            # Check for duplicate usernames
+            if User.objects.filter(username=new_username).count() > 0:
+                messages.error(request, f'Taki nick już istnieje')
             else:
-                UserNameUpdateForm(request.POST,instance=request.user.profile).save()
-        elif len(request.POST.get("nick", "")) > 24:
-                messages.success(request, f'Nick jest za długi')
+                UsernameUpdateForm(request.POST, instance=request.user).save(commit=True)
+
+        # Check for username length
+        elif len(request.POST.get("username", "")) > 24:
+            messages.error(request, f'Nick jest za długi')
+
+        # Check for illegal characters
+        elif not request.POST.get("username", "").isalnum():
+            messages.error(request, f'Nick może zawierać tylko litery i cyfry')
 
         """
         nick_form = UserNameUpdateForm(request.POST)
@@ -166,7 +168,8 @@ class profile(TemplateView):
                 messages.success(request, "wolne")
         """
 
-        if p_form.is_valid():
+        if p_form.is_valid() and request.POST.get("description", "") != Profile.objects.filter(
+                user=request.user).first().description:
             # lista dozwolonych tagow ,"div", "style"
             check_tag = ["a", "center"]
             r_valid = ["hr", "br"] + check_tag
@@ -181,20 +184,6 @@ class profile(TemplateView):
                     good_valid = False
                 elif not any(c in line for c in r_valid):
                     good_valid = False
-
-                #for c in check_tag:
-                #    if c in line:
-                #        if bool(re.search('</', line)):
-                #            a_stack -= 1
-                #       elif bool(re.search('<', line)):
-                #            a_stack += 1
-
-            #if a_stack != 0:
-            #    good_valid = False
-            #if a_stack > 0:
-            #    messages.success(request, f'nie zamknięty </')
-            #elif a_stack < 0:
-            #    messages.success(request, f'nie otwarty <')
             if dynks_open != dynks_close:
                 good_valid = False
             if dynks_open > dynks_close:
@@ -204,58 +193,55 @@ class profile(TemplateView):
 
             if good_valid:
                 ProfileUpdateForm(request.POST,
-                                    request.FILES,
-                                    instance=request.user.profile).save()
+                                  request.FILES,
+                                  instance=request.user.profile).save()
                 messages.success(request, f'Opis został zmodyfikowany.')
             else:
                 messages.success(request, f'Masz nie odpowiedni tag albo złą składnie.')
 
+        if username_form.is_valid() and p_form.is_valid():
+            messages.success(request, f'Zmiany zostały zapisane.')
+            return redirect('user-inf', request.user.username)
         else:
             return redirect('profile')
-
-        return redirect('user-inf', request.user.profile.web_name)
 
 
 class Profile_page(TemplateView):
     model = Profile
     context_object_name = 'posts'
-    template_name = 'users/user.html'
+    template_name = 'user.html'
     fields = ['content']
-           
+
     def dispatch(self, *args, **kwargs):
 
-        #try:
-            #if check_ban(User.objects.get(username=self.kwargs['user_name'])):
-                #return redirect('fumetsu-home')
-        #except:
-            #pass
-    
         try:
-            User.objects.get(profile__web_name=self.kwargs['user_name'])
+            User.objects.get(username=self.kwargs['username'])
             return super(Profile_page, self).dispatch(*args, **kwargs)
         except:
-            return redirect('fumetsu-home')            
-        
+            return redirect('fumetsu-home')
+
     def get_context_data(self, **kwargs):
-        #try:
-            #if check_ban(self.request.user):
-                #logout(self.request)
-        #except:
-            #pass
 
         context = super().get_context_data(**kwargs)
-        q_profile = Profile.objects.get(web_name=self.kwargs['user_name'])
+        q_profile = Profile.objects.get(user__username=self.kwargs['username'])
         q_user = User.objects.get(id=q_profile.user.id)
         q_user.color = Get_color(q_user)
         context['f_user'] = q_user
         context['q_profile'] = q_profile
+
+        credits_list = []
+        db_credits = Staff_credits.objects.filter(user=q_profile)
+        for credit in db_credits:
+            credit_tuple = (credit.series, credit.role)
+            credits_list.append(credit_tuple)
+        context['credits'] = list(reversed(credits_list)) if credits_list else []
+
         context['com_ed'] = CreateComment()
-        context['com_ser'] = Series_comment.objects.filter(author = q_user)
-        context['com_ep'] = Episode_comment.objects.filter(author = q_user)
+        context['com_ser'] = list(reversed(list(Series_comment.objects.filter(author=q_user))))
+        context['com_ep'] = list(reversed(list(Episode_comment.objects.filter(author=q_user))))
         context['ban_form'] = BanForm()
         return context
 
-      
     def post(self, request, *args, **kwargs):
         form = CreateComment(request.POST)
         idd = request.POST.get("idd", "")
@@ -264,12 +250,11 @@ class Profile_page(TemplateView):
         users = User.objects.get(id=q_profile.user.id)
 
         if ban_form.is_valid():
-
             messages.success(request, users.is_active)
 
             users.is_active = False
             users.save()
-            prof = Profile.objects.filter(user = users).first()
+            prof = Profile.objects.filter(user=users).first()
             prof.ban = ban_form.cleaned_data['ban']
             prof.save()
 
@@ -284,7 +269,7 @@ class Profile_page(TemplateView):
                 if len(form.cleaned_data.get('content')) > 9:
                     t_save = Episode_comment.objects.filter(id=idd).first()
                     if not t_save:
-                        t_save = Series_comment.objects.filter(id = idd).first()
+                        t_save = Series_comment.objects.filter(id=idd).first()
 
                     if t_save.author == users and idd:
                         t_save.content = form.cleaned_data.get('content')
@@ -302,4 +287,3 @@ class Profile_page(TemplateView):
             messages.success(request, f'Usunięto komentarz')
 
         return redirect('user-inf', self.kwargs['user_name'])
-    

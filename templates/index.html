@@ -12,7 +12,7 @@
                 <img src="{{ post.image.url }}" class="card-img-top" alt="Episode thumbnail">
                 <div class="card-body d-flex flex-column">
                     <a href="{% url 'anime-nm' post.odc_nm.key_map.web_name %}">
-                        <h5 class="card-title">{{post.odc_nm.key_map.title}}</h5>
+                        <h5 class="card-title">{{post.odc_nm.key_map.name_english}}</h5>
                     </a>
                     <h6 class="card-subtitle mb-2 fw-normal text-body-secondary">
                         Odcinek {{post.odc_nm.ep_nr|floatformat}} - {{ post.odc_nm.title }}

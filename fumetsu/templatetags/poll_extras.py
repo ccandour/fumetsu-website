@@ -18,3 +18,11 @@ def trimwords(value, arg):
     if not joined.endswith('...') and len(joined) < len(value):
         return joined + '...'
     return joined
+
+@register.filter
+def strip(value):
+    return value.strip()
+
+@register.filter
+def add_two_sizes(value, arg):
+    return len(value) + len(arg)

@@ -4,7 +4,7 @@ def harmon(request):
     harmon_html = Harmonogram.objects.all()
     key = []
     for ff in harmon_html:
-        g = Anime_list.objects.filter(id_anime=ff.id_anime)[0]
+        g = Anime_list.objects.filter(anilist_id=ff.anilist_id)[0]
         ff.title= g.title
         ff.web_name = g.web_name
         key.append(ff)

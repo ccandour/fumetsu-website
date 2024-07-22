@@ -13,25 +13,25 @@
 <!-- Metadata (mobile version) -->
 <div class="d-block d-md-none">
     <div class="col-12 text-center">
-        <img class="ser-m-img" src="{{ posts.cover_image }}">
+        <img class="ser-m-img" src="{{ series.image }}">
     </div>
 </div>
 
 <!-- Metadata (desktop version) -->
 <div class="d-none d-md-block col-9 bg-body-secondary card p-3 mb-4">
-    <div class ="d-flex flex-row mb-4">
+    <div class ="d-flex flex-row mb-3">
         <div class="me-4">
-            <img class="ser-cover" src="{{ posts.cover_image }}">
+            <img class="ser-cover" src="{{ series.image }}">
         </div>
 
         <div>
-           <h3 class="text-start pb-0 mb-1">{{posts.name_english}}
-                <a href="https://anilist.co/anime/{{posts.anilist_id}}" target="_blank">
+           <h3 class="text-start pb-0 mb-1">{{series.name_english}}
+                <a href="https://anilist.co/anime/{{series.anilist_id}}" target="_blank">
                     <img class="d-inline-block align-middle rounded-1" height="24em" src="{% static 'img/anilist_icon.svg' %}"></img>
                 </a>
             </h3>
 
-           <h5>{{posts.name_romaji}}</h5>
+           <h5>{{series.name_romaji}}</h5>
 
             <div id="tags" class="mb-3 d-flex flex-row flex-wrap gap-2">
                 {% for tag in tags %}
@@ -44,17 +44,17 @@
             <!-- Format -->
             <div class="d-flex flex-row gap-2">
                 <div class="text-secondary-emphasis">Rodzaj:</div>
-                {{ posts.format }}
+                {{ series.format }}
             </div>
 
             <!-- Status -->
             <div class="d-flex flex-row gap-2">
                 <div class="text-secondary-emphasis">Status:</div>
-                {% if posts.status == 'AIRING' %}
+                {% if series.status == 'AIRING' %}
                     Wychodzi
-                {% elif posts.status == 'FINISHED' %}
+                {% elif series.status == 'FINISHED' %}
                     Zakończone
-                {% elif posts.status == 'NOT_YET_RELEASED' %}
+                {% elif series.status == 'NOT_YET_RELEASED' %}
                     Nie wydane
                 {% endif %}
             </div>
@@ -62,17 +62,17 @@
             <!-- Episode count -->
             <div class="d-flex flex-row gap-2">
                 <div class="text-secondary-emphasis">Ilość odcinków:</div>
-                {{ posts.episode_count }}
+                {{ series.episode_count }}
             </div>
 
             <!-- Rating -->
             <div class="d-flex flex-row gap-2">
                 <div class="text-secondary-emphasis">Średnia ocena:</div>
                 <div class="d-flex flex-row gap-1">
-                    {{ posts.rating }}
-                    {% if posts.rating > 65 %}
+                    {{ series.rating }}
+                    {% if series.rating > 65 %}
                     <div class="text-success">•</div>
-                    {% elif posts.rating > 50 %}
+                    {% elif series.rating > 50 %}
                     <div class="text-warning">•</div>
                     {% else %}
                     <div class="text-danger">•</div>
@@ -81,42 +81,61 @@
             </div>
         </div>
     </div>
-    <div class="text-start mb-2">{{posts.content}}</div>
+    <div class="text-start">{{series.content}}</div>
     {% if napisy and user.is_authenticated %}
     <a class="float-end" href="/media/{{napisy}}">Napisy</a>
+    {% endif %}
+
+    <!-- Staff -->
+    {% if staff %}
+    <div class="d-flex flex-row flex-wrap gap-3 mt-3">
+        {% for user in staff %}
+        <a href="{% url 'user-inf' user.0.user.username %}">
+            <div class="card bg-body-secondary p-2 pe-3">
+                <div class="d-flex flex-row">
+                    <img class="com_img me-3" src="{{ user.0.image.url }}" alt="Staff Image">
+                    <div class="d-flex flex-column justify-content-center">
+                        <div class="" style="">{{ user.0.user.username }}</div>
+                        <div class="text-secondary-emphasis">{{ user.1 }}</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
     {% endif %}
 </div>
 
 <!-- Episodes -->
 <div class="card p-3 mb-4 col-9">
-    <h5 class="mb-3">Odcinki:</h5>
+    <h4 class="mb-3">Odcinki:</h4>
     <div class="d-flex flex-row flex-wrap gap-2">
         {% for e in ep %}
-            <a href="{% url 'ep-nm' posts.web_name e.ep_nr %}">
+            <a href="{% url 'ep-nm' series.web_name e.ep_nr %}">
                 <button class="btn btn-outline-primary ep-btn"><b>{{ e.ep_nr|floatformat}}</b></button>
             </a>
         {% endfor %}
     </div>
 </div>
 
-<!-- Powiązane -->
+<!-- Relations -->
 {% if relations %}
 <div class="card mb-4 p-3 col-9">
-    <h5 class="mb-3">Powiązane:</h5>
+    <h4 class="mb-3">Powiązane:</h4>
     <div class="d-flex flex-row flex-wrap gap-3">
         {% for relation in relations %}
             <a href="{% url 'anime-nm' relation.0.web_name %}">
             <div class="card relations-card bg-body-secondary text-center" style="width: 10rem;">
-                <img src="{{ relation.0.cover_image }}" class="card-img-top" alt="Relation Cover Image">
+                <img src="{{ relation.0.image }}" class="card-img-top" alt="Relation Cover Image">
                  <div class="card-body d-flex flex-column">
                     <h6 class="card-title">
-                        {% if relation.0.name_english|length < 50 %}
+                        {% if relation.0.name_english|length < 40 %}
                         {{relation.0.name_english}}
                         {% else %}
-                        {{relation.0.name_english|slice:":50"}}...
+                        {{relation.0.name_english|slice:":40"}}...
                         {% endif %}
                     </h6>
-                    <p class="card-text mt-auto ms-auto me-auto">
+                    <p class="card-text mt-auto ms-auto me-auto" style="font-size: 0.95rem">
                         {% if relation.1 == 'SIDE_STORY'%}
                         POBOCZNE
                         {% elif relation.1 == 'SPIN_OFF'%}
@@ -129,13 +148,13 @@
             </a>
         {% endfor %}
     </div>
-    {% endif %}
 </div>
+{% endif %}
 
-<!-- Komentarze -->
+<!-- Comments -->
 {% if comment %}
 <div class="col-12 col-lg-9 card p-3">
-    <h5 class="mb-3">Sekcja komentarzy:</h5>
+    <h4 class="mb-3">Sekcja komentarzy:</h4>
     {% if user.is_authenticated %}
     <form method="POST">
         {% csrf_token %}
@@ -147,37 +166,32 @@
     {% endif %}
     <div id="Section_comm" class="d-flex flex-column gap-4">
         {% for com in comment %}
-            <div class="d-flex flex-row align-items-center">
-                <img class="com_img me-3" src="{{ com.author.profile.image.url }}">
+            <div class="d-flex flex-row align-items-start">
+                <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}">
 
                 <div class="d-flex flex-column">
                     <div class="d-flex flex-row gap-2 align-items-center">
-                        <a href="{% url 'user-inf' com.author.profile.web_name %}" style="color:{{com.color}}">
-                            <div class="fs-5 fw-semibold">{{com.author.profile.nick}}</div>
+                        <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
+                            <div class="fs-5 fw-semibold">{{com.author.username}}</div>
                         </a>
-                        {{com.date_posted}}
-                    </div>
-                    {{com.content}}
-                    <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
-                </div>
 
-                {% if com.author == user %}
-                <div class="dropleft float-end">
-                    <a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </a>
-                        <div class="dropdown-menu com_edit" aria-labelledby="navbarDropdown">
-                            <div class="text-center">
-                                <a href="" class="bt_com_sh" data-toggle="modal" data-target="#modalComRe">Edytuj</a>
-                            </div>
-                            <div class="text-center">
-                                <a href="" class="bt_com_del" data-toggle="modal" data-target="#modalComDel">Usuń</a>
+                        {{com.date_posted}}
+
+                        {% if com.author == user %}
+                        <div class="dropend float-end ms-0">
+                            <a class="com_mor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa-solid fa-pen fa-md text-body" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu ms-2 p-0" style="min-width: 100px" aria-labelledby="navbarDropdown">
+                                <button class="text-start btn btn-outline-success rounded-bottom-0 w-100" data-bs-toggle="modal" data-target="#modalComRe">Edytuj</button>
+                                <button class="text-start btn btn-outline-danger rounded-top-0 w-100" data-bs-toggle="modal" data-target="#modalComDel">Usuń</button>
                             </div>
                         </div>
-                    </div>
                     {% endif %}
+                    </div>
 
-                <div class="com_date float-end d-none d-md-block"></div>
+                    {{com.content}}
+                </div>
             </div>
         {% endfor %}
     </div>

@@ -18,6 +18,10 @@ a {
 	max-width: none;
 }
 
+.card-img-top {
+	flex-shrink: 0;
+}
+
 .ftr {
   position: absolute;
   right: 0;
@@ -340,11 +344,11 @@ h2
 	display: inline-block;
 }
 
-.user-img{
-	height: 200px;
-	width: 200px;
+.user-img {
+	height: 100px;
+	width: 100px;
 	object-fit: cover;
-	margin-right: 20px;
+	border-radius: 8px;
 }
 
 .user-btn{
@@ -357,12 +361,12 @@ margin: 0 5px;
 
 }
 
-.com_img{
+.com_img {
 	height: 50px;
 	width: 50px;
 	object-fit: cover;
+	flex-shrink: 0;
 	border-radius: 6px;
-	/*border-radius: 100%;*/
 }
 
 .com_nick{

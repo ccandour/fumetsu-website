@@ -26,10 +26,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # migrations.AddField(
-        #     model_name='anime_list',
-        #     name='rating',
-        #     field=models.IntegerField(blank=True, null=True),
-        # ),
+        migrations.AddField(
+            model_name='anime_list',
+            name='rating',
+            field=models.IntegerField(blank=True, null=True),
+        ),
         migrations.RunPython(add_rating)
     ]

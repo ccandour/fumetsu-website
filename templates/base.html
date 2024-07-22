@@ -72,9 +72,9 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <i class="fas fa-user"></i>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end mt-md-2 rounded-top-0">
+                        <ul class="dropdown-menu dropdown-menu-end mt-md-2">
                             {% if user.is_authenticated%}
-                            <li><a class="dropdown-item" href="{% url 'user-inf' user.profile.web_name %}">Profil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'user-inf' user.username %}">Profil</a></li>
                             <li><a class="dropdown-item" href="{% url 'logout' %}">Wyloguj</a></li>
                             {% else %}
                             <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
@@ -117,7 +117,7 @@
             {% for series in harmon %}
             <a href="{% url 'anime-nm' series.key_map.web_name %}">
             <div class="schedule-series">
-                <div class="fs-5 text-primary-emphasis">{{series.key_map.title}}</div><div>{{series.day}}, {{series.content}}</div>
+                <div class="fs-5 text-primary-emphasis">{{series.key_map.name_english}}</div><div>{{series.day}}, {{series.content}}</div>
             </div>
             </a>
             {% endfor %}

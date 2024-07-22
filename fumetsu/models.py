@@ -6,6 +6,8 @@ from PIL import Image, ImageSequence
 from django_cleanup import cleanup
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+from users.models import Profile
+
 
 class Relation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -19,22 +21,20 @@ class Relation(models.Model):
 
 class Anime_list(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    id_anime = models.IntegerField()
-    content = models.TextField()
-    image = models.ImageField(default='av_default.gif', upload_to='anime_avatar')
-    image_bg = models.ImageField(default='anime_bg.jpg', upload_to='anime_avatar')
-    napisy = models.FileField(upload_to='archiwum/', blank=True)
-    title = models.CharField(max_length=100, null=True, blank=True)
-    web_name = models.CharField(max_length=100, null=True, blank=True)
-    # Anilist properties
+
+    anilist_id = models.CharField(max_length=100, null=True, blank=True)
     name_romaji = models.CharField(max_length=100, null=True, blank=True)
     name_english = models.CharField(max_length=100, null=True, blank=True)
+    web_name = models.CharField(max_length=100, null=True, blank=True)
+    image = models.CharField(max_length=100, null=True, blank=True)
+    content = models.TextField()
+
     format = models.CharField(max_length=100, null=True, blank=True)
     status = models.CharField(max_length=100, null=True, blank=True)
     episode_count = models.IntegerField(null=True, blank=True)
-    anilist_id = models.CharField(max_length=100, null=True, blank=True)
-    cover_image = models.CharField(max_length=100, null=True, blank=True)
     rating = models.IntegerField(null=True, blank=True)
+
+    napisy = models.FileField(upload_to='archiwum/', blank=True)
 
     def __str__(self):
         return f'{self.web_name}'
@@ -101,3 +101,12 @@ class Url_redirects(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     old_url = models.CharField(max_length=100)
     new_url = models.CharField(max_length=100)
+
+class Staff_credits(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    series = models.ForeignKey(Anime_list, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    role = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'{self.user} as {self.role} in {self.series}'

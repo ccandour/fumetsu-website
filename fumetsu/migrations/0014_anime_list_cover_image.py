@@ -8,7 +8,7 @@ def add_cover_from_anilist(apps, schema_editor):
     Anime_list = apps.get_model('fumetsu', 'Anime_list')
     for anime in Anime_list.objects.all():
         anilist_anime = get_series_by_name(anime.name_romaji)
-        anime.cover_image = anilist_anime.cover_image.large
+        anime.cover_image = anilist_anime.image.large
         anime.save()
         time.sleep(1)
 

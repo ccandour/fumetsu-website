@@ -20,7 +20,7 @@
 <!-- Title and Episode Navigation -->
 <div class="col-12 col-md-9 col-lg-9 mb-3">
 <div class="d-flex flex-column align-items-center">
-    <a href="{% url 'anime-nm' anime_nm.web_name %}"><h2>{{anime_nm.title}}</h2></a>
+    <a href="{% url 'anime-nm' anime_nm.web_name %}"><h2>{{anime_nm.name_english}}</h2></a>
     <h5>
         {% if prev %}
             <a class="ps-4" href="{% url 'ep-nm' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i></a>
@@ -38,7 +38,7 @@
 </div>
 
 <!-- Tabs -->
-<div class="card col-12 col-md-9 col-lg-9">
+<div class="card col-12 col-md-9 col-lg-9 mb-4">
     <div class="card-body">
         <!-- Tab controls -->
         <nav>
@@ -77,112 +77,50 @@
     </div>
 </div>
 
+<!-- Comments -->
 {% if comment %}
-    <div class="col-12 col-lg-9 float-start">
-        <div class="comments">
-        <h5>Sekcja komentarzy:</h5>
-        {% if user.is_authenticated %}
-        <form method="POST">
-            {% csrf_token %}
-            <div class="box_cr_com">
-                <div class="com_cr_cont">
-                    {{ form|crispy }}
-                </div>
-                <button class="btn btn-op float-end" name="com_cr_bt">Wyślij komentarz</button>
-            </div>
-            <div class="clearfix"></div>
-        </form>
-        {% endif %}
+<div class="col-12 col-lg-9 card p-3">
+    <h5 class="mb-3">Sekcja komentarzy:</h5>
+    {% if user.is_authenticated %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="example-textarea-1" class="form-label">Dodaj komentarz:</label>
+            <textarea class="form-control focus-ring focus-ring-primary" id="example-textarea-1" rows="3" placeholder="Super odcinek!"></textarea>
         </div>
-        <div id="Section_comm" class="d-flex flex-column gap-4">
-            {% for com in comment %}
-                    <div class="d-flex flex-row">
-                        <img class="com_img me-3" src="{{ com.author.profile.image.url }}">
+    </form>
+    {% endif %}
+    <div id="Section_comm" class="d-flex flex-column gap-4">
+        {% for com in comment %}
+            <div class="d-flex flex-row align-items-start">
+                <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}">
 
-                        <div class="d-flex flex-column">
-                            <div class="d-flex flex-row gap-2 align-items-center">
-                                <a href="{% url 'user-inf' com.author.profile.web_name %}" style="color:{{com.color}}">
-                                    <div class="fs-5 fw-semibold">{{com.author.profile.nick}}</div>
-                                </a>
-                                {{com.date_posted}}
-                            </div>
-                            {{com.content}}
-                            <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
-                        </div>
+                <div class="d-flex flex-column">
+                    <div class="d-flex flex-row gap-2 align-items-center">
+                        <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
+                            <div class="fs-5 fw-semibold">{{com.author.username}}</div>
+                        </a>
+
+                        {{com.date_posted}}
 
                         {% if com.author == user %}
-                        <div class="dropleft float-end">
-                            <a class="com_more" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
+                        <div class="dropend float-end ms-0">
+                            <a class="com_mor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa-solid fa-pen fa-md text-body" aria-hidden="true"></i>
                             </a>
-                                <div class="dropdown-menu com_edit" aria-labelledby="navbarDropdown">
-                                    <div class="text-center">
-                                        <a href="" class="bt_com_sh" data-toggle="modal" data-target="#modalComRe">Edytuj</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a href="" class="bt_com_del" data-toggle="modal" data-target="#modalComDel">Usuń</a>
-                                    </div>
-                                </div>
+                            <div class="dropdown-menu ms-2 p-0" style="min-width: 100px" aria-labelledby="navbarDropdown">
+                                <button class="text-start btn btn-outline-success rounded-bottom-0 w-100" data-bs-toggle="modal" data-target="#modalComRe">Edytuj</button>
+                                <button class="text-start btn btn-outline-danger rounded-top-0 w-100" data-bs-toggle="modal" data-target="#modalComDel">Usuń</button>
                             </div>
-                            {% endif %}
-
-                        <div class="com_date float-end d-none d-md-block"></div>
+                        </div>
+                        {% endif %}
                     </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-		
-<div class="modal fade" id="modalComRe" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Edytuj Komentarz</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      	</div>
-      	<form method="POST">
-				{% csrf_token %}
-				<div class="box_up_com">
-					<div class="com_up_cont cont_edit">
-						{{ com_ed|crispy }}
-						<input type="hidden" name="idd" value="" class="pdk">
-					</div>
-					<button class="btn btn-op btn-edit" name="com_up_bt">Edytuj</button>
-				</div>
-			</form>	
-		
+                    {{com.content}}
+                    <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
+                </div>
+            </div>
+        {% endfor %}
     </div>
-  </div>
-</div>
-
-<div class="modal fade" id="modalComDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Usuń komentarz</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      	</div>
-      	<h5 class="modal-title w-100 font-weight-bold">Na pewno chcesz usnąć komentarz?</h5>
-      	<div class="com_up_div">
-			<form method="POST">
-				{% csrf_token %}
-				<div class="box_up_com">
-					<div class="com_up_cont">															
-						<input type="hidden" name="idd" value="" class="pdk">
-						</div>
-					<button class="btn btn-danger btn-edit" name="com_up_del">Usuń</button>
-				</div>
-			</form>	
-		</div>
-    </div>
-  </div>
-</div>
-
-		</div>	
+{% endif %}
 
 {% endblock content %}
