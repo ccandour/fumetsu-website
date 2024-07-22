@@ -33,8 +33,8 @@ urlpatterns = [
     path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete'),
     path('profile/<slug:username>/', user_views.Profile_page.as_view(), name='user-inf'),
     #path('profile_ed/', login_required(user_views.Profile_ed.as_view()), name='user-ed'),
-    path('change-password/', auth_views.PasswordChangeView.as_view(template_name='users/password_change.html'), name='password_change'),
-    path('change-password/done/', auth_views.PasswordChangeView.as_view(template_name='users/password_change_done.html'), name='password_change_done'),
+    path('change-password/', user_views.change_password, name='password_change'),
+    path('change-password/done/', auth_views.PasswordChangeView.as_view(template_name='password_change_done.html'), name='password_change_done'),
 
     path('login/api/', include('social_django.urls', namespace='social')),
 

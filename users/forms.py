@@ -1,9 +1,13 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.forms import CharField, PasswordInput
+from django_password_eye.widgets import PasswordEyeWidget
+
 from .models import Profile
 
 from django_recaptcha.fields import ReCaptchaField, ReCaptchaV2Checkbox
+from django_password_eye.fields import PasswordEye
 import datetime
 
 
@@ -121,6 +125,37 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['image', 'description']
+
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    error_css_class = 'danger'
+    old_password = PasswordEye(
+        required=True, label='Stare hasło',
+        widget=PasswordEyeWidget(
+
+        )
+    )
+    new_password1 = PasswordEye(
+        required=True, label='Nowe hasło',
+        widget=PasswordEyeWidget(
+            attrs={
+                "class": "form-control form-control-lg focus-ring focus-ring-primary",
+                "placeholder": "********",
+                "data-bs-toggle": "new-password-1"
+            }
+        )
+    )
+    new_password2 = PasswordEye(
+        required=True, label='Powtórz nowe hasło',
+        widget=PasswordEyeWidget(
+            attrs={
+                "class": "form-control form-control-lg focus-ring focus-ring-primary",
+                "placeholder": "********",
+                "autocomplete": "off",
+                "data-bs-toggle": "new-password-2"
+            }
+        )
+    )
 
 
 class BanForm(forms.ModelForm):

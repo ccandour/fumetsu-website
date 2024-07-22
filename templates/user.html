@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_sidebar.html" %}
 {% load poll_extras %}
 {% load crispy_forms_tags %}
 {% load static %}
@@ -10,16 +10,20 @@
 <div class="d-flex flex-row gap-3 align-items-start col-9 bg-body-secondary card p-3 mb-4">
 	<img class="user-img float-start mt-1" src="{{ f_user.profile.image.url  }}" alt="Profile Picture">
     <div class="d-flex flex-column">
-        <h3 style="color:{{f_user.color}}">
+        <h3 class="d-flex flex-row align-items-center gap-2" style="color:{{f_user.color}}">
             {{ f_user.username }}
             {% if f_user.is_staff %}
-                <i class="fa-solid fa-screwdriver-wrench fa-2xs" style="color: rgb(181, 121, 210);"></i>
+                <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Członek ekipy">
+                    <i class="fa-solid fa-screwdriver-wrench fa-2xs" style="color: rgb(181, 121, 210);"></i>
+                </div>
             {% endif %}
             {% if f_user.is_superuser %}
-                <i class="fa-solid fa-crown fa-2xs" style="color: #FFD43B;"></i>
+                <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Administrator">
+                    <i class="fa-solid fa-crown fa-2xs" style="color: #FFD43B;"></i>
+                </div>
             {% endif %}
             {% if user.is_authenticated and f_user == user %}
-            <a href="{% url 'profile' %}">
+            <a href="{% url 'profile' %}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edytuj profil">
                 <i class="fa-solid fa-pen fa-2xs text-body" aria-hidden="true"></i>
             </a>
             {% endif %}
@@ -98,3 +102,7 @@
 </div>
 {% endif %}
 {% endblock content %}
+
+{% block scripts %}
+<script src="{% static '/js/tooltips.js' %}" defer></script>
+{% endblock scripts %}

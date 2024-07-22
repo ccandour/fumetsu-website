@@ -18,7 +18,6 @@ cryptography
 dataclasses
 decorator
 defusedxml
-discord
 discord.py
 Django
 django-captcha
@@ -96,5 +95,4 @@ yarl
 zipp
 crispy-bootstrap5
 pyanilist
-python-slugify
-json5
+django-password-eye

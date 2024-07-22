@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -13,7 +14,7 @@ from datetime import datetime, timezone
 from anime.models import Episode_comment
 from django.db.models import Q
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, update_session_auth_hash
 
 from django.contrib.auth.backends import ModelBackend
 
@@ -114,6 +115,22 @@ def login_cas(request):
         form = UserLoginForm()
     return render(request, 'users/login.html', {'form': form})
 
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Twoje hasło zostało pomyślnie zmienione!')
+            return redirect('user-inf', request.user.username)
+        else:
+            messages.error(request, 'Zmiana hasła nie powiodła się.')
+    else:
+        form = CustomPasswordChangeForm(request.user)
+    return render(request, 'password_change.html', {
+        'form': form
+    })
+
 
 class profile(TemplateView):
     template_name = 'profile.html'
@@ -131,10 +148,12 @@ class profile(TemplateView):
 
     def post(self, request, *args, **kwargs):
 
-        username_form = UsernameUpdateForm(request.POST)
-        p_form = ProfileUpdateForm(request.POST, request.FILES)
+        username_form = UsernameUpdateForm(request.POST, initial={'username': request.user.username})
+        mail_form = MailUpdateForm(request.POST, initial={'email': request.user.email})
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, initial={'image': request.user.profile.image, 'description': request.user.profile.description})
 
-        if username_form.is_valid():
+        # Username form
+        if username_form.is_valid() and username_form.has_changed():
             new_username = username_form.cleaned_data.get('username')
 
             # Check for duplicate usernames
@@ -151,35 +170,28 @@ class profile(TemplateView):
         elif not request.POST.get("username", "").isalnum():
             messages.error(request, f'Nick może zawierać tylko litery i cyfry')
 
-        """
-        nick_form = UserNameUpdateForm(request.POST)
-        if nick_form.is_valid() and request.POST.get("nick", ""):
-            q_porfile = Profile.objects.filter(id=self.request.user.profile.id).first()
-            f_save = nick_form.save(commit=False)
-            try:
-                alphanumeric = [character for character in f_save.nick if character.isalnum()]
-                web_urls = "".join(alphanumeric)
-                if Profile.objects.filter(web_name=web_urls, nick = q_porfile.nick).count() > 0:
+        # Email form
+        if mail_form.is_valid() and mail_form.has_changed():
+            new_email = mail_form.cleaned_data.get('email')
 
-                    messages.success(request, "Takia nazwa już istenieje")
-                else:
-                    messages.success(request, "wolne_2")
-            except:
-                messages.success(request, "wolne")
-        """
+            # Check for duplicate emails
+            if User.objects.filter(email=new_email).count() > 0:
+                messages.error(request, f'Ten email jest już w użyciu, czy chciałeś się zalogować?')
+            else:
+                MailUpdateForm(request.POST, instance=request.user).save()
 
-        if p_form.is_valid() and request.POST.get("description", "") != Profile.objects.filter(
-                user=request.user).first().description:
+        # Profile form
+        if profile_form.is_valid() and profile_form.has_changed():
             # lista dozwolonych tagow ,"div", "style"
             check_tag = ["a", "center"]
             r_valid = ["hr", "br"] + check_tag
             good_valid = True
             #a_stack = 0
 
-            dynks_open = p_form["description"].value().count("<")
-            dynks_close = p_form["description"].value().count(">")
+            dynks_open = profile_form["description"].value().count("<")
+            dynks_close = profile_form["description"].value().count(">")
 
-            for line in re.split('(<[^>]*>)', p_form["description"].value())[1::2]:
+            for line in re.split('(<[^>]*>)', profile_form["description"].value())[1::2]:
                 if not '<' in line and not '>' in line:
                     good_valid = False
                 elif not any(c in line for c in r_valid):
@@ -199,7 +211,7 @@ class profile(TemplateView):
             else:
                 messages.success(request, f'Masz nie odpowiedni tag albo złą składnie.')
 
-        if username_form.is_valid() and p_form.is_valid():
+        if username_form.is_valid() and mail_form.is_valid() and profile_form.is_valid():
             messages.success(request, f'Zmiany zostały zapisane.')
             return redirect('user-inf', request.user.username)
         else:
