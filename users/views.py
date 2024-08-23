@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.tokens import default_token_generator, PasswordResetTokenGenerator
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -21,11 +22,11 @@ from django.contrib.auth.backends import ModelBackend
 from django.http import HttpResponse
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode, base36_to_int
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.contrib.auth.models import User
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 
 from fumetsu.ban import check_ban, Get_color
 from django.contrib.auth import logout
@@ -115,6 +116,7 @@ def login_cas(request):
         form = UserLoginForm()
     return render(request, 'users/login.html', {'form': form})
 
+
 def change_password(request):
     if request.method == 'POST':
         form = CustomPasswordChangeForm(request.user, request.POST)
@@ -130,6 +132,57 @@ def change_password(request):
     return render(request, 'password_change.html', {
         'form': form
     })
+
+
+def reset_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordResetForm(request.POST)
+        if form.is_valid():
+            mail = form.cleaned_data.get('email')
+            user = User.objects.filter(email=mail).first()
+            if user:
+                current_site = get_current_site(request)
+                reset_token = default_token_generator.make_token(user)
+                message = render_to_string('users/password_reset_email.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'protocol': request.scheme,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': reset_token,
+                })
+                mail_subject = 'Resetowanie hasła na Fumetsu'
+                to_email = mail
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
+
+            messages.success(request, 'Na podany adres e-mail został wysłany link do resetowania hasła.')
+            return redirect('fumetsu-home')
+    else:
+        return render(request, 'users/password_reset.html', {'form': CustomPasswordResetForm()})
+
+
+def reset_password_confirm(request, uidb64, token, token_generator=default_token_generator):
+    if request.method == 'POST':
+        user = User.objects.get(id=urlsafe_base64_decode(uidb64))
+        form = CustomSetPasswordForm(request.user, request.POST)\
+
+        if form.is_valid() and token_generator.check_token(user, token):
+            new_password = form.cleaned_data['new_password2']
+            uid = urlsafe_base64_decode(uidb64)
+            user = User.objects.get(pk=uid)
+            user.set_password(new_password)
+            user.save()
+            messages.success(request, 'Twoje haslo zostalo zmienione.')
+            return redirect('fumetsu-home')
+        else:
+            print(f'User: {user.username} - Token: {token} - Valid: {token_generator.check_token(user, token)}')
+            messages.error(request, 'Nie udalo sie zmienic hasla.')
+            return redirect('fumetsu-home')
+    else:
+        user = User.objects.get(pk=urlsafe_base64_decode(uidb64))
+        form = CustomSetPasswordForm(user)
+        return render(request, 'users/password_reset_confirm.html', {'form': form})
+
 
 def logout_view(request):
     logout(request)
@@ -155,7 +208,8 @@ class profile(TemplateView):
 
         username_form = UsernameUpdateForm(request.POST, initial={'username': request.user.username})
         mail_form = MailUpdateForm(request.POST, initial={'email': request.user.email})
-        profile_form = ProfileUpdateForm(request.POST, request.FILES, initial={'image': request.user.profile.image, 'description': request.user.profile.description})
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, initial={'image': request.user.profile.image,
+                                                                               'description': request.user.profile.description})
 
         # Username form
         if username_form.is_valid() and username_form.has_changed():

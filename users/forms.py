@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from django.forms import CharField, PasswordInput
 from django_password_eye.widgets import PasswordEyeWidget
 
@@ -145,6 +145,42 @@ class CustomPasswordChangeForm(PasswordChangeForm):
 
         )
     )
+    new_password1 = PasswordEye(
+        required=True, label='Nowe hasło',
+        widget=PasswordEyeWidget(
+            attrs={
+                "class": "form-control form-control-lg focus-ring focus-ring-primary",
+                "placeholder": "********",
+                "data-bs-toggle": "new-password-1"
+            }
+        )
+    )
+    new_password2 = PasswordEye(
+        required=True, label='Powtórz nowe hasło',
+        widget=PasswordEyeWidget(
+            attrs={
+                "class": "form-control form-control-lg focus-ring focus-ring-primary",
+                "placeholder": "********",
+                "autocomplete": "off",
+                "data-bs-toggle": "new-password-2"
+            }
+        )
+    )
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        label="E-mail",
+        widget=forms.EmailInput(
+            attrs={
+                'placeholder': 'admin@fumetsu.pl',
+                "class": "form-control form-control-lg focus-ring focus-ring-primary"
+            }
+        )
+    )
+
+
+class CustomSetPasswordForm(SetPasswordForm):
     new_password1 = PasswordEye(
         required=True, label='Nowe hasło',
         widget=PasswordEyeWidget(
