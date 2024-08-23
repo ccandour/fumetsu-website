@@ -611,6 +611,19 @@ margin: 0 5px;
   	width: 100%;
 }
 
+.announcements-card {
+  	width: 100%;
+	height: 100%;
+}
+
+.announcements-card img {
+  	height: 100%;
+  	object-fit: contain;
+  	display: block;
+  	width: 100%;
+	border-radius: 6px;
+}
+
 .focus-ring-primary:focus{
 	border-color: #67428B;
 }

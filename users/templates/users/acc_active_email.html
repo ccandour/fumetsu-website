@@ -1,5 +1,0 @@
-{% autoescape off %}
-Cześć {{ user.username }},
-Kliknij w ten link by aktywować konto,
-https://{{ domain }}{% url 'activate' uidb64=uid token=token %}
-{% endautoescape %}

@@ -56,11 +56,11 @@ class google_auth(ListView):
         return context
 
 
-class Info(ListView):
+class Announcements(ListView):
     model = Post
     context_object_name = 'posts'
     queryset = Info_bd.objects.all().order_by('-date_posted')
-    template_name = 'info.html'
+    template_name = 'announcements.html'
 
 
 class Info_d(ListView):

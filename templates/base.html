@@ -59,7 +59,7 @@
                         <a class="nav-link active menu-link" href="{% url 'anime-list' %}">Anime</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="{% url 'fumetsu-info' %}">Aktualności</a>
+                        <a class="nav-link menu-link" href="{% url 'fumetsu-announcements' %}">Aktualności</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="{% url 'fumetsu-about' %}">O nas</a>
@@ -70,7 +70,11 @@
                     <!-- Dropdown usera -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-user"></i>
+                            {% if user.is_authenticated %}
+                                <img src="{{ user.profile.image.url }}" class="rounded-circle" height="30" width="30" alt="Profile picture">
+                            {% else %}
+                                <i class="fas fa-user"></i>
+                            {% endif %}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end mt-md-2">
                             {% if user.is_authenticated%}

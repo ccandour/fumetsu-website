@@ -43,30 +43,32 @@ def signup(request):
             user = form.save(commit=False)
             if User.objects.filter(email=form.cleaned_data.get('email')).first() or User.objects.filter(
                     username=form.cleaned_data['username']).first():
-                messages.success(request, f'Ten email lub nick już istnieje.')
+                messages.error(request, f'Ten email lub nick już istnieje.')
                 return render(request, 'users/signup.html', {'form': form})
             else:
-
                 user.is_active = False
                 user.username = form.cleaned_data['username']
                 user.save()
                 current_site = get_current_site(request)
-                message = render_to_string('users/acc_active_email.html', {
+                message = render_to_string('users/signup_email.html', {
                     'user': user,
                     'domain': current_site.domain,
+                    'protocol': request.scheme,
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                     'token': account_activation_token.make_token(user),
                 })
-                mail_subject = 'Aktywuj konto do Fumetsu-subs.'
+                mail_subject = 'Aktywacja konta na Fumetsu'
                 to_email = form.cleaned_data.get('email')
                 email = EmailMessage(mail_subject, message, to=[to_email])
                 email.send()
-                return render(request, 'users/confirm_email.html')
 
+                messages.success(request, f'Na podany adres e-mail został wysłany link aktywacyjny.')
+                return redirect('fumetsu-home')
+        else:
+            messages.error(request, f'Nieprawidłowe dane.')
+            return render(request, 'users/signup.html', {'form': form})
     else:
-        form = SignupForm()
-
-    return render(request, 'users/signup.html', {'form': form})
+        return render(request, 'users/signup.html', {'form': SignupForm()})
 
 
 def activate(request, uidb64, token):
@@ -78,10 +80,11 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
+        messages.success(request, f'Dziękujemy za potwierdzenie e-maila. Możesz się teraz zalogować.')
         return redirect('login')
-        return HttpResponse('Dziękujemy za potwierdzenie e-mailu. Możesz się teraz zalogować.')
     else:
-        return HttpResponse('Nieprawidłowy link!')
+        messages.error(request, f'Nieprawidłowy link!')
+        return redirect('fumetsu-home')
 
 
 def login_cas(request):

@@ -13,29 +13,41 @@ import datetime
 
 
 class SignupForm(UserCreationForm):
-    email = forms.EmailField(widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'email',
-    })
-    )
-
     username = forms.CharField(
         max_length=24,
         label="Nazwa użytkownika",
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Login',
+            "class": "form-control form-control-lg focus-ring focus-ring-primary",
+            'placeholder': 'Nick'
         })
     )
 
-    password1 = forms.CharField(
-        label="Hasło",
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Hasło'})
+    email = forms.EmailField(
+        widget=forms.TextInput(attrs={
+            "class": "form-control form-control-lg focus-ring focus-ring-primary",
+            'placeholder': 'admin@fumetsu.pl'
+        })
     )
 
-    password2 = forms.CharField(
-        label="Powtórz hasło",
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Powtórz hasło'})
+    password1 = PasswordEye(
+        required=True, label='Hasło',
+        widget=PasswordEyeWidget(
+            attrs={
+                "class": "form-control form-control-lg focus-ring focus-ring-primary",
+                "placeholder": "********",
+                "data-bs-toggle": "password"
+            }
+        )
+    )
+
+    password2 = PasswordEye(
+        required=True, label='Powtórz hasło',
+        widget=PasswordEyeWidget(
+            attrs={
+                "class": "form-control form-control-lg focus-ring focus-ring-primary",
+                "placeholder": "********",
+            }
+        )
     )
 
     #captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox(attrs={
