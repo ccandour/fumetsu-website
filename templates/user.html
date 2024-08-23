@@ -28,7 +28,7 @@
             </a>
             {% endif %}
         </h3>
-        <p>{{ f_user.profile.description|safe}}</p>
+        {{f_user.profile.description|convert_markdown|safe}}
     </div>
 </div>
 

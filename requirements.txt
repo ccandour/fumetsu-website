@@ -96,3 +96,5 @@ zipp
 crispy-bootstrap5
 pyanilist
 django-password-eye
+markdown
+markdown-link-attr-modifier

@@ -16,3 +16,17 @@ def has_group(user, group_name):
         return True
 
     return user.groups.filter(name=group_name).exists()
+
+
+@register.filter(name='convert_markdown')
+def convert_markdown(text):
+    from markdown import markdown
+    extensions = ['markdown_link_attr_modifier', ]
+    extension_configs = {
+        'markdown_link_attr_modifier': {
+            'new_tab': 'on',
+            'no_referrer': 'external_only',
+            'auto_title': 'on',
+        },
+    }
+    return markdown(text, extensions=extensions, extension_configs=extension_configs)

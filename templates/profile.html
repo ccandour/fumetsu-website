@@ -15,11 +15,6 @@
 			{{username_form|crispy}}
 			{{mail_form|crispy}}
 			{{p_form|crispy}}
-			dozwolone tagi:
-			{% for o in r_valid %}
-                {{ o }}
-                {% if forloop.revcounter0 %}, {% endif %}
-			{% endfor %}
 			
 		</fieldset>
 

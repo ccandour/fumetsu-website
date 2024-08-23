@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from django.forms import CharField, PasswordInput
+from django.utils.safestring import mark_safe
 from django_password_eye.widgets import PasswordEyeWidget
 
 from .models import Profile
@@ -97,11 +98,12 @@ class UsernameUpdateForm(forms.ModelForm):
 class MailUpdateForm(forms.ModelForm):
     email = forms.EmailField(
         max_length=100,
-        label="E-mail",
+        label="E-mail (aby zmienić skontaktuj się z administratorem)",
         widget=forms.EmailInput(
             attrs={
                 'placeholder': 'admin@fumetsu.pl',
-                "class": "form-control form-control-lg focus-ring focus-ring-primary"
+                "class": "form-control form-control-lg focus-ring focus-ring-primary",
+                'disabled': 'true'
             }
         )
     )
@@ -123,7 +125,7 @@ class ProfileUpdateForm(forms.ModelForm):
     )
     description = forms.CharField(
         max_length=1024,
-        label="Opis",
+        label=mark_safe('Opis (obsługuje <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown</a>)'),
         widget=forms.Textarea(
             attrs={
                 "placeholder": "Napisz coś o sobie <3",

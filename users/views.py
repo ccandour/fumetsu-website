@@ -229,46 +229,9 @@ class profile(TemplateView):
         elif not request.POST.get("username", "").isalnum():
             messages.error(request, f'Nick może zawierać tylko litery i cyfry')
 
-        # Email form
-        if mail_form.is_valid() and mail_form.has_changed():
-            new_email = mail_form.cleaned_data.get('email')
-
-            # Check for duplicate emails
-            if User.objects.filter(email=new_email).count() > 0:
-                messages.error(request, f'Ten email jest już w użyciu, czy chciałeś się zalogować?')
-            else:
-                MailUpdateForm(request.POST, instance=request.user).save()
-
-        # Profile form
+        # Save description
         if profile_form.is_valid() and profile_form.has_changed():
-            # lista dozwolonych tagow ,"div", "style"
-            check_tag = ["a", "center"]
-            r_valid = ["hr", "br"] + check_tag
-            good_valid = True
-            #a_stack = 0
-
-            dynks_open = profile_form["description"].value().count("<")
-            dynks_close = profile_form["description"].value().count(">")
-
-            for line in re.split('(<[^>]*>)', profile_form["description"].value())[1::2]:
-                if not '<' in line and not '>' in line:
-                    good_valid = False
-                elif not any(c in line for c in r_valid):
-                    good_valid = False
-            if dynks_open != dynks_close:
-                good_valid = False
-            if dynks_open > dynks_close:
-                messages.success(request, f'nie zamknięty <>')
-            elif dynks_open < dynks_close:
-                messages.success(request, f'nie otwarty <>')
-
-            if good_valid:
-                ProfileUpdateForm(request.POST,
-                                  request.FILES,
-                                  instance=request.user.profile).save()
-                messages.success(request, f'Opis został zmodyfikowany.')
-            else:
-                messages.success(request, f'Masz nie odpowiedni tag albo złą składnie.')
+            ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile).save(commit=True)
 
         if username_form.is_valid() and mail_form.is_valid() and profile_form.is_valid():
             messages.success(request, f'Zmiany zostały zapisane.')
