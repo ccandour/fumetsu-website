@@ -75,7 +75,12 @@
                         <ul class="dropdown-menu dropdown-menu-end mt-md-2">
                             {% if user.is_authenticated%}
                             <li><a class="dropdown-item" href="{% url 'user-inf' user.username %}">Profil</a></li>
-                            <li><a class="dropdown-item" href="{% url 'logout' %}">Wyloguj</a></li>
+                            <li>
+                                <form method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button class="dropdown-item">Wyloguj</button>
+                                </form>
+                            </li>
                             {% else %}
                             <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
                             <li><a class="dropdown-item" href="{% url 'register' %}">Rejestracja</a></li>

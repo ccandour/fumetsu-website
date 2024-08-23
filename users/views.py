@@ -131,6 +131,11 @@ def change_password(request):
         'form': form
     })
 
+def logout_view(request):
+    logout(request)
+    messages.success(request, f'Pomyślnie wylogowano')
+    return redirect('fumetsu-home')
+
 
 class profile(TemplateView):
     template_name = 'profile.html'

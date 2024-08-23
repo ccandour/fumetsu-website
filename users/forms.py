@@ -52,12 +52,22 @@ class UserLoginForm(forms.Form):
         label="Nazwa użytkownika",
         widget=forms.TextInput(
             attrs={
-                "placeholder": "Nazwa użytkownika"
+                'placeholder': 'Nick',
+                "class": "form-control form-control-lg focus-ring focus-ring-primary"
             }
         )
     )
 
-    password = forms.CharField(widget=forms.PasswordInput())
+    password = PasswordEye(
+        required=True, label='Hasło',
+        widget=PasswordEyeWidget(
+            attrs={
+                "class": "form-control form-control-lg focus-ring focus-ring-primary",
+                "placeholder": "********",
+                "data-bs-toggle": "password"
+            }
+        )
+    )
 
     #captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox(attrs={
     #        'data-theme': 'dark',
