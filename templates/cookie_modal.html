@@ -1,0 +1,59 @@
+<!-- cookie_modal.html -->
+<div id="cookieModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pliki cookies na Fumetsu</h5>
+            </div>
+            <div class="modal-body">
+                <p class="text-start">Używamy plików cookies jedynie do zapewnienia poprawnego funkcjonowania niezbędnych części strony takich jak logowanie, komentowanie i pokazywanie powiadomień. Jeśli chcesz dowiedzieć się więcej, sprawdź naszą <a href="/privacy-policy/">Politykę prywatności</a>.</p>
+            </div>
+            <div class="modal-footer d-flex flex-row justify-content-center">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="acceptCookies">Akceptuję</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="rejectCookies">Odrzucam</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    // Cookie consent functions
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            let date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+        let nameEQ = name + "=";
+        let ca = document.cookie.split(';');
+        for(let i=0;i < ca.length;i++) {
+            let c = ca[i];
+            while (c.charAt(0)===' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+
+    // Show cookie consent modal if not accepted yet
+    if(getCookie('cookiesAccepted') === null){
+        $('#cookieModal').modal('show');
+    }
+
+    // Handle cookie consent choices
+    $('#acceptCookies').on('click', function(){
+        setCookie('cookiesAccepted', 'true', 365);
+        $('#cookieModal').modal('hide');
+    });
+
+    $('#rejectCookies').on('click', function(){
+        setCookie('cookiesAccepted', 'false', 365);
+        $('#cookieModal').modal('hide');
+    });
+  });
+</script>

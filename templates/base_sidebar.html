@@ -42,7 +42,7 @@
 
 <!-- Navbar -->
 <header class="site-header">
-    <nav class="navbar navbar-expand-md bg-dark" style="background-color: var(--bs-content-bg); border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
+    <nav class="navbar navbar-expand-md card rounded-0 card-header" style="background-color: var(--bs-content-bg); border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
         <div class="container-fluid justify-content-center">
             <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
                 <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36"/>
@@ -112,7 +112,7 @@
 </header>
 
 <!-- Page -->
-<section class="content-section container container-fluid px-0">
+<section class="content-section container container-fluid px-0 mb-5">
     <!-- Side Menu -->
     <section class="w-lg-auto side-menu bg-dark float-end ms-5 d-none d-lg-block" style="margin-top: 120px">
         <a href="https://www.facebook.com/fumetsusubs/" target="_blank"><div class="social facebook text-bg-primary"><div></div><i class="fab fa-facebook-f"></i> Bądź na bieżąco!</div></a>
@@ -162,18 +162,20 @@
         {% block content%}{% endblock content %}
     </div>
 
+    {% include 'cookie_modal.html' %}
+
 </section>
 
 {#<!--Stopka-->#}
 <div class="clearfix"></div>
-{#<footer class="ftr container-fluid">#}
-{#    <div class="row justify-content-center">#}
-{#        <div class="col-12 col-lg-10">#}
-{#            <div class="float-end p-2 d-none d-md-block">© Fumetsu 2020 All Rights Reserved</div>#}
-{#        </div>#}
-{#    </div>#}
-{#</footer>#}
-{#	#}
+<footer id="footer" class="gap-4 p-4 border-top">
+    <a href="#">Regulamin Serwisu</a>
+    <a href="#">Polityka prywatności</a>
+        <div class="">
+            <div class="float-end p-2 d-none d-md-block">© Fumetsu 2024 All Rights Reserved</div>
+        </div>
+</footer>
+
 {#<div id="consent-popup" class="hidden text-center">#}
 {#    Ta strona wykorzystuje pliki cookie. Korzystając z ni1ej, akceptujesz je. <a id="accept" href=""><button class="btn btn-op ml-4">Rozumiem</button></a>#}
 {#</div>#}

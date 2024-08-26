@@ -42,7 +42,7 @@
 
 <!-- Navbar -->
 <header class="site-header">
-    <nav class="navbar navbar-expand-md bg-dark" style="background-color: var(--bs-content-bg); border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
+    <nav class="navbar navbar-expand-md card rounded-0 card-header" style="background-color: var(--bs-content-bg); border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
         <div class="container-fluid justify-content-center">
             <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
                 <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36"/>
@@ -112,7 +112,7 @@
 </header>
 
 <!-- Page -->
-<section class="content-section container container-fluid px-0">
+<section class="content-section container container-fluid px-0 mb-5">
 
     {% if messages %}
         {% for message in messages %}
@@ -146,6 +146,16 @@
 </section>
 
 <div class="clearfix"></div>
+
+{#<!--Stopka-->#}
+<div class="clearfix"></div>
+<footer id="footer" class="gap-4 p-4 border-top">
+    <a href="#">Regulamin Serwisu</a>
+    <a href="#">Polityka prywatności</a>
+        <div class="">
+            <div class="float-end p-2 d-none d-md-block">© Fumetsu 2024 All Rights Reserved</div>
+        </div>
+</footer>
 
 </body>
 </html>
