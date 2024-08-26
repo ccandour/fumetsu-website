@@ -1,191 +1,75 @@
 {% extends "base_sidebar.html" %}
 {% block content %}
-<div class="col-12 col-md-9 col-lg-8 float-start">
-<h2>Nasi tłumacze i ich serie</h2>
-<small class="text-muted float-end ml-2">
-	*Naciśnij na nick tłumacza by zobaczyć jakie serie tłumaczy.
-</small>
-<h4 class="tlm" value="Blair">Blair:</h4>
-<div id="Blair" style="display: none;">
-<a href="https://fumetsu.pl/anime/Arte/"> - Arte </a> <br/>
-<a href="https://fumetsu.pl/anime/bna/"> - Brand New Animal (BNA) </a> <br/>
-<a href="https://fumetsu.pl/anime/TowerofGod/"> - Tower of God </a> <br/>
-<a href="https://fumetsu.pl/anime/YesterdaywoUtatte/"> - Yesterday wo Utatte </a> <br/> <br/>
-</div>
+<div class="col-12 col-md-7 col-lg-9">
+    <div class="card py-4 px-5 mb-4">
+        <h4 class="mb-3 text-center">Administracja:</h4>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center">
+            {% for member in administators %}
+                <a href="{% url 'user-inf' member.user.username %}">
+                <div class="card bg-body-secondary p-2 pe-3">
+                    <div class="d-flex flex-row">
+                        <img class="com_img me-3" src="{{ member.image.url }}" alt="Staff Image">
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="" style="color:{{member.0.color}}">{{ member.user.username }}</div>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card py-4 px-5 mb-4">
+        <h4 class="mb-3 text-center">Nasi tłumacze:</h4>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center">
+            {% for member in translators %}
+                <a href="{% url 'user-inf' member.0.user.username %}">
+                <div class="card bg-body-secondary p-2 pe-3">
+                    <div class="d-flex flex-row">
+                        <img class="com_img me-3" src="{{ member.0.image.url }}" alt="Staff Image">
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="" style="color:{{member.0.color}}">{{ member.0.user.username }}</div>
+                            <div class="text-secondary-emphasis">{{ member.1 }} serii</div>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card py-4 px-5 mb-4">
+        <h4 class="mb-3 text-center">Nasi korektorzy:</h4>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center">
+            {% for member in editors %}
+                <a href="{% url 'user-inf' member.0.user.username %}">
+                <div class="card bg-body-secondary p-2 pe-3">
+                    <div class="d-flex flex-row">
+                        <img class="com_img me-3" src="{{ member.0.image.url }}" alt="Staff Image">
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="" style="color:{{member.0.color}}">{{ member.0.user.username }}</div>
+                            <div class="text-secondary-emphasis">{{ member.1 }} serii</div>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card py-4 px-5 mb-4">
+        <h2 class="mb-3">FAQ</h2>
+        <p>Q: Czy przetłumaczycie anime XYZ?<br>
+        A: Zawsze możesz się nas o to zapytać, chociaż staramy się jednak skupiać na wychodzących anime podczas kolejnych sezonów. Przed wystartowaniem każdego z nich, będzie się pojawiać ankieta, gdzie będziecie mogli zagłosować, na które anime najbardziej czekacie.
+        Chociaż ostateczna decyzja zależy od tłumaczy, którzy zdecydują się na daną serię!</p>
 
-<h4 class="tlm" value="Frytka">Frytka:</h4>
-<div id="Frytka" style="display: none;">
-<a href="https://fumetsu.pl/anime/Arte/"> - Arte </a> <br/>
-<a href="https://fumetsu.pl/anime/Gleipnir/"> - Gleipnir </a> <br/>
-<a href="https://fumetsu.pl/anime/KonoSuba-Movie/"> - Kono Subarashii Sekai ni Shukufuku wo!: Kurenai Densetsu! </a> <br/>
-</div>
+        <p>Q: Kiedy wyjdzie anime XYZ? O której godzinie?<br>
+        A: Odcinki zazwyczaj wychodzą mniej więcej w tych samych dniach i godzinach, co tydzień. Tłumaczenie może spóźnić się o dzień, ale staramy się zawsze w miarę możliwości informować was o tym na bieżąco.</p>
 
-<h4 class="tlm" value="Kuro">Kuro:</h4>
-<div id="Kuro" style="display: none;">
-<a href="https://fumetsu.pl/anime/Arifureta/"> - Arifureta Shokugyou de Sekai Saikyou </a> <br/>
-<a href="https://fumetsu.pl/anime/GrandBlue/"> - Grand Blue </a> <br/>
-<a href="https://fumetsu.pl/anime/IsekaiQuartet2/"> - Isekai Quartet 2 </a> <br/>
-<a href="https://fumetsu.pl/anime/OnePunchMan2/"> - One Punch Man 2 </a> <br/>
-<a href="https://fumetsu.pl/anime/OverlordIII/"> - Ovelord III </a> <br/>
-<a href="https://fumetsu.pl/anime/SnS4/"> - Shokugeki no Souma: Shin no Sara </a> <br/>
-<a href="https://fumetsu.pl/anime/SnS5/"> - Shokugeki no Souma: Go no Sara </a> <br/>
-<a href="https://fumetsu.pl/anime/Slime/"> - Tensei Shitara Slime Datta Ken </a> <br/>
-<a href="https://fumetsu.pl/anime/SlimeOVA/"> - Tensei Shitara Slime Datta Ken OVA </a> <br/>
-</div>
+        <p>Q: Czy dzisiaj będzie odcinek XYZ?<br>
+        A: Jak wyżej, postaramy się was poinformować w razie zmian. </p>
 
-<h4 class="tlm" value="Misia">Misia:</h4>
-<div id="Misia" style="display: none;">
-<a href="https://fumetsu.pl/anime/Arte/"> - Arte </a> <br/>
-<a href="https://fumetsu.pl/anime/DateALiveIII/"> - Date a Live III </a> <br/>
-<a href="https://fumetsu.pl/anime/DrStone/"> - Dr. Stone </a> <br/>
-<a href="https://fumetsu.pl/anime/EnennoShouboutai/"> - Enen no Shouboutai </a> <br/>
-<a href="https://fumetsu.pl/anime/FairyGone/"> - Fairy Gone </a> <br/>
-<a href="https://fumetsu.pl/anime/GoblinSlayer/"> - GOBLIN SLAYER </a> <br/>
-<a href="https://fumetsu.pl/anime/HQ4/"> - Haikyuu!! To The Top! </a> <br/>
-<a href="https://fumetsu.pl/anime/HappySugarLife/"> - Happy Sugar Life </a> <br/>
-<a href="https://fumetsu.pl/anime/HanakoKun/"> - Jibaku Shounen Hanako-Kun </a> <br/>
-<a href="https://fumetsu.pl/anime/KimetsunoYaiba/"> - Kimetsu no Yaiba </a> <br/>
-<a href="https://fumetsu.pl/anime/Madoka/"> - Magia Record: Puella Magi Madoka Magica Side Story </a> <br/>
-<a href="https://fumetsu.pl/anime/Bakarina/"> - Otome Game no Hametsu Flag shika Nai Akuyaku Reijou ni Tensei shiteshimatta… </a> <br/>
-<a href="https://fumetsu.pl/anime/Slime/"> - Tensei Shitara Slime Datta Ken </a> <br/>
-<a href="https://fumetsu.pl/anime/SlimeOVA/"> - Tensei ShitaraSlime Datta Ken OVA </a> <br/>
-<a href="https://fumetsu.pl/anime/VinlandSaga/"> - Vinland Saga </a> <br/>
-</div>
-
-<h4 class="tlm" value="Naru">Naru:</h4>
-<div id="Naru" style="display: none;">
-</div>  
-
-<h4 class="tlm" value="Saskianna">Saskianna:</h4>
-<div id="Saskianna" style="display: none;">
-</div> 
-
-<h4 class="tlm" value="Snake">Snake:</h4>
-<div id="Snake" style="display: none;">
-</div>
-
-<h4 class="tlm" value="Momohana">Momohana:</h4>
-<div id="Momohana" style="display: none;">
-</div>
-
-<h4 class="tlm" value="Whitehead">Whitehead:</h4>
-<div id="Whitehead" style="display: none;">
-<a href="https://fumetsu.pl/anime/NanatsunoTaizaiIII/"> - Nanatsu no Taizai III </a> <br/>
-<a href="https://fumetsu.pl/anime/NoGunsLife/"> - No Guns Life</a> <br/>
-<a href="https://fumetsu.pl/anime/Accelerator/"> - Toaru Kagaku no Accelerator </a> <br/>
-<a href="https://fumetsu.pl/anime/Railgun/"> - Toaru Kagaku no Railgun T </a> <br/>
-</div>
-
-<h4 class="tlm" value="Czapson">Czapson (Emerytura):</h4>
-<div id="Czapson" style="display: none;">
-<a href="https://fumetsu.pl/anime/GoblinSlayer/"> - GOBLIN SLAYER </a> <br/>
-<a href="https://fumetsu.pl/anime/Hyakuren/"> - Hyakuren no Haou to Seiyaku no Valkyria </a> <br/>
-<a href="https://fumetsu.pl/anime/ICM/"> - Isekai Cheat Magician </a> <br/>
-<a href="https://fumetsu.pl/anime/IsekaiMaou/"> - Isekai Maou to Shoukan Shoujo no Dorei Majutsu </a> <br/>
-<a href="https://fumetsu.pl/anime/IsekaiQuartet/"> - Isekai Quartet </a> <br/>
-<a href="https://fumetsu.pl/anime/Kakegurui/"> - Kakegurui </a> <br/>
-<a href="https://fumetsu.pl/anime/OverlordIII/"> - Overlord III </a> <br/>
-</div>
-
-<h4 class="tlm" value="Ciul">Ciul (Emerytura):</h4>
-<div id="Ciul" style="display: none;">
-<a href="https://fumetsu.pl/anime/Bokuhaka/"> - Boku no Tonari ni Ankoku Hakaishin ga Imasu (Bokuhaka) </a> <br/>
-<a href="https://fumetsu.pl/anime/HeyaCamp/"> - Heya Camp </a> <br/>
-<a href="https://fumetsu.pl/anime/Nekopara/"> - Nekopara </a> <br/>
-<a href="https://fumetsu.pl/anime/PrincessConnectReDive/"> - Princess Connect Re: DIVE </a> <br/>
-<a href="https://fumetsu.pl/anime/Noukin/"> - Watashi, Nouryoku wa Heikinchi de tte Itta yo ne! (Noukin) </a> <br/>
-</div>
-
-<h4 class="tlm" value="Krolik">Królik (Emerytura):</h4>
-<div id="Krolik" style="display: none;">
-<a href="https://fumetsu.pl/anime/Darwin/"> - Darwin's Game </a> <br/>
-<a href="https://fumetsu.pl/anime/NanatsunoTaizaiIII/"> - Nanatsu no Taizai III </a> <br/>
-<a href="https://fumetsu.pl/anime/InfiniteDendrogram/"> - Infinite Dendrogram </a> <br/>
-<a href="https://fumetsu.pl/anime/Pet/"> - Pet </a> <br/>
-<a href="https://fumetsu.pl/anime/SnS4/"> - Shokugeki no Souma: Shin no Sara </a> <br/>
-<a href="https://fumetsu.pl/anime/YesterdaywoUtatte/"> - Yesterday wo Utatte </a> <br/>
-</div>
-
-<h4 class="tlm" value="Kostuch">Kostuch (Emerytura):</h4>
-<div id="Kostuch" style="display: none;">
-<a href="https://fumetsu.pl/anime/DateALiveIII/"> - Date a Live III </a> <br/>
-<a href="https://fumetsu.pl/anime/GunjounoMagmel/"> - Gunjou no Magmel </a> <br/>
-<a href="https://fumetsu.pl/anime/MobPsycho100II/"> - Mob Psycho 100 II </a> <br/>
-</div>
-
-<h4 class="tlm" value="Orzech">Orzech (Emerytura):</h4>
-<div id="Orzech" style="display: none;">
-<a href="https://fumetsu.pl/anime/AhirunoSora/"> - Ahiru no Sora </a> <br/>
-<a href="https://fumetsu.pl/anime/AzurLane/"> - Azur Lane </a> <br/>
-<a href="https://fumetsu.pl/anime/FugouKeiji/"> - Fugou Keiji Balance: UNLIMITED </a> <br/>
-<a href="https://fumetsu.pl/anime/Haikyuu/"> - Haikyuu!! </a> <br/>
-<a href="https://fumetsu.pl/anime/HaikyuuRikuvsKuu/"> - Haikyuu!! Riku vs Kuu </a> <br/>
-<a href="https://fumetsu.pl/anime/HQ4/"> - Haikyuu!! S4 </a> <br/>
-<a href="https://fumetsu.pl/anime/InfiniteDendrogram/"> - Infinite Dendrogram </a> <br/>
-<a href="https://fumetsu.pl/anime/Pet/"> - Pet </a> <br/>
-<a href="https://fumetsu.pl/anime/SpiceandWolf/"> - Spice and Wolf </a> <br/>
-<a href="https://fumetsu.pl/anime/Accelerator/"> - Toaru Kagaku no Accelerator </a> <br/>
-<a href="https://fumetsu.pl/anime/Okaasan-Online/"> - Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki Desu ka? </a> <br/>
-<a href="https://fumetsu.pl/anime/Noukin/"> - Watashi, Nouryoku wa Heikinchi de tte Itta yo ne! (Noukin)  </a> <br/>
-</div>
-
-<h4 class="tlm" value="Plunk">Plunk (Emerytura):</h4>
-<div id="Plunk" style="display: none;">
-<a href="https://fumetsu.pl/anime/BikiniWarriors/"> - Bikini Warriors </a> <br/>
-<a href="https://fumetsu.pl/anime/bna/"> - Brand New Animal (BNA) </a> <br/>
-<a href="https://fumetsu.pl/anime/Gleipnir/"> - Gleipnir </a> <br/>
-<a href="https://fumetsu.pl/anime/KonoSuba-Movie/"> - Kono Subarashii Sekai ni Shukufuku wo!: Kurenai Densetsu! </a> <br/>
-</div>
-
-<h4 class="tlm" value="ShiroeFS">ShiroeFS (Emerytura):</h4>
-<div id="ShiroeFS" style="display: none;">
-<a href="https://fumetsu.pl/anime/AhirunoSora/"> - Ahiru no Sora </a> <br/>
-<a href="https://fumetsu.pl/anime/Darwin/"> - Darwin's Game </a> <br/>
-<a href="https://fumetsu.pl/anime/HanakoKun/"> - Jibaku Shounen Hanako-Kun </a> <br/>
-<a href="https://fumetsu.pl/anime/Madoka/"> - Magia Record: Puella Magi Madoka Magica Side Story </a> <br/>
-<a href="https://fumetsu.pl/anime/Bakarina/"> - Otome Game no Hametsu Flag shika Nai Akuyaku Reijou ni Tensei shiteshimatta… </a> <br/>
-<a href="https://fumetsu.pl/anime/Railgun/"> - Toaru Kagaku no Ralgun T </a> <br/>
-<a href="https://fumetsu.pl/anime/TowerofGod/"> - Tower of God </a> <br/>
-</div>
-
-<h4 class="tlm" value="Wilczek">Wilczek (Emerytura):</h4>
-<div id="Wilczek" style="display: none;">
-<a href="https://fumetsu.pl/anime/Arifureta/"> - Arifureta Shokugyou de Sekai Saikyou </a> <br/>
-<a href="https://fumetsu.pl/anime/NoGunsLife/"> - No Guns Life </a> <br/>
-<a href="https://fumetsu.pl/anime/Radiant/"> - Radiant </a> <br/>
-<a href="https://fumetsu.pl/anime/Okaasan-Online/"> - Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki Desu ka? </a> <br/>
-</div>
-
-<h4 class="tlm" value="WPWW">WPWW (Emerytura):</h4>
-<div id="WPWW" style="display: none;">
-<a href="https://fumetsu.pl/anime/BnHAIV/"> - Boku no Hero IV </a> <br/>
-<a href="https://fumetsu.pl/anime/Dororo/"> - Dororo </a> <br/>
-<a href="https://fumetsu.pl/anime/DrStone/"> - Dr. Stone </a> <br/>
-<a href="https://fumetsu.pl/anime/EnennoShouboutai/"> - Enen no Shouboutai </a> <br/>
-<a href="https://fumetsu.pl/anime/FairyGone/"> - Fairy Gone </a> <br/>
-<a href="https://fumetsu.pl/anime/IshuzokuReviewers/"> - Ishuzoku Reviewers </a> <br/>
-<a href="https://fumetsu.pl/anime/Kaguya/"> - Kaguya-sama wa Kokurasetai?: Tensai-tachi no Renai Zunousen </a> <br/>
-<a href="https://fumetsu.pl/anime/KimetsunoYaiba/"> - Kimetsu no Yaiba </a> <br/>
-<a href="https://fumetsu.pl/anime/OnePunchMan2/"> - One Punch Man 2 </a> <br/>
-<a href="https://fumetsu.pl/anime/SnS5/"> - Shokugeki no Souma: Go no Sara </a> <br/>
-<a href="https://fumetsu.pl/anime/VinlandSaga/"> - Vinland Saga </a> <br/>
-</div>
-<div>
-	<h2>FAQ</h2>
-<p>Q: Czy przetłumaczycie anime XYZ?<br>
-A: Zawsze możesz się nas o to zapytać, chociaż staramy się jednak skupiać na wychodzących anime podczas kolejnych sezonów. Przed wystartowaniem każdego z nich, będzie się pojawiać ankieta, gdzie będziecie mogli zagłosować, na które anime najbardziej czekacie. 
-Chociaż ostateczna decyzja zależy od tłumaczy, którzy zdecydują się na daną serię!</p>
-
-<p>Q: Kiedy wyjdzie anime XYZ? O której godzinie?<br>
-A: Odcinki zazwyczaj wychodzą mniej więcej w tych samych dniach i godzinach, co tydzień. Tłumaczenie może spóźnić się o dzień, ale staramy się zawsze w miarę możliwości informować was o tym na bieżąco.</p>
-
-<p>Q: Czy dzisiaj będzie odcinek XYZ?<br>
-A: Jak wyżej, postaramy się was poinformować w razie zmian. </p>
-
-<p>Q: Czy można was jakoś wesprzeć?<br>
-A: Jasne! Niedawno ruszyliśmy z naszym patronite --> https://patronite.pl/fumetsu <br>
-Jeśli chcesz nas wesprzeć, polecamy tę metodę. Darowizny otrzymane od was posłużą na utrzymanie strony i rozwijanie jej.</p>
-</div>
+        <p>Q: Czy można was jakoś wesprzeć?<br>
+        A: Jasne! Możecie nas wesprzeć naszym patronite --> <a href="https://patronite.pl/fumetsu" target="_blank">https://patronite.pl/fumetsu</a> <br>
+        Darowizny otrzymane od was posłużą na utrzymanie strony i rozwijanie jej :P</p>
+    </div>
 </div>
 
 {% endblock content %}

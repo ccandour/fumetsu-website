@@ -41,9 +41,33 @@ class Home(ListView):
 class about(ListView):
     model = Post
     template_name = 'about.html'
+    fields = ['content']
 
     def get_context_data(self, **kwargs):
+        try:
+            if check_ban(self.request.user):
+                logout(self.request)
+        except:
+            pass
+
         context = super().get_context_data(**kwargs)
+
+        # Prepare a lists of staff members
+        administators = Profile.objects.filter(user__is_superuser='True')
+        translators = []
+        editors = []
+
+        db_credits = Staff_credits.objects.all()
+        for credit in db_credits:
+            if credit.role == 'Tłumaczenie' and [credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Tłumaczenie')))] not in translators:
+                translators.append([credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Tłumaczenie')))])
+            elif credit.role == 'Korekta' and [credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Korekta')))] not in editors:
+                editors.append([credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Korekta')))])
+
+        context['administators'] = administators
+        context['translators'] = translators
+        context['editors'] = editors
+
         return context
 
 

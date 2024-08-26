@@ -77,6 +77,16 @@
     </div>
 </div>
 
+<!-- Subtitles -->
+{% if napisy and user.is_authenticated %}
+<div class="col-12 col-md-9 col-lg-9 mb-4 d-flex flex-row justify-content-center">
+    <button class="btn fw-bold btn-lg btn-secondary" value="-">
+        <i class="fa-solid fa-arrow-down me-1" style="color: #ffffff;"></i>
+        <a class="text-white" href="/media/{{napisy}}" download="/media/{{napisy}}">Pobierz napisy</a>
+    </button>
+</div>
+{% endif %}
+
 <!-- Comments -->
 {% if comment %}
 <div class="col-12 col-lg-9 card p-3">
