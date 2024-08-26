@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load utils_extras %}
+{% load static %}
+{% load poll_extras %}
+{% block content %}
+<div class="d-flex flex-column align-items-center">
+<div class="col-12 col-md-8">
+    <h2 class="mb-5">Polityka prywatności serwisu Fumetsu</h2>
+    <div class="d-flex flex-column align-items-center gap-4">
+        <div class="card announcements-card overflow-hidden">
+            <div class="d-flex flex-column">
+                <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
+                    <h4 class="card-title mb-0">1. Informacje ogólne</h4>
+                </div>
+                <div class="card-body px-4">
+                    Niniejsza Polityka Prywatności określa zasady przetwarzania danych osobowych użytkowników serwisu Fumetsu, dostępnego pod adresem internetowym <a href="https://fumetsu.pl">fumetsu.pl</a>. Dokładamy wszelkich starań, aby Twoje dane osobowe były chronione i przetwarzane zgodnie z obowiązującymi przepisami prawa, w tym z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych (RODO).
+                </div>
+            </div>
+        </div>
+        <div class="card announcements-card overflow-hidden">
+            <div class="d-flex flex-column">
+                <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
+                    <h4 class="card-title mb-0">2. Administrator danych</h4>
+                </div>
+                <div class="card-body px-4">
+                    Administratorem Twoich danych osobowych jest administracja Fumetsu, z którą można bezpłatnie się skontaktować przez adres e-mail: fumetsusubs@gmail.com.
+                </div>
+            </div>
+        </div>
+        <div class="card announcements-card overflow-hidden">
+            <div class="d-flex flex-column">
+                <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
+                    <h4 class="card-title mb-0">3. Zbieranie i przetwarzanie danych osobowych</h4>
+                </div>
+                <div class="card-body px-4">
+                    Serwis Fumetsu zbiera i przetwarza dane osobowe użytkowników w zakresie niezbędnym do świadczenia usług dostępnych na stronie. Zbierane dane obejmują:
+                    <ul>
+                        <li><strong>Nazwa użytkownika</strong> – wykorzystywana w celach identyfikacji w serwisie.</li>
+                        <li><strong>Adres e-mail</strong> – wykorzystywany do komunikacji z użytkownikami, w tym do wysyłania powiadomień oraz resetowania hasła.</li>
+                        <li><strong>Zahashowane hasło</strong> – przechowywane w sposób zaszyfrowany w celu zapewnienia bezpieczeństwa konta użytkownika.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card announcements-card overflow-hidden">
+            <div class="d-flex flex-column">
+                <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
+                    <h4 class="card-title mb-0">4. Pliki cookies</h4>
+                </div>
+                <div class="card-body px-4">
+                    Serwis Fumetsu wykorzystuje pliki cookies, które są niezbędne do funkcjonowania strony. Pliki cookies używane przez nasz serwis umożliwiają:
+                    <ul>
+                        <li>Logowanie się na konto użytkownika,</li>
+                        <li>Wyświetlanie powiadomień i zarządzanie nimi.</li>
+                    </ul>
+                    Serwis <strong>nie</strong> wykorzystuje plików cookies do celów reklamowych i <strong>nie</strong> udostępnia ich stronom trzecim.
+                </div>
+            </div>
+        </div>
+        <div class="card announcements-card overflow-hidden">
+            <div class="d-flex flex-column">
+                <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
+                    <h4 class="card-title mb-0">5. Udostępnianie danych</h4>
+                </div>
+                <div class="card-body px-4">
+                    Fumetsu <strong>nie</strong> udostępnia danych osobowych użytkowników innym podmiotom bez wyraźnej zgody użytkownika, chyba że jest to wymagane przepisami prawa lub konieczne do realizacji usług świadczonych przez serwis.
+                </div>
+            </div>
+        </div>
+        <div class="card announcements-card overflow-hidden">
+            <div class="d-flex flex-column">
+                <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
+                    <h4 class="card-title mb-0">6. Bezpieczeństwo danych</h4>
+                </div>
+                <div class="card-body px-4">
+                    Dokładamy wszelkich starań, aby Twoje dane osobowe były chronione przed nieuprawnionym dostępem, utratą, uszkodzeniem lub zniszczeniem. Stosujemy odpowiednie środki techniczne i organizacyjne, aby zapewnić bezpieczeństwo przetwarzanych danych.
+                </div>
+            </div>
+        </div>
+        <div class="card announcements-card overflow-hidden">
+            <div class="d-flex flex-column">
+                <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
+                    <h4 class="card-title mb-0">7. Prawa użytkownika</h4>
+                </div>
+                <div class="card-body px-4">
+                    Masz prawo do:
+                    <ul>
+                        <li>Dostępu do swoich danych osobowych oraz otrzymania ich kopii,</li>
+                        <li>Sprostowania swoich danych osobowych, jeśli są nieprawidłowe lub niekompletne,</li>
+                        <li>Usunięcia swoich danych osobowych (prawo do bycia zapomnianym),</li>
+                        <li>Ograniczenia przetwarzania swoich danych,</li>
+                        <li>Wniesienia sprzeciwu wobec przetwarzania swoich danych osobowych,</li>
+                        <li>Przenoszenia danych.</li>
+                    </ul>
+                    Aby skorzystać z powyższych praw, skontaktuj się z nami pod adresem e-mail fumetsusubs@gmail.com.
+                </div>
+            </div>
+        </div>
+        <div class="card announcements-card overflow-hidden">
+            <div class="d-flex flex-column">
+                <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
+                    <h4 class="card-title mb-0">8. Zmiany w Polityce Prywatności</h4>
+                </div>
+                <div class="card-body px-4">
+                    Fumetsu zastrzega sobie prawo do wprowadzania zmian w niniejszej Polityce Prywatności. Wszelkie zmiany będą publikowane na tej stronie. Zalecamy regularne przeglądanie Polityki Prywatności w celu zapoznania się z wszelkimi aktualizacjami.
+                </div>
+            </div>
+        </div>
+        <div class="card announcements-card overflow-hidden">
+            <div class="d-flex flex-column">
+                <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
+                    <h4 class="card-title mb-0">9. Kontakt</h4>
+                </div>
+                <div class="card-body px-4">
+                    W razie jakichkolwiek pytań dotyczących niniejszej Polityki Prywatności lub przetwarzania Twoich danych osobowych, prosimy o kontakt pod adresem e-mail: fumetsusubs@gmail.com.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}

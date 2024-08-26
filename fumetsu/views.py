@@ -86,6 +86,21 @@ class Announcements(ListView):
     queryset = Info_bd.objects.all().order_by('-date_posted')
     template_name = 'announcements.html'
 
+class Privacy_policy(ListView):
+    model = Post
+    template_name = 'privacy-policy.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+class Terms_of_service(ListView):
+    model = Post
+    template_name = 'terms-of-service.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 class Info_d(ListView):
     model = Post
