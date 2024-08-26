@@ -103,7 +103,9 @@
     <div id="Section_comm" class="d-flex flex-column gap-4">
         {% for com in comment %}
             <div class="d-flex flex-row align-items-start">
-                <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}">
+                <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
+                    <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}">
+                </a>
 
                 <div class="d-flex flex-column">
                     <div class="d-flex flex-row gap-2 align-items-center">
