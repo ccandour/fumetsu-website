@@ -1,9 +1,11 @@
 {% extends "base_sidebar.html" %}
 {% block content %}
 <div class="col-12 col-md-7 col-lg-9">
-    <div class="card py-4 px-5 mb-4">
-        <h4 class="mb-3 text-center">Administracja:</h4>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center">
+    <div class="card mb-4">
+        <div class="card-header d-flex flex-row justify-content-center align-items-center gap-3 px-4 py-2">
+            <h4 class="card-title mb-0">Administracja:</h4>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center card-body">
             {% for member in administators %}
                 <a href="{% url 'user-inf' member.user.username %}">
                 <div class="card bg-body-secondary p-2 pe-3">
@@ -18,9 +20,11 @@
             {% endfor %}
         </div>
     </div>
-    <div class="card py-4 px-5 mb-4">
-        <h4 class="mb-3 text-center">Nasi tłumacze:</h4>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center">
+    <div class="card mb-4">
+        <div class="card-header d-flex flex-row justify-content-center align-items-center gap-3 px-4 py-2">
+            <h4 class="card-title mb-0">Tłumacze:</h4>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center card-body">
             {% for member in translators %}
                 <a href="{% url 'user-inf' member.0.user.username %}">
                 <div class="card bg-body-secondary p-2 pe-3">
@@ -36,9 +40,11 @@
             {% endfor %}
         </div>
     </div>
-    <div class="card py-4 px-5 mb-4">
-        <h4 class="mb-3 text-center">Nasi korektorzy:</h4>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center">
+    <div class="card mb-4">
+        <div class="card-header d-flex flex-row justify-content-center align-items-center gap-3 px-4 py-2">
+            <h4 class="card-title mb-0">Korektorzy:</h4>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center card-body">
             {% for member in editors %}
                 <a href="{% url 'user-inf' member.0.user.username %}">
                 <div class="card bg-body-secondary p-2 pe-3">
@@ -54,21 +60,25 @@
             {% endfor %}
         </div>
     </div>
-    <div class="card py-4 px-5 mb-4">
-        <h2 class="mb-3">FAQ</h2>
-        <p>Q: Czy przetłumaczycie anime XYZ?<br>
-        A: Zawsze możesz się nas o to zapytać, chociaż staramy się jednak skupiać na wychodzących anime podczas kolejnych sezonów. Przed wystartowaniem każdego z nich, będzie się pojawiać ankieta, gdzie będziecie mogli zagłosować, na które anime najbardziej czekacie.
-        Chociaż ostateczna decyzja zależy od tłumaczy, którzy zdecydują się na daną serię!</p>
+    <div class="card mb-4">
+         <div class="card-header d-flex flex-row justify-content-center align-items-center gap-3 px-4 py-2">
+            <h4 class="card-title mb-0 px-5">FAQ:</h4>
+        </div>
+        <div class="card-body px-4">
+            <p>Q: Czy przetłumaczycie anime XYZ?<br>
+            A: Zawsze możesz się nas o to zapytać, chociaż staramy się jednak skupiać na wychodzących anime podczas kolejnych sezonów. Przed wystartowaniem każdego z nich, będzie się pojawiać ankieta, gdzie będziecie mogli zagłosować, na które anime najbardziej czekacie.
+            Chociaż ostateczna decyzja zależy od tłumaczy, którzy zdecydują się na daną serię!</p>
 
-        <p>Q: Kiedy wyjdzie anime XYZ? O której godzinie?<br>
-        A: Odcinki zazwyczaj wychodzą mniej więcej w tych samych dniach i godzinach, co tydzień. Tłumaczenie może spóźnić się o dzień, ale staramy się zawsze w miarę możliwości informować was o tym na bieżąco.</p>
+            <p>Q: Kiedy wyjdzie anime XYZ? O której godzinie?<br>
+            A: Odcinki zazwyczaj wychodzą mniej więcej w tych samych dniach i godzinach, co tydzień. Tłumaczenie może spóźnić się o dzień, ale staramy się zawsze w miarę możliwości informować was o tym na bieżąco.</p>
 
-        <p>Q: Czy dzisiaj będzie odcinek XYZ?<br>
-        A: Jak wyżej, postaramy się was poinformować w razie zmian. </p>
+            <p>Q: Czy dzisiaj będzie odcinek XYZ?<br>
+            A: Jak wyżej, postaramy się was poinformować w razie zmian. </p>
 
-        <p>Q: Czy można was jakoś wesprzeć?<br>
-        A: Jasne! Możecie nas wesprzeć naszym patronite --> <a href="https://patronite.pl/fumetsu" target="_blank">https://patronite.pl/fumetsu</a> <br>
-        Darowizny otrzymane od was posłużą na utrzymanie strony i rozwijanie jej :P</p>
+            <p class="mb-0">Q: Czy można was jakoś wesprzeć?<br>
+            A: Jasne! Możecie nas wesprzeć naszym patronite --> <a href="https://patronite.pl/fumetsu" target="_blank">https://patronite.pl/fumetsu</a> <br>
+            Darowizny otrzymane od was posłużą na utrzymanie strony i rozwijanie jej :P</p>
+        </div>
     </div>
 </div>
 
