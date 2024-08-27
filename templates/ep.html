@@ -9,15 +9,6 @@
 
 {% block content %}
 
-{#  {% if user.is_authenticated%}#}
-{#	<form method="POST">#}
-{#		{% csrf_token %}#}
-{#		<button class="btn-none float-end pd-2" type="submit" name="ply_error">zgłoś player</button>#}
-{#	</form>#}
-{#  {% endif %}#}
-{#	<br/>#}
-{##}
-
 <!-- Title and Episode Navigation -->
 <div class="col-12 col-md-9 col-lg-9 mb-3">
 <div class="d-flex flex-column align-items-center">
@@ -124,11 +115,20 @@
                             {% if com.author == user %}
                             <div class="dropend float-end ms-0">
                                 <a class="com_mor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa-solid fa-pen fa-md text-body" aria-hidden="true"></i>
+                                    <i class="fa-solid fa-ellipsis-vertical fa-md text-primary-emphasis pe-2" aria-hidden="true"></i>
                                 </a>
                                 <div class="dropdown-menu ms-2 p-0" style="min-width: 100px" aria-labelledby="navbarDropdown">
-                                    <button class="text-start btn btn-outline-success rounded-bottom-0 w-100" data-bs-toggle="modal" data-target="#modalComRe">Edytuj</button>
-                                    <button class="text-start btn btn-outline-danger rounded-top-0 w-100" data-bs-toggle="modal" data-target="#modalComDel">Usuń</button>
+                                    <button onclick="location.href='{% url 'edit-cmt' com.id %}'" class="d-flex flex-row align-items-center gap-2 btn btn-outline-success rounded-bottom-0 w-100">
+                                        <i class="fa-solid fa-pen fa-sm"></i>
+                                        Edytuj
+                                    </button>
+                                    <form method="POST" action="{% url 'del-cmt' com.id %}">
+                                        {% csrf_token %}
+                                        <button class="d-flex flex-row align-items-center gap-2 btn btn-outline-danger rounded-top-0 w-100">
+                                            <i class="fa-solid fa-trash fa-sm"></i>
+                                            Usuń
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                             {% endif %}

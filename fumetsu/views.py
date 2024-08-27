@@ -59,9 +59,12 @@ class about(ListView):
 
         db_credits = Staff_credits.objects.all()
         for credit in db_credits:
-            if credit.role == 'Tłumaczenie' and [credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Tłumaczenie')))] not in translators:
-                translators.append([credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Tłumaczenie')))])
-            elif credit.role == 'Korekta' and [credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Korekta')))] not in editors:
+            if credit.role == 'Tłumaczenie' and [credit.user, len(list(
+                    Staff_credits.objects.filter(user=credit.user, role='Tłumaczenie')))] not in translators:
+                translators.append(
+                    [credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Tłumaczenie')))])
+            elif credit.role == 'Korekta' and [credit.user, len(list(
+                    Staff_credits.objects.filter(user=credit.user, role='Korekta')))] not in editors:
                 editors.append([credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Korekta')))])
 
         context['administators'] = administators
@@ -86,6 +89,7 @@ class Announcements(ListView):
     queryset = Info_bd.objects.all().order_by('-date_posted')
     template_name = 'announcements.html'
 
+
 class Privacy_policy(ListView):
     model = Post
     template_name = 'privacy-policy.html'
@@ -94,6 +98,7 @@ class Privacy_policy(ListView):
         context = super().get_context_data(**kwargs)
         return context
 
+
 class Terms_of_service(ListView):
     model = Post
     template_name = 'terms-of-service.html'
@@ -101,6 +106,87 @@ class Terms_of_service(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class Delete_comment(TemplateView):
+    def post(self, request, *args, **kwargs):
+        episode_comments = Episode_comment.objects.filter(id=kwargs['pk'])
+        if episode_comments and (episode_comments.first().author == request.user or request.user.is_superuser):
+            episode_comments.delete()
+            messages.success(request, 'Komentarz usunięty.')
+        else:
+            series_comments = Series_comment.objects.filter(id=kwargs['pk'])
+            if series_comments and (series_comments.first().author == request.user or request.user.is_superuser):
+                series_comments.delete()
+                messages.success(request, 'Komentarz usunięty.')
+            else:
+                messages.error(request, 'Nie masz uprawnień do usunięcia tego komentarza.')
+
+        if 'HTTP_REFERER' in request.META and 'edit-comment' not in request.META['HTTP_REFERER']:
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        elif 'previous_referer' in request.session:
+            referer = request.session['previous_referer']
+            del request.session['previous_referer']
+            return HttpResponseRedirect(referer)
+        else:
+            return HttpResponseRedirect(reverse('fumetsu-home'))
+
+
+class Edit_comment(TemplateView):
+    model = Post_comment
+    template_name = 'edit_comment.html'
+    referer = ''
+
+    def get_context_data(self, **kwargs):
+        # Store the referer in the session
+        if 'HTTP_REFERER' in self.request.META:
+            self.request.session['previous_referer'] = self.request.META['HTTP_REFERER']
+
+        context = super().get_context_data(**kwargs)
+        episode_comments = Episode_comment.objects.filter(id=kwargs['pk'])
+        if episode_comments and (episode_comments.first().author == self.request.user):
+            context['form'] = EditCommentForm(instance=episode_comments.first())
+            context['comment'] = episode_comments.first()
+            context['type'] = 'episode'
+            return context
+        else:
+            series_comments = Series_comment.objects.filter(id=kwargs['pk'])
+            if series_comments and (series_comments.first().author == self.request.user):
+                context['form'] = EditCommentForm(instance=series_comments.first())
+                context['comment'] = series_comments.first()
+                context['type'] = 'series'
+                return context
+            else:
+                redirect('fumetsu-home')
+
+    def post(self, request, *args, **kwargs):
+        episode_comments = Episode_comment.objects.filter(id=kwargs['pk'])
+        if episode_comments and (episode_comments.first().author == request.user):
+            form = EditCommentForm(request.POST, instance=episode_comments.first())
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Komentarz zaktualizowany.')
+            else:
+                messages.error(request, 'Nie udało się zaktualizować komentarza.')
+        else:
+            series_comments = Series_comment.objects.filter(id=kwargs['pk'])
+            if series_comments and (series_comments.first().author == request.user):
+                form = EditCommentForm(request.POST, instance=series_comments.first())
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, 'Komentarz zaktualizowany.')
+                else:
+                    messages.error(request, 'Nie udało się zaktualizować komentarza.')
+            else:
+                messages.error(request, 'Nie masz uprawnień do edycji tego komentarza.')
+
+        if 'previous_referer' in request.session:
+            referer = request.session['previous_referer']
+            del request.session['previous_referer']
+            return HttpResponseRedirect(referer)
+        else:
+            return redirect('fumetsu-home')
+
 
 class Info_d(ListView):
     model = Post
@@ -111,12 +197,12 @@ class Info_d(ListView):
         context = super().get_context_data(**kwargs)
         post_h = Info_bd.objects.filter(idd=self.kwargs['pkk']).first()
         context['content'] = post_h
-        context['form'] = CreateComment()
+        context['form'] = CreateCommentForm()
         context['comment'] = Post_comment.objects.filter(post_map=post_h).order_by('-date_posted')
         return context
 
     def post(self, request, *args, **kwargs):
-        form = CreateComment(request.POST)
+        form = CreateCommentForm(request.POST)
 
         if form.is_valid():
             if 'com_cr_bt' in request.POST:
@@ -184,87 +270,87 @@ class Info_d(ListView):
 #
 #         return context
 
-    # def post(self, request, *args, **kwargs):
-    #     try:
-    #         ex = modelformset_factory(Harmonogram, extra=2, form=HarmonForm)
-    #         harmon_form = ex(request.POST)
-    #
-    #         for form in harmon_form:
-    #             if form.is_valid():
-    #                 harmon_post = form.save(commit=False)
-    #                 if form.cleaned_data.get('ch_box'):
-    #                     harmon_post.delete()
-    #                 elif form.cleaned_data.get('day') < 0:
-    #                     pass
-    #                 elif form.cleaned_data.get('day') > 7:
-    #                     pass
-    #                 elif form.cleaned_data.get('key_map'):
-    #                     if form.cleaned_data.get('content'):
-    #                         harmon_post.save()
-    #
-    #                 del harmon_post
-    #
-    #         messages.success(request, "Zmieniono harmonogram")
-    #
-    #         return redirect('Cre-ser')
-    #
-    #     except:
-    #         form_p = SeriersForm(request.POST, request.FILES)
-    #         form_t = Tags_add(request.POST)
-    #         form_td = Tags_del(request.POST)
-    #
-    #         if form_p.is_valid():
-    #             try:
-    #                 idd = (Anime_list.objects.all().order_by('-id_anime').first().id_anime + 1)
-    #             except:
-    #                 idd = 0
-    #
-    #             f_k = Anime_list()
-    #             f_k.id_anime = idd
-    #             f_k.title = form_p.cleaned_data.get('title')
-    #             web_name = ''.join(e for e in f_k.title if e.isalnum())
-    #             f_k.web_name = web_name
-    #             f_k.save()
-    #
-    #             f_cr = form_p.save(commit=False)
-    #             f_cr.id_anime = idd
-    #             f_cr.key_map = f_k
-    #             f_cr.save()
-    #
-    #             # for ta in form_p.cleaned_data.get('Tags'):
-    #             #     f_t = Tags()
-    #             #     ids = Tags_map.objects.filter(title=ta).first()
-    #             #     f_t.tags_map = ids
-    #             #     f_t.key_map = f_k  #chyba tu
-    #             #     f_t.save()
-    #             #     del f_t
-    #
-    #             messages.success(request, "Dodano anime.")
-    #         elif form_td.is_valid():  #popraw usuń tag
-    #             q_t = Tags_map.objects.filter(title__iexact=form_td.cleaned_data.get('title')).first()
-    #             #f_t = form_td.save(commit=False)
-    #             if form_td.cleaned_data.get('new_title'):
-    #                 q_t.title = form_td.cleaned_data.get('new_title')
-    #                 q_t.save()
-    #                 messages.success(request, "poprawiono tag.")
-    #             else:
-    #                 q_t.delete()
-    #                 messages.success(request, "Usunięto tag.")
-    #
-    #         elif form_t.is_valid():  #nowy tag
-    #             f_t = form_t.save(commit=False)
-    #             if form_t.cleaned_data.get('title'):
-    #                 if not Tags_map.objects.filter(title__iexact=form_t.cleaned_data.get('title')):
-    #                     f_t.save()
-    #                     messages.success(request, "Dodano tag.")
-    #                 else:
-    #                     messages.success(request, "Tagi tag już istneje.")
-    #             else:
-    #                 messages.success(request, "Podaj tag.")
-    #         else:
-    #             messages.success(request, "cosik się popsuło. Jeszcze raz.")
-    #
-    #         return redirect('Cre-ser')
+# def post(self, request, *args, **kwargs):
+#     try:
+#         ex = modelformset_factory(Harmonogram, extra=2, form=HarmonForm)
+#         harmon_form = ex(request.POST)
+#
+#         for form in harmon_form:
+#             if form.is_valid():
+#                 harmon_post = form.save(commit=False)
+#                 if form.cleaned_data.get('ch_box'):
+#                     harmon_post.delete()
+#                 elif form.cleaned_data.get('day') < 0:
+#                     pass
+#                 elif form.cleaned_data.get('day') > 7:
+#                     pass
+#                 elif form.cleaned_data.get('key_map'):
+#                     if form.cleaned_data.get('content'):
+#                         harmon_post.save()
+#
+#                 del harmon_post
+#
+#         messages.success(request, "Zmieniono harmonogram")
+#
+#         return redirect('Cre-ser')
+#
+#     except:
+#         form_p = SeriersForm(request.POST, request.FILES)
+#         form_t = Tags_add(request.POST)
+#         form_td = Tags_del(request.POST)
+#
+#         if form_p.is_valid():
+#             try:
+#                 idd = (Anime_list.objects.all().order_by('-id_anime').first().id_anime + 1)
+#             except:
+#                 idd = 0
+#
+#             f_k = Anime_list()
+#             f_k.id_anime = idd
+#             f_k.title = form_p.cleaned_data.get('title')
+#             web_name = ''.join(e for e in f_k.title if e.isalnum())
+#             f_k.web_name = web_name
+#             f_k.save()
+#
+#             f_cr = form_p.save(commit=False)
+#             f_cr.id_anime = idd
+#             f_cr.key_map = f_k
+#             f_cr.save()
+#
+#             # for ta in form_p.cleaned_data.get('Tags'):
+#             #     f_t = Tags()
+#             #     ids = Tags_map.objects.filter(title=ta).first()
+#             #     f_t.tags_map = ids
+#             #     f_t.key_map = f_k  #chyba tu
+#             #     f_t.save()
+#             #     del f_t
+#
+#             messages.success(request, "Dodano anime.")
+#         elif form_td.is_valid():  #popraw usuń tag
+#             q_t = Tags_map.objects.filter(title__iexact=form_td.cleaned_data.get('title')).first()
+#             #f_t = form_td.save(commit=False)
+#             if form_td.cleaned_data.get('new_title'):
+#                 q_t.title = form_td.cleaned_data.get('new_title')
+#                 q_t.save()
+#                 messages.success(request, "poprawiono tag.")
+#             else:
+#                 q_t.delete()
+#                 messages.success(request, "Usunięto tag.")
+#
+#         elif form_t.is_valid():  #nowy tag
+#             f_t = form_t.save(commit=False)
+#             if form_t.cleaned_data.get('title'):
+#                 if not Tags_map.objects.filter(title__iexact=form_t.cleaned_data.get('title')):
+#                     f_t.save()
+#                     messages.success(request, "Dodano tag.")
+#                 else:
+#                     messages.success(request, "Tagi tag już istneje.")
+#             else:
+#                 messages.success(request, "Podaj tag.")
+#         else:
+#             messages.success(request, "cosik się popsuło. Jeszcze raz.")
+#
+#         return redirect('Cre-ser')
 
 
 #to działa w 100%

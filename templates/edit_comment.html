@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="d-flex flex-column align-items-center">
+<div class="col-12 col-lg-8 card mb-4 p-4">
+	<form method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+
+		<fieldset class="form-group mb-4">
+            {% if type == 'series' %}
+            <a href="{% url 'anime-nm' comment.key_map.web_name %}"><h3 class="mb-4 d-flex flex-row justify-content-center">{{ comment.key_map.name_english}}</h3></a>
+            {% elif type == 'episode' %}
+            <a href="{% url 'ep-nm' comment.key_map_ep.key_map.web_name comment.key_map_ep.ep_nr %}"><h3 class="mb-4 d-flex flex-row justify-content-center">{{ comment.key_map_ep.key_map.name_english}} - Odcinek {{ comment.key_map_ep.ep_nr }}</h3></a>
+            {% endif %}
+			{{form|crispy}}
+			
+		</fieldset>
+
+		<div class="form-group d-flex flex-row gap-2 justify-content-center">
+			<button class="btn btn-success btn-lg" type="submit">Zatwierdź</button>
+            <button form="delete-form" class="btn btn-outline-danger btn-lg" type="submit">Usuń komentarz</button>
+		</div>
+	</form>
+    <form id="delete-form" method="POST" action="{% url 'del-cmt' comment.id %}">
+        {% csrf_token %}
+    </form>
+
+</div>
+</div>
+{% endblock content %}
