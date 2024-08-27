@@ -2,10 +2,10 @@
 {% block content %}
 <div class="col-12 col-md-7 col-lg-9">
     <div class="card mb-4">
-        <div class="card-header d-flex flex-row justify-content-center align-items-center gap-3 px-4 py-2">
+        <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
             <h4 class="card-title mb-0">Administracja:</h4>
         </div>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center card-body">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 card-body">
             {% for member in administators %}
                 <a href="{% url 'user-inf' member.user.username %}">
                 <div class="card bg-body-secondary p-2 pe-3">
@@ -21,10 +21,10 @@
         </div>
     </div>
     <div class="card mb-4">
-        <div class="card-header d-flex flex-row justify-content-center align-items-center gap-3 px-4 py-2">
+        <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
             <h4 class="card-title mb-0">Tłumacze:</h4>
         </div>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center card-body">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 card-body">
             {% for member in translators %}
                 <a href="{% url 'user-inf' member.0.user.username %}">
                 <div class="card bg-body-secondary p-2 pe-3">
@@ -41,10 +41,10 @@
         </div>
     </div>
     <div class="card mb-4">
-        <div class="card-header d-flex flex-row justify-content-center align-items-center gap-3 px-4 py-2">
+        <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
             <h4 class="card-title mb-0">Korektorzy:</h4>
         </div>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 justify-content-center card-body">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 card-body">
             {% for member in editors %}
                 <a href="{% url 'user-inf' member.0.user.username %}">
                 <div class="card bg-body-secondary p-2 pe-3">
@@ -61,8 +61,8 @@
         </div>
     </div>
     <div class="card mb-4">
-         <div class="card-header d-flex flex-row justify-content-center align-items-center gap-3 px-4 py-2">
-            <h4 class="card-title mb-0 px-5">FAQ:</h4>
+         <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
+            <h4 class="card-title mb-0">FAQ:</h4>
         </div>
         <div class="card-body px-4">
             <p>Q: Czy przetłumaczycie anime XYZ?<br>

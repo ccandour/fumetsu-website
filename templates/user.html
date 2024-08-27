@@ -34,9 +34,11 @@
 
     <!-- Relations -->
 {% if credits %}
-<div class="card mb-4 p-3 col-9">
-    <h4 class="fw-semibold mb-4 text-body">Moje serie:</h4>
-    <div class="d-flex flex-row overflow-auto gap-3 pb-4">
+<div class="card mb-4 col-9">
+    <div class="card-header d-flex flex-row align-items-center gap-3 py-2">
+        <h4 class="card-title text-body mb-0">Moje serie:</h4>
+    </div>
+    <div class="d-flex flex-row overflow-auto gap-3 pb-4 card-body">
         {% for credit in credits %}
             <a href="{% url 'anime-nm' credit.0.web_name %}">
             <div class="card relations-card bg-body-secondary text-center" style="width: 10rem;">
@@ -61,10 +63,11 @@
 
 <!-- Comments -->
 {% if com_ser or com_ep %}
-<div class="col-12 col-lg-9 card p-3">
-    <h4 class="fw-semibold mb-4 text-body">Komentarze ({{ com_ser|add_two_sizes:com_ep }}):</h4>
-    <div id="Section_comm" class="d-flex flex-column gap-4">
-
+<div class="col-12 col-lg-9 card">
+    <div class="card-header d-flex flex-row align-items-center gap-3 py-2">
+        <h4 class="card-title text-body mb-0">Komentarze ({{ com_ser|add_two_sizes:com_ep }}):</h4>
+    </div>
+    <div id="Section_comm" class="d-flex flex-column gap-4 card-body">
         {% for com in com_ser %}
             <a href="{% url 'anime-nm' com.key_map.web_name %}">
                 <div class="d-flex flex-row align-items-start">

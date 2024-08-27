@@ -107,9 +107,11 @@
 </div>
 
 <!-- Episodes -->
-<div class="card p-3 mb-4 col-9">
-    <h4 class="mb-3">Odcinki:</h4>
-    <div class="d-flex flex-row flex-wrap gap-2">
+<div class="card mb-4 col-9">
+    <div class="card-header d-flex flex-row align-items-center gap-3 py-2">
+        <h4 class="card-title mb-0">Odcinki:</h4>
+    </div>
+    <div class="d-flex flex-row flex-wrap gap-2 card-body">
         {% for e in ep %}
             <a href="{% url 'ep-nm' series.web_name e.ep_nr %}">
                 <button class="btn btn-outline-primary ep-btn"><b>{{ e.ep_nr|floatformat}}</b></button>
@@ -120,9 +122,11 @@
 
 <!-- Relations -->
 {% if relations %}
-<div class="card mb-4 p-3 col-9">
-    <h4 class="mb-3">Powiązane:</h4>
-    <div class="d-flex flex-row flex-wrap gap-3">
+<div class="card mb-4 col-9">
+    <div class="card-header d-flex flex-row align-items-center gap-3 py-2">
+        <h4 class="card-title mb-0">Powiązane:</h4>
+    </div>
+    <div class="d-flex flex-row flex-wrap gap-3 card-body">
         {% for relation in relations %}
             <a href="{% url 'anime-nm' relation.0.web_name %}">
             <div class="card relations-card bg-body-secondary text-center" style="width: 10rem;">
@@ -152,53 +156,57 @@
 {% endif %}
 
 <!-- Comments -->
-<div class="col-12 col-lg-9 card p-3">
-    <h4 class="mb-3">Sekcja komentarzy:</h4>
-    {% if user.is_authenticated %}
-    <form class="" method="POST">
-        {% csrf_token %}
-        {{ comment_form|crispy }}
-        <button class="btn btn-success flex-row d-flex align-items-center gap-2" type="submit">
-            <i class="fa-solid fa-check" style="color: #ffffff;"></i>
-            Dodaj
-        </button>
-    </form>
-    {% endif %}
-    {% if comment %}
-    <div id="Section_comm" class="d-flex flex-column gap-4 mt-4">
-        {% for com in comment %}
-            <div class="d-flex flex-row align-items-start">
-                <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
-                    <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}">
-                </a>
-
-                <div class="d-flex flex-column">
-                    <div class="d-flex flex-row gap-2 align-items-center">
-                        <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
-                            <div class="fs-5 fw-semibold">{{com.author.username}}</div>
-                        </a>
-
-                        {{com.date_posted}}
-
-                        {% if com.author == user %}
-                        <div class="dropend float-end ms-0">
-                            <a class="com_mor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa-solid fa-pen fa-md text-body" aria-hidden="true"></i>
-                            </a>
-                            <div class="dropdown-menu ms-2 p-0" style="min-width: 100px" aria-labelledby="navbarDropdown">
-                                <button class="text-start btn btn-outline-success rounded-bottom-0 w-100" data-bs-toggle="modal" data-target="#modalComRe">Edytuj</button>
-                                <button class="text-start btn btn-outline-danger rounded-top-0 w-100" data-bs-toggle="modal" data-target="#modalComDel">Usuń</button>
-                            </div>
-                        </div>
-                    {% endif %}
-                    </div>
-
-                    {{com.content}}
-                </div>
-            </div>
-        {% endfor %}
+<div class="col-12 col-lg-9 card">
+    <div class="card-header d-flex flex-row align-items-center gap-3 py-2">
+        <h4 class="card-title mb-0">Sekcja komentarzy:</h4>
     </div>
-    {% endif %}
+    <div class="card-body">
+        {% if user.is_authenticated %}
+        <form class="mb-4" method="POST">
+            {% csrf_token %}
+            {{ comment_form|crispy }}
+            <button class="btn btn-success flex-row d-flex align-items-center gap-2" type="submit">
+                <i class="fa-solid fa-check" style="color: #ffffff;"></i>
+                Dodaj
+            </button>
+        </form>
+        {% endif %}
+        {% if comment %}
+        <div id="Section_comm" class="d-flex flex-column gap-4">
+            {% for com in comment %}
+                <div class="d-flex flex-row align-items-start">
+                    <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
+                        <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}">
+                    </a>
+
+                    <div class="d-flex flex-column">
+                        <div class="d-flex flex-row gap-2 align-items-center">
+                            <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
+                                <div class="fs-5 fw-semibold">{{com.author.username}}</div>
+                            </a>
+
+                            {{com.date_posted}}
+
+                            {% if com.author == user %}
+                            <div class="dropend float-end ms-0">
+                                <a class="com_mor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa-solid fa-pen fa-md text-body" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu ms-2 p-0" style="min-width: 100px" aria-labelledby="navbarDropdown">
+                                    <button class="text-start btn btn-outline-success rounded-bottom-0 w-100" data-bs-toggle="modal" data-target="#modalComRe">Edytuj</button>
+                                    <button class="text-start btn btn-outline-danger rounded-top-0 w-100" data-bs-toggle="modal" data-target="#modalComDel">Usuń</button>
+                                </div>
+                            </div>
+                        {% endif %}
+                        </div>
+
+                        {{com.content}}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
 </div>
 
 

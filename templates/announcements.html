@@ -11,7 +11,7 @@
             <div class="d-flex flex-column">
                 <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
                     <h4 class="card-title mb-0">{{ post.title }}</h4>
-                    <h5 class="card-title fw-normal text-muted mb-0 ms-auto">{{ post.date_posted|date:"d.m.o" }} </h5>
+                    <h6 class="card-title fw-normal text-muted mb-0 ms-auto">{{ post.date_posted|date:"d.m.o" }} </h6>
                 </div>
                 <div class="card-body px-4">
                     {{ post.content|convert_markdown|safe }}
