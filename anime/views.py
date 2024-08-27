@@ -114,12 +114,14 @@ class Anime_content(TemplateView):
             comm.color = Get_color(comm.author)
         context['comment'] = comment
 
+        context['comment_form'] = CreateComment()
+
         context['ep'] = Odc_name.objects.filter(key_map_id=ani).order_by('ep_title')
 
-        kurwa = Tags.objects.filter(anime_anilist_id=ani.anilist_id).only("label")
+        db_tags = Tags.objects.filter(anime_anilist_id=ani.anilist_id).only("label")
 
         list_tags = []
-        for tag in kurwa:
+        for tag in db_tags:
             list_tags.append(tag_label_to_polish(tag.label))
         context['tags'] = list_tags
 
@@ -131,21 +133,18 @@ class Anime_content(TemplateView):
         form = CreateComment(request.POST)
         idd = request.POST.get("idd", "")
 
-        messages.success(request, 'aaaaaaaaaaaa')
         if form.is_valid():
-            messages.success(request, '1')
-            if 'com_cr_bt' in request.POST:
-                if len(form.cleaned_data.get('content')) > 9:
-                    ani = get_object_or_404(Anime_list, web_name=self.kwargs['anime_name'])
-                    f_save = form.save(commit=False)
-                    f_save.anime = ani
-                    f_save.author = request.user
-                    f_save.save()
-                    messages.success(request, 'Dodatno komentarz')
-                else:
-                    messages.success(request, 'komentarz jest za krótki')
+            if len(form.cleaned_data.get('content')) > 9:
+                ani = get_object_or_404(Anime_list, web_name=self.kwargs['anime_name'])
+                f_save = form.save(commit=False)
+                f_save.key_map = ani
+                f_save.author = request.user
+                f_save.save()
+                messages.success(request, 'Dodatno komentarz.')
+            else:
+                messages.warning(request, 'Komentarz jest za krótki (minimum 10 znaków).')
 
-            elif 'com_up_bt' in request.POST:
+            if 'com_up_bt' in request.POST:
                 if len(form.cleaned_data.get('content')) > 9:
                     t_save = Series_comment.objects.filter(id=idd).first()
                     if t_save.author == request.user and idd:
@@ -154,11 +153,11 @@ class Anime_content(TemplateView):
                         t_save.save()
                         messages.success(request, 'Poprawiono komentarz')
 
-        if 'com_up_del' in request.POST and idd:
-            t_save = Series_comment.objects.filter(id=idd).first()
-            if t_save.author == request.user and idd:
-                t_save.delete()
-            messages.success(request, 'Usunięto komentarz')
+            if 'com_up_del' in request.POST and idd:
+                t_save = Series_comment.objects.filter(id=idd).first()
+                if t_save.author == request.user and idd:
+                    t_save.delete()
+                messages.success(request, 'Usunięto komentarz')
 
         return redirect('anime-nm', self.kwargs['anime_name'])
 
@@ -188,7 +187,6 @@ class Anime_episode(TemplateView):
         ep = self.kwargs['ep']
         context['link'] = Anime_url.objects.filter(key_map_id=ani, ep_nr=ep)
         context['anime_nm'] = ani
-        context['com_ed'] = CreateCommentEp()
 
         ep_query = Odc_name.objects.filter(key_map_id=ani, ep_nr=ep).first()
         context['odc_html'] = ep_query.ep_nr
@@ -205,6 +203,8 @@ class Anime_episode(TemplateView):
             comm.color = Get_color(comm.author)
         context['comment'] = comment
 
+        context['comment_form'] = CreateCommentEp()
+
         context['next'] = Odc_name.objects.filter(key_map_id=ani, ep_title__gt=ep_query.ep_title).order_by(
             'ep_title').first()
         context['prev'] = Odc_name.objects.filter(key_map_id=ani, ep_title__lt=ep_query.ep_title).order_by(
@@ -217,17 +217,16 @@ class Anime_episode(TemplateView):
         ani = get_object_or_404(Anime_list, web_name=self.kwargs['anime_name'])
         ep_query = Odc_name.objects.filter(key_map_id=ani, ep_nr=self.kwargs['ep']).first()
         if form.is_valid():
-            if 'com_cr_bt' in request.POST:
-                if len(form.cleaned_data.get('content')) > 9:
-                    f_save = form.save(commit=False)
-                    f_save.episode = ep_query
-                    f_save.author = request.user
-                    f_save.save()
-                    messages.success(request, 'Dodatno komentarz')
-                else:
-                    messages.success(request, 'komentarz jest za krótki')
+            if len(form.cleaned_data.get('content')) > 9:
+                f_save = form.save(commit=False)
+                f_save.key_map_ep = ep_query
+                f_save.author = request.user
+                f_save.save()
+                messages.success(request, 'Dodatno komentarz.')
+            else:
+                messages.warning(request, 'Komentarz jest za krótki (minimum 10 znaków).')
 
-            elif 'com_up_bt' in request.POST:
+            if 'com_up_bt' in request.POST:
                 if len(form.cleaned_data.get('content')) > 9:
                     idd = request.POST.get("idd", "")
                     t_save = Episode_comment.objects.filter(key_map_ep=ep_query, id=idd).first()

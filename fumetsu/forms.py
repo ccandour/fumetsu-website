@@ -53,7 +53,7 @@ class Form_upload_edit_t(forms.ModelForm):
             }
         )
     )
-    
+
     napisy = forms.FileField(label="Napisy .zip albo .txt", required = False, widget=forms.FileInput)
 
     ch_box = forms.BooleanField(label=_('Usuń całkowice odcinek i posta'), required=False)
@@ -222,14 +222,13 @@ class HarmonForm(forms.ModelForm):
 #         fields = ['title','new_title']
 
 class CreateComment(forms.ModelForm):
-
     content = forms.CharField(max_length=254,
         label="Komentarz (minimum 10 znaków)",
         widget=forms.Textarea(
             attrs={
-                "placeholder": "Napisz swój komentarz.",
+                "placeholder": "Super seria!",
                 "rows":3,
-                'class': 'komentarz',
+                "class": "form-control focus-ring focus-ring-primary",
             }
         )
     )

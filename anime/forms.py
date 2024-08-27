@@ -7,18 +7,18 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_recaptcha.fields import ReCaptchaField, ReCaptchaV2Checkbox
 
-class CreateComment(forms.ModelForm):
 
+class CreateComment(forms.ModelForm):
     content = forms.CharField(max_length=254,
-        label="Komentarz (minimum 10 znaków)",
+        label="Dodaj komentarz (minimum 10 znaków)",
         widget=forms.Textarea(
             attrs={
-                "placeholder": "Napisz swój komentarz.",
-                'class': 'komentarz',
-                "rows":3,
+                "placeholder": "Super seria!",
+                "class": "form-control focus-ring focus-ring-primary",
+                "rows": 3,
             }
         )
-    )
+        )
 
     class Meta:
         model = Series_comment
@@ -27,20 +27,19 @@ class CreateComment(forms.ModelForm):
 
 class CreateCommentEp(forms.ModelForm):
     content = forms.CharField(max_length=254,
-        label="Komentarz (minimum 10 znaków)",
+        label="Dodaj komentarz (minimum 10 znaków)",
         widget=forms.Textarea(
             attrs={
-                "placeholder": "Napisz swój komentarz.",
-                'class': 'komentarz',
-                 "rows":3,
+                "placeholder": "Super odcinek!",
+                "class": "form-control focus-ring focus-ring-primary",
+                "rows": 3,
             }
         )
-    )
+        )
 
     class Meta:
         model = Episode_comment
         fields = ['content']
-
 
 # class QueryTags(forms.ModelForm):
 #     name = forms.CharField(max_length=254,

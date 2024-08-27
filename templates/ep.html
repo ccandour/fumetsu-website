@@ -1,4 +1,5 @@
 {% extends "base_sidebar.html" %}
+{% load crispy_forms_filters %}
 {% load static %}
 {% load crispy_forms_tags %}
 
@@ -88,19 +89,20 @@
 {% endif %}
 
 <!-- Comments -->
-{% if comment %}
 <div class="col-12 col-lg-9 card p-3">
-    <h5 class="mb-3">Sekcja komentarzy:</h5>
+    <h4 class="mb-3">Sekcja komentarzy:</h4>
     {% if user.is_authenticated %}
     <form method="POST">
         {% csrf_token %}
-        <div class="mb-4">
-            <label for="example-textarea-1" class="form-label">Dodaj komentarz:</label>
-            <textarea class="form-control focus-ring focus-ring-primary" id="example-textarea-1" rows="3" placeholder="Super odcinek!"></textarea>
-        </div>
+        {{ comment_form|crispy }}
+        <button class="btn btn-success flex-row d-flex align-items-center gap-2" type="submit">
+            <i class="fa-solid fa-check" style="color: #ffffff;"></i>
+            Dodaj
+        </button>
     </form>
     {% endif %}
-    <div id="Section_comm" class="d-flex flex-column gap-4">
+    {% if comment %}
+    <div id="Section_comm" class="d-flex flex-column gap-4 mt-4">
         {% for com in comment %}
             <div class="d-flex flex-row align-items-start">
                 <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
@@ -133,6 +135,7 @@
             </div>
         {% endfor %}
     </div>
-{% endif %}
+    {% endif %}
+</div>
 
 {% endblock content %}
