@@ -133,7 +133,7 @@ class ProfileUpdateForm(forms.ModelForm):
             attrs={
                 "class": "form-control form-control-lg focus-ring focus-ring-primary"
             }
-        )
+        ),
     )
     description = forms.CharField(
         max_length=1024,

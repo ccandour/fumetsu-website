@@ -97,10 +97,12 @@ class Post_comment(models.Model):
     def __str__(self):
         return (f'post {self.author}, {self.content} do anime {self.post_map}.')
 
+
 class Url_redirects(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     old_url = models.CharField(max_length=100)
     new_url = models.CharField(max_length=100)
+
 
 class Staff_credits(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

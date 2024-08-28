@@ -232,8 +232,15 @@ class profile(TemplateView):
         elif not request.POST.get("username", "").isalnum():
             messages.error(request, f'Nick może zawierać tylko litery i cyfry')
 
-        # Save description
+        # Save description and image
         if profile_form.is_valid() and profile_form.has_changed():
+            if request.user.profile.image and request.user.profile.image.name != 'default.jpg':
+                image_name = request.user.profile.image.name.replace("\\", "/");
+                if os.path.exists(image_name):
+                    os.remove(image_name)
+                request.user.profile.image = 'default.jpg'
+                request.user.profile.save()
+
             ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile).save(commit=True)
 
         if username_form.is_valid() and mail_form.is_valid() and profile_form.is_valid():
@@ -279,48 +286,48 @@ class Profile_page(TemplateView):
         context['ban_form'] = BanForm()
         return context
 
-    def post(self, request, *args, **kwargs):
-        form = CreateComment(request.POST)
-        idd = request.POST.get("idd", "")
-        ban_form = BanForm(request.POST)
-        q_profile = Profile.objects.get(web_name=self.kwargs['user_name'])
-        users = User.objects.get(id=q_profile.user.id)
-
-        if ban_form.is_valid():
-            messages.success(request, users.is_active)
-
-            users.is_active = False
-            users.save()
-            prof = Profile.objects.filter(user=users).first()
-            prof.ban = ban_form.cleaned_data['ban']
-            prof.save()
-
-            messages.success(request, users.is_active)
-
-            messages.success(request, f'Zbanowano użytkownika')
-            return redirect('user-inf', self.kwargs['user_name'])
-
-        if form.is_valid():
-            if 'com_up_bt' in request.POST:
-
-                if len(form.cleaned_data.get('content')) > 9:
-                    t_save = Episode_comment.objects.filter(id=idd).first()
-                    if not t_save:
-                        t_save = Series_comment.objects.filter(id=idd).first()
-
-                    if t_save.author == users and idd:
-                        t_save.content = form.cleaned_data.get('content')
-                        t_save.date_posted = datetime.now()
-                        t_save.save()
-                        messages.success(request, f'Poprawiono komentarz')
-
-        elif 'com_up_del' in request.POST and idd:
-            t_save = Episode_comment.objects.filter(id=idd).first()
-            if not t_save:
-                t_save = Series_comment.objects.filter(id=idd).first()
-
-            if t_save.author == users and idd:
-                t_save.delete()
-            messages.success(request, f'Usunięto komentarz')
-
-        return redirect('user-inf', self.kwargs['user_name'])
+    # def post(self, request, *args, **kwargs):
+    #     form = CreateComment(request.POST)
+    #     idd = request.POST.get("idd", "")
+    #     ban_form = BanForm(request.POST)
+    #     q_profile = Profile.objects.get(web_name=self.kwargs['user_name'])
+    #     users = User.objects.get(id=q_profile.user.id)
+    #
+    #     if ban_form.is_valid():
+    #         messages.success(request, users.is_active)
+    #
+    #         users.is_active = False
+    #         users.save()
+    #         prof = Profile.objects.filter(user=users).first()
+    #         prof.ban = ban_form.cleaned_data['ban']
+    #         prof.save()
+    #
+    #         messages.success(request, users.is_active)
+    #
+    #         messages.success(request, f'Zbanowano użytkownika')
+    #         return redirect('user-inf', self.kwargs['user_name'])
+    #
+    #     if form.is_valid():
+    #         if 'com_up_bt' in request.POST:
+    #
+    #             if len(form.cleaned_data.get('content')) > 9:
+    #                 t_save = Episode_comment.objects.filter(id=idd).first()
+    #                 if not t_save:
+    #                     t_save = Series_comment.objects.filter(id=idd).first()
+    #
+    #                 if t_save.author == users and idd:
+    #                     t_save.content = form.cleaned_data.get('content')
+    #                     t_save.date_posted = datetime.now()
+    #                     t_save.save()
+    #                     messages.success(request, f'Poprawiono komentarz')
+    #
+    #     elif 'com_up_del' in request.POST and idd:
+    #         t_save = Episode_comment.objects.filter(id=idd).first()
+    #         if not t_save:
+    #             t_save = Series_comment.objects.filter(id=idd).first()
+    #
+    #         if t_save.author == users and idd:
+    #             t_save.delete()
+    #         messages.success(request, f'Usunięto komentarz')
+    #
+    #     return redirect('user-inf', self.kwargs['user_name'])

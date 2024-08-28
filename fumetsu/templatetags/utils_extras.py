@@ -1,3 +1,5 @@
+import os
+
 from django import template
 from django.contrib.auth.models import Group
 
@@ -30,3 +32,9 @@ def convert_markdown(text):
         },
     }
     return markdown(text, extensions=extensions, extension_configs=extension_configs)
+
+
+def generate_upload_path(instance, filename):
+    file_extension = filename.split('.')[-1]
+    # Delete the old image
+    return f'profile_pics/{instance.user.username}.{file_extension}'
