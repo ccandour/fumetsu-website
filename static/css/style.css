@@ -182,7 +182,7 @@ h2
 
 
 .content-section {
-	margin: 40px 12vw 0 12vw;
+	margin: 60px 12vw 0 12vw;
 	width: auto;
 }
 
@@ -190,12 +190,6 @@ h2
 	height: 200px;
 	width: 100%;
 	object-fit: cover;
-}
-
-.side-menu{
-	border-radius: 10px;
-	padding: 0;
-	width: 20%;
 }
 .new-btn{
 	position: absolute;
@@ -636,4 +630,30 @@ margin: 0 5px;
 
 .focus-ring-primary:focus{
 	border-color: #67428B;
+}
+
+.big-gap {
+	gap: 60px;
+}
+
+.content-wrapper {
+    max-width: calc(100% - 320px); /* Adjust the width to account for the sidebar */
+	height: fit-content;
+    overflow-x: hidden; /* Allow horizontal scrolling if needed */
+}
+
+.sixteen-nine-img {
+	width: 100%;
+  	overflow: hidden;
+  	margin: 0;
+  	padding-top: 56.25%;
+ 	 position: relative;
+}
+
+.sixteen-nine-img img {
+  	position: absolute;
+  	top: 50%;
+  	left: 50%;
+ 	width: 100%;
+  	transform: translate(-50%, -50%);
 }

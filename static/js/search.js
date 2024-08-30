@@ -5,6 +5,8 @@ const searchInput = document.getElementById('search-input')
 const tagsFilter = document.getElementById('tags-filter')
 const resultsBox = document.getElementById('results-box')
 const infiniteTrigger = document.getElementById('infinite-trigger')
+const sidebar = document.querySelector('.content-section > section');
+const content = document.querySelector('.content-wrapper');
 const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
 
 let infiniteViewpoint
@@ -112,7 +114,7 @@ const insertSearchQuery = (searchTerm) => {
 
 const renderSeries = (data) => {
     data.forEach(series => {
-         const animeUrl = `/anime/${series.web_name}/`; // Construct the URL
+         const animeUrl = `/anime/${series.web_name}/` // Construct the URL
          let seriesHtml = `
         <a href="${animeUrl}" class="infinite-item">
         <div class="card list-card overflow-hidden">
@@ -149,6 +151,10 @@ const renderSeries = (data) => {
             seriesHtml = seriesHtml.replace('text-bg-success', 'text-bg-danger')
         }
         resultsBox.innerHTML += seriesHtml
+
+        // Resize the sidebar to match the content
+        sidebar.style.height = content.clientHeight + 'px'
+
      })
 }
 

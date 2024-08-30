@@ -17,252 +17,200 @@
     </div>
 </div>
 
-<!-- Metadata (desktop version) -->
-<div class="d-none d-md-block col-9 bg-body-secondary card p-3 mb-4">
-    <div class ="d-flex flex-row mb-3">
-        <div class="me-4">
-            <img class="ser-cover" src="{{ series.image }}">
-        </div>
+<div class="d-flex flex-column gap-4">
+    <!-- Metadata (desktop version) -->
+    <div class="d-none d-md-block bg-body-secondary card p-3">
+        <div class ="d-flex flex-row mb-3">
+            <div class="me-4">
+                <img class="ser-cover" src="{{ series.image }}">
+            </div>
 
-        <div>
-           <h3 class="text-start pb-0 mb-1">{{series.name_english}}
-                <a href="https://anilist.co/anime/{{series.anilist_id}}" target="_blank">
-                    <img class="d-inline-block align-middle rounded-1" height="24em" src="{% static 'img/anilist_icon.svg' %}"></img>
-                </a>
-            </h3>
-
-           <h5>{{series.name_romaji}}</h5>
-
-            <div id="tags" class="mb-3 d-flex flex-row flex-wrap gap-2">
-                {% for tag in tags %}
-                    <a href="/anime/?tags={{ tag|lower }}">
-                        <button class="btn btn-secondary tag-btn">{{ tag }}</button>
+            <div>
+               <h3 class="text-start pb-0 mb-1">{{series.name_english}}
+                    <a href="https://anilist.co/anime/{{series.anilist_id}}" target="_blank">
+                        <img class="d-inline-block align-middle rounded-1" height="24em" src="{% static 'img/anilist_icon.svg' %}"></img>
                     </a>
-                {% endfor %}
-            </div>
+                </h3>
 
-            <!-- Format -->
-            <div class="d-flex flex-row gap-2">
-                <div class="text-secondary-emphasis">Rodzaj:</div>
-                {{ series.format }}
-            </div>
+               <h5>{{series.name_romaji}}</h5>
 
-            <!-- Status -->
-            <div class="d-flex flex-row gap-2">
-                <div class="text-secondary-emphasis">Status:</div>
-                {% if series.status == 'AIRING' %}
-                    Wychodzi
-                {% elif series.status == 'FINISHED' %}
-                    Zakończone
-                {% elif series.status == 'NOT_YET_RELEASED' %}
-                    Nie wydane
-                {% endif %}
-            </div>
+                <div id="tags" class="mb-3 d-flex flex-row flex-wrap gap-2">
+                    {% for tag in tags %}
+                        <a href="/anime/?tags={{ tag|lower }}">
+                            <button class="btn btn-secondary tag-btn">{{ tag }}</button>
+                        </a>
+                    {% endfor %}
+                </div>
 
-            <!-- Episode count -->
-            <div class="d-flex flex-row gap-2">
-                <div class="text-secondary-emphasis">Ilość odcinków:</div>
-                {{ series.episode_count }}
-            </div>
+                <!-- Format -->
+                <div class="d-flex flex-row gap-2">
+                    <div class="text-secondary-emphasis">Rodzaj:</div>
+                    {{ series.format }}
+                </div>
 
-            <!-- Rating -->
-            <div class="d-flex flex-row gap-2">
-                <div class="text-secondary-emphasis">Średnia ocena:</div>
-                <div class="d-flex flex-row gap-1">
-                    {{ series.rating }}
-                    {% if series.rating > 65 %}
-                    <div class="text-success">•</div>
-                    {% elif series.rating > 50 %}
-                    <div class="text-warning">•</div>
-                    {% else %}
-                    <div class="text-danger">•</div>
+                <!-- Status -->
+                <div class="d-flex flex-row gap-2">
+                    <div class="text-secondary-emphasis">Status:</div>
+                    {% if series.status == 'AIRING' %}
+                        Wychodzi
+                    {% elif series.status == 'FINISHED' %}
+                        Zakończone
+                    {% elif series.status == 'NOT_YET_RELEASED' %}
+                        Nie wydane
                     {% endif %}
                 </div>
+
+                <!-- Episode count -->
+                <div class="d-flex flex-row gap-2">
+                    <div class="text-secondary-emphasis">Ilość odcinków:</div>
+                    {{ series.episode_count }}
+                </div>
+
+                <!-- Rating -->
+                <div class="d-flex flex-row gap-2">
+                    <div class="text-secondary-emphasis">Średnia ocena:</div>
+                    <div class="d-flex flex-row gap-1">
+                        {{ series.rating }}
+                        {% if series.rating > 65 %}
+                        <div class="text-success">•</div>
+                        {% elif series.rating > 50 %}
+                        <div class="text-warning">•</div>
+                        {% else %}
+                        <div class="text-danger">•</div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="text-start">{{series.content}}</div>
-    {% if napisy and user.is_authenticated %}
-    <a class="float-end" href="/media/{{napisy}}">Napisy</a>
-    {% endif %}
+        <div class="text-start">{{series.content}}</div>
 
-    <!-- Staff -->
-    {% if staff %}
-    <div class="d-flex flex-row flex-wrap gap-3 mt-3">
-        {% for user in staff %}
-        <a href="{% url 'user-inf' user.0.user.username %}">
-            <div class="card bg-body-secondary p-2 pe-3">
-                <div class="d-flex flex-row">
-                    <img class="com_img me-3" src="{{ user.0.image.url }}" alt="Staff Image">
-                    <div class="d-flex flex-column justify-content-center">
-                        <div class="" style="">{{ user.0.user.username }}</div>
-                        <div class="text-secondary-emphasis">{{ user.1 }}</div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        {% endfor %}
-    </div>
-    {% endif %}
-</div>
-
-<!-- Episodes -->
-<div class="card mb-4 col-9">
-    <div class="card-header d-flex flex-row align-items-center gap-3 py-2">
-        <h4 class="card-title mb-0">Odcinki:</h4>
-    </div>
-    <div class="d-flex flex-row flex-wrap gap-2 card-body">
-        {% for e in ep %}
-            <a href="{% url 'ep-nm' series.web_name e.ep_nr %}">
-                <button class="btn btn-outline-primary ep-btn"><b>{{ e.ep_nr|floatformat}}</b></button>
-            </a>
-        {% endfor %}
-    </div>
-</div>
-
-<!-- Relations -->
-{% if relations %}
-<div class="card mb-4 col-9">
-    <div class="card-header d-flex flex-row align-items-center gap-3 py-2">
-        <h4 class="card-title mb-0">Powiązane:</h4>
-    </div>
-    <div class="d-flex flex-row flex-wrap gap-3 card-body">
-        {% for relation in relations %}
-            <a href="{% url 'anime-nm' relation.0.web_name %}">
-            <div class="card relations-card bg-body-secondary text-center" style="width: 10rem;">
-                <img src="{{ relation.0.image }}" class="card-img-top" alt="Relation Cover Image">
-                 <div class="card-body d-flex flex-column">
-                    <h6 class="card-title">
-                        {% if relation.0.name_english|length < 40 %}
-                        {{relation.0.name_english}}
-                        {% else %}
-                        {{relation.0.name_english|slice:":40"}}...
-                        {% endif %}
-                    </h6>
-                    <p class="card-text mt-auto ms-auto me-auto" style="font-size: 0.95rem">
-                        {% if relation.1 == 'SIDE_STORY'%}
-                        POBOCZNE
-                        {% elif relation.1 == 'SPIN_OFF'%}
-                        SPIN-OFF
-                        {% else%}
-                        {{relation.1}}</p>
-                        {% endif %}
-                  </div>
-            </div>
-            </a>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
-
-<!-- Comments -->
-<div class="col-12 col-lg-9 card">
-    <div class="card-header d-flex flex-row align-items-center gap-3 py-2">
-        <h4 class="card-title mb-0">Sekcja komentarzy:</h4>
-    </div>
-    <div class="card-body">
-        {% if user.is_authenticated %}
-        <form class="mb-4" method="POST">
-            {% csrf_token %}
-            {{ comment_form|crispy }}
-            <button class="btn btn-success flex-row d-flex align-items-center gap-2" type="submit">
-                <i class="fa-solid fa-check" style="color: #ffffff;"></i>
-                Dodaj
-            </button>
-        </form>
-        {% endif %}
-        {% if comment %}
-        <div id="Section_comm" class="d-flex flex-column gap-4">
-            {% for com in comment %}
-                <div class="d-flex flex-row align-items-start">
-                    <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
-                        <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}">
-                    </a>
-
-                    <div class="d-flex flex-column">
-                        <div class="d-flex flex-row gap-2 align-items-center">
-                            <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
-                                <div class="fs-5 fw-semibold">{{com.author.username}}</div>
-                            </a>
-
-                            {{com.date_posted}}
-
-                            {% if com.author == user %}
-                            <div class="dropend float-end ms-0">
-                                <a class="com_mor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa-solid fa-ellipsis-vertical fa-md text-primary-emphasis pe-2" aria-hidden="true"></i>
-                                </a>
-                                <div class="dropdown-menu ms-2 p-0" style="min-width: 100px" aria-labelledby="navbarDropdown">
-                                    <button onclick="location.href='{% url 'edit-cmt' com.id %}'" class="text-start btn btn-outline-success rounded-bottom-0 w-100">Edytuj</button>
-                                    <form method="POST" action="{% url 'del-cmt' com.id %}">
-                                        {% csrf_token %}
-                                        <button class="text-start btn btn-outline-danger rounded-top-0 w-100">Usuń</button>
-                                    </form>
-                                </div>
-                            </div>
-                        {% endif %}
+        <!-- Staff -->
+        {% if staff %}
+        <div class="d-flex flex-row flex-wrap gap-3 mt-3">
+            {% for user in staff %}
+            <a href="{% url 'user-inf' user.0.user.username %}">
+                <div class="card bg-body-secondary p-2 pe-3">
+                    <div class="d-flex flex-row">
+                        <img class="com_img me-3" src="{{ user.0.image.url }}" alt="Staff Image">
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="" style="">{{ user.0.user.username }}</div>
+                            <div class="text-secondary-emphasis">{{ user.1 }}</div>
                         </div>
-
-                        {{com.content}}
                     </div>
                 </div>
+            </a>
             {% endfor %}
         </div>
         {% endif %}
     </div>
-</div>
 
-
-<div class="modal fade" id="modalComRe" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Edytuj Komentarz</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+    <!-- Episodes -->
+    <div class="card">
+        <div class="card-header d-flex flex-row align-items-center">
+            <h4 class="card-title mb-0 py-1">Odcinki:</h4>
         </div>
-        <form method="POST">
-                {% csrf_token %}
-                <div class="box_up_com">
-                    <div class="com_up_cont cont_edit">
-                        {{ com_ed|crispy }}
-                        <input type="hidden" name="idd" value="" class="pdk">
-                    </div>
-                    <button class="btn btn-op btn-edit" name="com_up_bt">Edytuj</button>
-                </div>
-            </form>
+        <div class="d-flex flex-row flex-wrap gap-2 card-body">
+            {% for e in ep %}
+                <a href="{% url 'ep-nm' series.web_name e.ep_nr %}">
+                    <button class="btn btn-outline-primary ep-btn"><b>{{ e.ep_nr|floatformat}}</b></button>
+                </a>
+            {% endfor %}
+        </div>
     </div>
-  </div>
-</div>
 
-<div class="modal fade" id="modalComDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Usuń komentarz</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+    <!-- Relations -->
+    {% if relations %}
+    <div class="card">
+        <div class="card-header d-flex flex-row align-items-center">
+            <h4 class="card-title mb-0 py-1">Powiązane:</h4>
         </div>
-        <h5 class="modal-title w-100 font-weight-bold">Na pewno chcesz usnąć komentarz?</h5>
-        <div class="com_up_div">
-            <form method="POST">
+        <div class="d-flex flex-row flex-wrap gap-3 card-body">
+            {% for relation in relations %}
+                <a href="{% url 'anime-nm' relation.0.web_name %}">
+                <div class="card relations-card bg-body-secondary text-center" style="width: 10rem;">
+                    <img src="{{ relation.0.image }}" class="card-img-top" alt="Relation Cover Image">
+                     <div class="card-body d-flex flex-column">
+                        <h6 class="card-title">
+                            {% if relation.0.name_english|length < 40 %}
+                            {{relation.0.name_english}}
+                            {% else %}
+                            {{relation.0.name_english|slice:":40"}}...
+                            {% endif %}
+                        </h6>
+                        <p class="card-text mt-auto ms-auto me-auto" style="font-size: 0.95rem">
+                            {% if relation.1 == 'SIDE_STORY'%}
+                            POBOCZNE
+                            {% elif relation.1 == 'SPIN_OFF'%}
+                            SPIN-OFF
+                            {% else%}
+                            {{relation.1}}</p>
+                            {% endif %}
+                      </div>
+                </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Comments -->
+    {% if user.is_authenticated or comment %}
+    <div class="card">
+        <div class="card-header d-flex flex-row align-items-center">
+            <h4 class="card-title mb-0 py-1">Sekcja komentarzy:</h4>
+        </div>
+        <div class="card-body">
+            {% if user.is_authenticated %}
+            <form class="mb-4" method="POST">
                 {% csrf_token %}
-                <div class="box_up_com">
-                    <div class="com_up_cont">
-                        <input type="hidden" name="idd" value="" class="pdk">
+                {{ comment_form|crispy }}
+                <button class="btn btn-success flex-row d-flex align-items-center gap-2" type="submit">
+                    <i class="fa-solid fa-check" style="color: #ffffff;"></i>
+                    Dodaj
+                </button>
+            </form>
+            {% endif %}
+            {% if comment %}
+            <div id="Section_comm" class="d-flex flex-column gap-4">
+                {% for com in comment %}
+                    <div class="d-flex flex-row align-items-start">
+                        <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
+                            <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}">
+                        </a>
+
+                        <div class="d-flex flex-column">
+                            <div class="d-flex flex-row gap-2 align-items-center">
+                                <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
+                                    <div class="fs-5 fw-semibold">{{com.author.username}}</div>
+                                </a>
+
+                                {{com.date_posted}}
+
+                                {% if com.author == user %}
+                                <div class="dropend float-end ms-0">
+                                    <a class="com_mor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis-vertical fa-md text-primary-emphasis pe-2" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu ms-2 p-0" style="min-width: 100px" aria-labelledby="navbarDropdown">
+                                        <button onclick="location.href='{% url 'edit-cmt' com.id %}'" class="text-start btn btn-outline-success rounded-bottom-0 w-100">Edytuj</button>
+                                        <form method="POST" action="{% url 'del-cmt' com.id %}">
+                                            {% csrf_token %}
+                                            <button class="text-start btn btn-outline-danger rounded-top-0 w-100">Usuń</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            </div>
+
+                            {{com.content}}
                         </div>
-                    <button class="btn btn-danger btn-edit" name="com_up_del">Usuń</button>
-                </div>
-            </form>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
     </div>
-  </div>
+    {% endif %}
 </div>
-
-		</div>
 
 {% endblock content %}

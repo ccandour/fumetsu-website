@@ -12,8 +12,7 @@
 {% endblock scripts %}
 
 {% block content %}
-<div class="col-12 col-md-7 col-lg-9">
-	<h2 class="mb-4" >Lista Anime</h2>
+<div class="">
     <div class="d-flex flex-column align-items-center mb-5">
         <form id="search-form" class="d-flex flex-row gap-4 w-md-75 align-items-center" autocomplete="off">
             {% csrf_token %}
@@ -42,7 +41,7 @@
 </div>
 
 <!-- Actual list of anime (managed by search.js) -->
-<div id="results-box" class=" infinite-container d-flex flex-column col-12 col-md-7 col-lg-9 anime-list gap-3"></div>
+<div id="results-box" class=" infinite-container d-flex flex-column anime-list gap-3"></div>
 <!-- Invisible button to trigger infinite scrolling -->
 <button id="infinite-trigger" class="d-none infinite-more-link"></button>
 

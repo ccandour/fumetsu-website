@@ -9,139 +9,139 @@
 
 {% block content %}
 
-<!-- Title and Episode Navigation -->
-<div class="col-12 col-md-9 col-lg-9 mb-3">
-<div class="d-flex flex-column align-items-center">
-    <a href="{% url 'anime-nm' anime_nm.web_name %}"><h2>{{anime_nm.name_english}}</h2></a>
-    <h5>
-        {% if prev %}
-            <a class="ps-4" href="{% url 'ep-nm' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i></a>
-        {% else %}
-            <i class="fas fa-chevron-left control-disabled ps-4"></i></a>
-        {% endif %}
-         Odcinek {{odc_html|floatformat}}
-        {% if next %}
-            <a class="pe-4" href="{% url 'ep-nm' next.key_map.web_name next.ep_nr %}"><i class="fas fa-chevron-right"></i></a>
-        {% else %}
-            <i class="fas fa-chevron-right control-disabled pe-4"></i>
-        {% endif %}
-     </h5>
-</div>
-</div>
+<div class="d-flex flex-column gap-4">
+    <!-- Title and Episode Navigation -->
+    <div class="d-flex flex-column align-items-center">
+        <a href="{% url 'anime-nm' anime_nm.web_name %}"><h2>{{anime_nm.name_english}}</h2></a>
+        <h5>
+            {% if prev %}
+                <a class="ps-4" href="{% url 'ep-nm' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i></a>
+            {% else %}
+                <i class="fas fa-chevron-left control-disabled ps-4"></i></a>
+            {% endif %}
+             Odcinek {{odc_html|floatformat}}
+            {% if next %}
+                <a class="pe-4" href="{% url 'ep-nm' next.key_map.web_name next.ep_nr %}"><i class="fas fa-chevron-right"></i></a>
+            {% else %}
+                <i class="fas fa-chevron-right control-disabled pe-4"></i>
+            {% endif %}
+         </h5>
+    </div>
 
-<!-- Tabs -->
-<div class="card col-12 col-md-9 col-lg-9 mb-4">
-    <div class="card-body">
-        <!-- Tab controls -->
-        <nav>
-            <div class="nav nav-justified nav-tabs px-5 gap-3" id="js-tabs-2" role="tablist">
+    <!-- Tabs -->
+    <div class="card">
+        <div class="card-body">
+            <!-- Tab controls -->
+            <nav>
+                <div class="nav nav-justified nav-tabs px-5 gap-3" id="js-tabs-2" role="tablist">
+                    {% for player in link %}
+                        {% if forloop.counter == 1 %}
+                        <button class="nav-link active player-btn fw-bold fs-5 py-2" id="nav-{{player.web_site}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{player.web_site}}" type="button" role="tab" aria-controls="nav-{{player.web_site}}" aria-selected="true">{{player.web_site}}</button>
+                        {% else %}
+                        <button class="nav-link player-btn fw-bold fs-5 py-2" id="nav-{{player.web_site}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{player.web_site}}" type="button" role="tab" aria-controls="nav-{{player.web_site}}" aria-selected="false">{{player.web_site}}</button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </nav>
+            <!-- Tab content (players) -->
+            <div class="tab-content rounded-3 bg-body-secondary mt-3" style="height: 32vw" id="js-tabs-content-2">
                 {% for player in link %}
                     {% if forloop.counter == 1 %}
-                    <button class="nav-link active player-btn fw-bold fs-5 py-2" id="nav-{{player.web_site}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{player.web_site}}" type="button" role="tab" aria-controls="nav-{{player.web_site}}" aria-selected="true">{{player.web_site}}</button>
+                    <div class="tab-pane active" id="nav-{{player.web_site}}" role="tabpanel" aria-labelledby="nav-{{player.web_site}}-tab" tabindex="0">
+                        <div class="">
+                            <div class="video_cont">
+                                <iframe src="{{player.link}}" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
                     {% else %}
-                    <button class="nav-link player-btn fw-bold fs-5 py-2" id="nav-{{player.web_site}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{player.web_site}}" type="button" role="tab" aria-controls="nav-{{player.web_site}}" aria-selected="false">{{player.web_site}}</button>
+                    <div class="tab-pane fade" id="nav-{{player.web_site}}" role="tabpanel" aria-labelledby="nav-{{player.web_site}}-tab" tabindex="0">
+                        <div class="">
+                            <div class="video_cont">
+                                <iframe src="{{player.link}}" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
                     {% endif %}
                 {% endfor %}
             </div>
-        </nav>
-        <!-- Tab content (players) -->
-        <div class="tab-content rounded-3 bg-body-secondary mt-3" style="height: 31vw" id="js-tabs-content-2">
-            {% for player in link %}
-                {% if forloop.counter == 1 %}
-                <div class="tab-pane active" id="nav-{{player.web_site}}" role="tabpanel" aria-labelledby="nav-{{player.web_site}}-tab" tabindex="0">
-                    <div class="">
-                        <div class="video_cont">
-                            <iframe src="{{player.link}}" allowfullscreen></iframe>
-                        </div>
-                    </div>
-                </div>
-                {% else %}
-                <div class="tab-pane fade" id="nav-{{player.web_site}}" role="tabpanel" aria-labelledby="nav-{{player.web_site}}-tab" tabindex="0">
-                    <div class="">
-                        <div class="video_cont">
-                            <iframe src="{{player.link}}" allowfullscreen></iframe>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-            {% endfor %}
         </div>
     </div>
-</div>
 
-<!-- Subtitles -->
-{% if napisy and user.is_authenticated %}
-<div class="col-12 col-md-9 col-lg-9 mb-4 d-flex flex-row justify-content-center">
-    <button class="btn fw-bold btn-lg btn-secondary" value="-">
-        <i class="fa-solid fa-arrow-down me-1" style="color: #ffffff;"></i>
-        <a class="text-white" href="/media/{{napisy}}" download="/media/{{napisy}}">Pobierz napisy</a>
-    </button>
-</div>
-{% endif %}
-
-<!-- Comments -->
-{% if user.is_authenticated or comment %}
-<div class="col-12 col-lg-9 card">
-    <div class="card-header d-flex flex-row align-items-center gap-3 py-2">
-        <h4 class="card-title mb-0">Sekcja komentarzy:</h4>
+    <!-- Subtitles -->
+    {% if napisy and user.is_authenticated %}
+    <div class="d-flex flex-row justify-content-center">
+        <button class="btn fw-bold btn-lg btn-secondary" value="-">
+            <i class="fa-solid fa-arrow-down me-1" style="color: #ffffff;"></i>
+            <a class="text-white" href="/media/{{napisy}}" download="/media/{{napisy}}">Pobierz napisy</a>
+        </button>
     </div>
-    <div class="card-body">
-        {% if user.is_authenticated %}
-        <form class="mb-4" method="POST">
-            {% csrf_token %}
-            {{ comment_form|crispy }}
-            <button class="btn btn-success flex-row d-flex align-items-center gap-2" type="submit">
-                <i class="fa-solid fa-check" style="color: #ffffff;"></i>
-                Dodaj
-            </button>
-        </form>
-        {% endif %}
-        {% if comment %}
-        <div id="Section_comm" class="d-flex flex-column gap-4">
-            {% for com in comment %}
-                <div class="d-flex flex-row align-items-start">
-                    <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
-                        <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}">
-                    </a>
+    {% endif %}
 
-                    <div class="d-flex flex-column">
-                        <div class="d-flex flex-row gap-2 align-items-center">
-                            <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
-                                <div class="fs-5 fw-semibold">{{com.author.username}}</div>
-                            </a>
+    <!-- Comments -->
+    {% if user.is_authenticated or comment %}
+    <div class="card">
+        <div class="card-header d-flex flex-row align-items-center">
+            <h4 class="card-title mb-0 py-1">Sekcja komentarzy:</h4>
+        </div>
+        <div class="card-body">
+            {% if user.is_authenticated %}
+            <form class="mb-4" method="POST">
+                {% csrf_token %}
+                {{ comment_form|crispy }}
+                <button class="btn btn-success flex-row d-flex align-items-center gap-2" type="submit">
+                    <i class="fa-solid fa-check" style="color: #ffffff;"></i>
+                    Dodaj
+                </button>
+            </form>
+            {% endif %}
+            {% if comment %}
+            <div id="Section_comm" class="d-flex flex-column gap-4">
+                {% for com in comment %}
+                    <div class="d-flex flex-row align-items-start">
+                        <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
+                            <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}">
+                        </a>
 
-                            {{com.date_posted}}
-
-                            {% if com.author == user %}
-                            <div class="dropend float-end ms-0">
-                                <a class="com_mor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa-solid fa-ellipsis-vertical fa-md text-primary-emphasis pe-2" aria-hidden="true"></i>
+                        <div class="d-flex flex-column">
+                            <div class="d-flex flex-row gap-2 align-items-center">
+                                <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
+                                    <div class="fs-5 fw-semibold">{{com.author.username}}</div>
                                 </a>
-                                <div class="dropdown-menu ms-2 p-0" style="min-width: 100px" aria-labelledby="navbarDropdown">
-                                    <button onclick="location.href='{% url 'edit-cmt' com.id %}'" class="d-flex flex-row align-items-center gap-2 btn btn-outline-success rounded-bottom-0 w-100">
-                                        <i class="fa-solid fa-pen fa-sm"></i>
-                                        Edytuj
-                                    </button>
-                                    <form method="POST" action="{% url 'del-cmt' com.id %}">
-                                        {% csrf_token %}
-                                        <button class="d-flex flex-row align-items-center gap-2 btn btn-outline-danger rounded-top-0 w-100">
-                                            <i class="fa-solid fa-trash fa-sm"></i>
-                                            Usuń
+
+                                {{com.date_posted}}
+
+                                {% if com.author == user %}
+                                <div class="dropend float-end ms-0">
+                                    <a class="com_mor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis-vertical fa-md text-primary-emphasis pe-2" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu ms-2 p-0" style="min-width: 100px" aria-labelledby="navbarDropdown">
+                                        <button onclick="location.href='{% url 'edit-cmt' com.id %}'" class="d-flex flex-row align-items-center gap-2 btn btn-outline-success rounded-bottom-0 w-100">
+                                            <i class="fa-solid fa-pen fa-sm"></i>
+                                            Edytuj
                                         </button>
-                                    </form>
+                                        <form method="POST" action="{% url 'del-cmt' com.id %}">
+                                            {% csrf_token %}
+                                            <button class="d-flex flex-row align-items-center gap-2 btn btn-outline-danger rounded-top-0 w-100">
+                                                <i class="fa-solid fa-trash fa-sm"></i>
+                                                Usuń
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
+                                {% endif %}
                             </div>
-                            {% endif %}
+                            {{com.content}}
+                            <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
                         </div>
-                        {{com.content}}
-                        <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
     </div>
+    {% endif %}
 </div>
-{% endif %}
 
 {% endblock content %}

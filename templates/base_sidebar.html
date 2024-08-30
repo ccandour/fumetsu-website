@@ -38,12 +38,11 @@
 
 </head>
 <body class="bg-dark-subtle">
-<!-- Główny Kontener -->
 
 <!-- Navbar -->
 <header class="site-header">
-    <nav class="navbar navbar-expand-md card rounded-0 card-header" style="background-color: var(--bs-content-bg); border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
-        <div class="container-fluid justify-content-center">
+    <nav class="navbar navbar-expand-md card rounded-0"  style="border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
+        <div class="container-fluid justify-content-center px-0">
             <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
                 <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36"/>
             </a>
@@ -53,30 +52,30 @@
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active menu-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
+                        <a class="nav-link {% active_url 'fumetsu-home' %} menu-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active menu-link" href="{% url 'anime-list' %}">Anime</a>
+                        <a class="nav-link {% active_url 'anime-list' %} menu-link" href="{% url 'anime-list' %}">Anime</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="{% url 'fumetsu-announcements' %}">Aktualności</a>
+                        <a class="nav-link {% active_url 'fumetsu-announcements' %} menu-link" href="{% url 'fumetsu-announcements' %}">Aktualności</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="{% url 'fumetsu-about' %}">O nas</a>
+                        <a class="nav-link {% active_url 'fumetsu-about' %} menu-link" href="{% url 'fumetsu-about' %}">O nas</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav ms-auto d-flex">
 
+                <ul class="navbar-nav ms-auto d-flex">
                     <!-- Dropdown usera -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item dropdown p-0">
+                        <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
                             {% if user.is_authenticated %}
-                                <img src="{{ user.profile.image.url }}" class="rounded-circle" height="30" width="30" alt="Profile picture">
+                                <img src="{{ user.profile.image.url }}" class="rounded-circle" height="40" width="40" alt="Profile picture">
                             {% else %}
-                                <i class="fas fa-user"></i>
+                                <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle" height="40" width="40" alt="Profile picture">
                             {% endif %}
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end mt-md-2">
+                        <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
                             {% if user.is_authenticated%}
                             <li><a class="dropdown-item" href="{% url 'user-inf' user.username %}">Profil</a></li>
                             <li>
@@ -91,90 +90,117 @@
                             {% endif %}
                         </ul>
                     </li>
-
-                    <!-- Dropdown staff -->
-                    {% if user|has_group:"Informator" or user|has_group:"Uploader" or user|has_group:"content_creator" %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-cog"></i>
-                        </a>
-                    <ul class="dropdown-menu dropdown-menu-end mt-md-2 rounded-top-0">
-{#                        <li><a class="dropdown-item" href="{% url 'Cre-info' %}">Dodaj posta</a></li>#}
-{#                        <li><a class="dropdown-item" href="{% url 'Cre-ani'  %}">Nowy Odc</a></li>#}
-{#                        <li><a class="dropdown-item" href="{% url 'ed-an' %}">Popraw Anime</a></li>#}
-                        <li><a class="dropdown-item" href="{% url 'lnk-err' %}">Spr skargi url</a></li>
-                    </ul>
-                  {% endif %}
                 </ul>
           </div>
         </div>
     </nav>
 </header>
 
-<!-- Page -->
-<section class="content-section container container-fluid px-0 mb-5">
-    <!-- Side Menu -->
-    <section class="w-lg-auto side-menu bg-dark float-end ms-5 d-none d-lg-block" style="margin-top: 120px">
-        <a href="https://www.facebook.com/fumetsusubs/" target="_blank"><div class="social facebook text-bg-primary"><div></div><i class="fab fa-facebook-f"></i> Bądź na bieżąco!</div></a>
-        <a href="https://discord.gg/t5phVKT" target="_blank"><div class="social text-bg-secondary"><i class="fab fa-discord"></i> Dołącz do nas!</div></a>
-        <a href="https://patronite.pl/fumetsu" target="_blank"><div class="social text-bg-danger"><i class="fa-solid fa-crown"></i> Wesprzyj nas!</div></a>
-        <div class="on-air">
-            <div id="clock"></div>
-
-            <p id="schedule">Harmonogram</p>
-
-            {% for series in harmon %}
-            <a href="{% url 'anime-nm' series.key_map.web_name %}">
-            <div class="schedule-series">
-                <div class="fs-5 text-primary-emphasis">{{series.key_map.name_english}}</div><div>{{series.day}}, {{series.content}}</div>
+<!-- Messages -->
+<section class="container container-fluid px-0">
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <div class="alert alert-success d-flex align-items-center" role="alert">
+                <svg class="me-2" height="1.4em" width="1.4em" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                </svg>
+                <div>{{ message }}</div>
             </div>
-            </a>
-            {% endfor %}
-        </div>
-    </section>
-
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.tags == 'success' %}
-                <div class="alert alert-success d-flex align-items-center" role="alert">
-                    <svg class="me-2" height="1.4em" width="1.4em" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
-                    </svg>
-                    <div>{{ message }}</div>
-                </div>
-            {% elif message.tags == 'danger' %}
-                <div class="alert alert-danger d-flex align-items-center" role="alert">
-                    <svg class="me-2" height="1.4em" width="1.4em" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"></path>
-                    </svg>
-                    <div>{{ message }}</div>
-                </div>
-            {% else %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-
-    <!-- Content -->
-    <div>
-        {% block content%}{% endblock content %}
-    </div>
-
-    {% include 'cookie_modal.html' %}
-
+        {% elif message.tags == 'danger' %}
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <svg class="me-2" height="1.4em" width="1.4em" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"></path>
+                </svg>
+                <div>{{ message }}</div>
+            </div>
+        {% else %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
 </section>
 
-{#<!--Stopka-->#}
+{% include 'cookie_modal.html' %}
+
+<!-- Parent container -->
+<section class="content-section container container-fluid px-0 mb-auto d-flex flex-row big-gap justify-content-between">
+    <!-- Content block -->
+    <div class="w-100 content-wrapper">
+        {% block content %}{% endblock content %}
+    </div>
+    <!-- Sidebar -->
+    <section class="d-none d-lg-flex flex-column flex-shrink-0 card bg-dark-subtle" style="width:280px; overflow-y: auto;">
+        <div class="card-header">
+            <h4 class="text-center mb-0 py-1">Najnowsze odcinki</h4>
+        </div>
+        <div class="d-flex flex-column gap-3 mx-4 my-3">
+            {% for post in posts|slice:3 %}
+                <a href="{% url 'ep-nm' post.odc_nm.key_map.web_name post.odc_nm.ep_nr %}">
+                <div class="card d-flex flex-column">
+                    <div class="">
+                        <img src="{{ post.image.url }}" class="w-100 card-img-top" alt="Episode thumbnail">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fs-6">{{post.odc_nm.key_map.name_english}}</h5>
+                        <h6 class="card-subtitle fw-normal text-body-secondary">
+                            Odcinek {{post.odc_nm.ep_nr|floatformat}} - {{ post.odc_nm.title }}
+                        </h6>
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+        </div>
+        <div class="card-header border-top mt-2">
+            <h4 class="text-center mb-0 py-1">Popularne serie</h4>
+        </div>
+        <div class="d-flex flex-column gap-3 mx-4 my-3">
+            {% for series in popular %}
+                <a href="{% url 'anime-nm' series.web_name %}">
+                <div class="card d-flex flex-column">
+                    <div class="sixteen-nine-img card-img-top">
+                        <img src="{{ series.image }}" class="w-100" alt="Episode thumbnail">
+                    </div>
+                    <div class="card-body d-flex flex-row justify-content-between align-items-center">
+                        <h5 class="card-title fs-6 mb-0">
+                            {{series.name_english}}
+                            <div class="fs-6 text-body fw-normal d-inline-block">({{ series.episode_count }} odc.)</div>
+                        </h5>
+                        <div class="text-bg-success fs-5 px-2 py-1 rounded-3 h-100 ms-3">{{series.rating}}</div>
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+        </div>
+{#        <a href="https://www.facebook.com/fumetsusubs/" target="_blank"><div class="social facebook text-bg-primary"><div></div><i class="fab fa-facebook-f"></i> Bądź na bieżąco!</div></a>#}
+{#        <a href="https://discord.gg/t5phVKT" target="_blank"><div class="social text-bg-secondary"><i class="fab fa-discord"></i> Dołącz do nas!</div></a>#}
+{#        <a href="https://patronite.pl/fumetsu" target="_blank"><div class="social text-bg-danger"><i class="fa-solid fa-crown"></i> Wesprzyj nas!</div></a>#}
+{#        <div class="on-air">#}
+{#            <div id="clock"></div>#}
+{#            <p id="schedule">Harmonogram</p>#}
+{#            {% for series in harmon %}#}
+{#            <a href="{% url 'anime-nm' series.key_map.web_name %}">#}
+{#            <div class="schedule-series">#}
+{#                <div class="fs-5 text-primary-emphasis">{{series.key_map.name_english}}</div><div>{{series.day}}, {{series.content}}</div>#}
+{#            </div>#}
+{#            </a>#}
+{#            {% endfor %}#}
+{#        </div>#}
+    </section>
+</section>
+
+<!-- Footer -->
 <div class="clearfix"></div>
-<footer id="footer" class="gap-4 p-4 border-top">
+<footer id="footer" class="gap-4 p-4 border-top mt-5">
     <a href="{% url 'fumetsu-terms-of-service' %}">Regulamin Serwisu</a>
     <a href="{% url 'fumetsu-privacy-policy' %}">Polityka prywatności</a>
         <div class="">
             <div class="float-end p-2 d-none d-md-block">© Fumetsu 2024 All Rights Reserved</div>
         </div>
 </footer>
+
 
 {#<div id="consent-popup" class="hidden text-center">#}
 {#    Ta strona wykorzystuje pliki cookie. Korzystając z ni1ej, akceptujesz je. <a id="accept" href=""><button class="btn btn-op ml-4">Rozumiem</button></a>#}

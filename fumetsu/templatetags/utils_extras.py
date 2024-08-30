@@ -2,6 +2,7 @@ import os
 
 from django import template
 from django.contrib.auth.models import Group
+from django.urls import resolve
 
 register = template.Library()
 
@@ -18,6 +19,14 @@ def has_group(user, group_name):
         return True
 
     return user.groups.filter(name=group_name).exists()
+
+
+@register.simple_tag(takes_context=True)
+def active_url(context, url_name):
+    try:
+        return 'active' if resolve(context['request'].path_info).url_name == url_name else ''
+    except:
+        return ''
 
 
 @register.filter(name='convert_markdown')

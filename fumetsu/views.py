@@ -67,6 +67,9 @@ class about(ListView):
                     Staff_credits.objects.filter(user=credit.user, role='Korekta')))] not in editors:
                 editors.append([credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Korekta')))])
 
+        translators.sort(key=lambda x: x[1], reverse=True)
+        editors.sort(key=lambda x: x[1], reverse=True)
+
         context['administators'] = administators
         context['translators'] = translators
         context['editors'] = editors
@@ -85,7 +88,7 @@ class google_auth(ListView):
 
 class Announcements(ListView):
     model = Post
-    context_object_name = 'posts'
+    context_object_name = 'announcements'
     queryset = Info_bd.objects.all().order_by('-date_posted')
     template_name = 'announcements.html'
 

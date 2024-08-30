@@ -40,7 +40,7 @@ class Post(models.Model):
             img.thumbnail(size)
             img.save(self.image.path)
 
-        if Post.objects.all().count() >= 9:
+        if Post.objects.all().count() > 12:
             Post.objects.all().order_by('odc_nm__date_posted').first().delete()
 
 

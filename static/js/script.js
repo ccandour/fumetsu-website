@@ -1,40 +1,3 @@
-const cookieStorage = {
-    getItem: (key) => {
-        const cookies = document.cookie
-            .split(';')
-            .map(cookie => cookie.split('='))
-            .reduce((acc, [key, value]) => ({ ...acc, [key.trim()]: value }), {});
-        return cookies[key];
-    },
-    setItem: (key, value) => {
-        document.cookie = `${key}=${value}; expires=Thu, 31 Dec 2055 12:00:00 UTC; path=/`
-    }
-}
-
-const storageType = cookieStorage;
-const consentPropertyName = 'cookie_consent';
-
-const shouldShowPopup = () => !storageType.getItem(consentPropertyName);
-const saveToStorage = () => storageType.setItem(consentPropertyName, true);
-
-window.onload = () => {
-    const consentPopup = document.getElementById('consent-popup');
-    const acceptBtn = document.getElementById('accept');
-
-    const acceptFn = event => {
-        saveToStorage(storageType);
-        consentPopup.classList.add('hidden');
-    }
-
-    acceptBtn.addEventListener('click', acceptFn);
-
-    if (shouldShowPopup(storageType)) {
-        setTimeout(() => {
-            consentPopup.classList.remove('hidden');
-        }, 1000);
-    }
-
-};
 
 $(document).ready(function(){
 
@@ -70,3 +33,27 @@ function showtime(timerID, timerRunning){
 	timerID = setTimeout("showtime()",1000)
 	timerRunning = true
 }
+
+<!-- Sidebar resize script -->
+$(document).ready(function() {
+    const sidebar = document.querySelector('.content-section > section');
+    const content = document.querySelector('.content-wrapper');
+    const mainContainer = document.querySelector('.content-section');
+    const footer = document.querySelector('#footer');
+    const margin = 80; // Adjust this value as needed
+// Delay the logging to ensure styles are computed
+    setTimeout(() => {
+        console.log(mainContainer);
+        const computedStyles = window.getComputedStyle(mainContainer);
+        console.log(computedStyles);
+        console.log(computedStyles.marginBottom);
+
+        if (content.offsetHeight > window.innerHeight) {
+            sidebar.style.height = (content.offsetHeight) + 'px';
+        } else {
+            sidebar.style.height = (content.offsetHeight) + 'px';
+            const contentMargin = parseInt(computedStyles.marginBottom);
+            sidebar.style.height = (content.offsetHeight + contentMargin) + 'px';
+        }
+    }, 1);
+});

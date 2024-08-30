@@ -42,8 +42,8 @@
 
 <!-- Navbar -->
 <header class="site-header">
-    <nav class="navbar navbar-expand-md card rounded-0 card-header" style="background-color: var(--bs-content-bg); border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
-        <div class="container-fluid justify-content-center">
+    <nav class="navbar navbar-expand-md card rounded-0" style="border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
+        <div class="container-fluid justify-content-center px-0">
             <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
                 <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36"/>
             </a>
@@ -65,18 +65,18 @@
                         <a class="nav-link menu-link" href="{% url 'fumetsu-about' %}">O nas</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav ms-auto d-flex">
 
+                <ul class="navbar-nav ms-auto d-flex">
                     <!-- Dropdown usera -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item dropdown p-0">
+                        <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
                             {% if user.is_authenticated %}
-                                <img src="{{ user.profile.image.url }}" class="rounded-circle" height="30" width="30" alt="Profile picture">
+                                <img src="{{ user.profile.image.url }}" class="rounded-circle" height="40" width="40" alt="Profile picture">
                             {% else %}
-                                <i class="fas fa-user"></i>
+                                <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle" height="40" width="40" alt="Profile picture">
                             {% endif %}
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end mt-md-2">
+                        <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
                             {% if user.is_authenticated%}
                             <li><a class="dropdown-item" href="{% url 'user-inf' user.username %}">Profil</a></li>
                             <li>
@@ -91,20 +91,6 @@
                             {% endif %}
                         </ul>
                     </li>
-
-                    <!-- Dropdown staff -->
-                    {% if user|has_group:"Informator" or user|has_group:"Uploader" or user|has_group:"content_creator" %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-cog"></i>
-                        </a>
-                    <ul class="dropdown-menu dropdown-menu-end mt-md-2 rounded-top-0">
-{#                        <li><a class="dropdown-item" href="{% url 'Cre-info' %}">Dodaj posta</a></li>#}
-{#                        <li><a class="dropdown-item" href="{% url 'Cre-ani'  %}">Nowy Odc</a></li>#}
-{#                        <li><a class="dropdown-item" href="{% url 'ed-an' %}">Popraw Anime</a></li>#}
-                        <li><a class="dropdown-item" href="{% url 'lnk-err' %}">Spr skargi url</a></li>
-                    </ul>
-                  {% endif %}
                 </ul>
           </div>
         </div>

@@ -40,6 +40,8 @@
         return null;
     }
 
+    console.log(getCookie('cookiesAccepted'));
+
     // Show cookie consent modal if not accepted yet
     if(getCookie('cookiesAccepted') === null){
         $('#cookieModal').modal('show');

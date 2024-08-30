@@ -2,26 +2,24 @@
 {% load utils_extras %}
 {% load static %}
 {% load poll_extras %}
+
 {% block content %}
-<div class="col-12 col-md-7 col-lg-9">
-    <h2 class="mb-4" >Aktualności</h2>
-    <div class="d-flex flex-column align-items-center gap-4">
-    {% for post in posts %}
-        <div class="card announcements-card overflow-hidden">
-            <div class="d-flex flex-column">
-                <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
-                    <h4 class="card-title mb-0">{{ post.title }}</h4>
-                    <h6 class="card-title fw-normal text-muted mb-0 ms-auto">{{ post.date_posted|date:"d.m.o" }} </h6>
-                </div>
-                <div class="card-body px-4">
-                    {{ post.content|convert_markdown|safe }}
-                    <a href="{{ post.image.url }}" target="_blank" style="width: 30%; display: inline-block">
-                        <img src="{{ post.image.url }}" alt="Announcement image">
-                    </a>
-                </div>
+<div class="d-flex flex-column align-items-center gap-4">
+{% for post in announcements %}
+    <div class="card announcements-card overflow-hidden">
+        <div class="d-flex flex-column">
+            <div class="card-header d-flex flex-row align-items-center gap-3 px-4 py-2">
+                <h4 class="card-title mb-0 py-1">{{ post.title }}</h4>
+                <h6 class="card-title fw-normal text-muted mb-0 ms-auto">{{ post.date_posted|date:"d.m.o" }} </h6>
+            </div>
+            <div class="card-body px-4">
+                {{ post.content|convert_markdown|safe }}
+                <a href="{{ post.image.url }}" target="_blank" style="width: 30%; display: inline-block">
+                    <img src="{{ post.image.url }}" alt="Announcement image">
+                </a>
             </div>
         </div>
-    {% endfor %}
     </div>
+{% endfor %}
 </div>
 {% endblock content %}

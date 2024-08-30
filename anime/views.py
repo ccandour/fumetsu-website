@@ -26,6 +26,7 @@ from fumetsu.ban import check_ban, Nap_time, Is_member, Get_color
 from django.contrib.auth import logout
 import math
 
+
 def search_anime(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         search_text = request.POST.get('search_text')
@@ -42,18 +43,21 @@ def search_anime(request):
         if any(tag.strip() for tag in tags):
             # Check if the series has all the selected tags
             for series in query_set:
-                series_tags = Tags.objects.filter(anime_anilist_id=series.anilist_id).values_list('label_polish', flat=True)
+                series_tags = Tags.objects.filter(anime_anilist_id=series.anilist_id).values_list('label_polish',
+                                                                                                  flat=True)
                 if not set(tags).issubset(set(series_tags)):
                     query_set = query_set.exclude(anilist_id=series.anilist_id)
 
         # Return appropriate json response
         if len(query_set) > 0:
-            response = json.loads(json.dumps(sorted(list(query_set), key=lambda x: x.rating, reverse=True), cls=AnimeSeriesJSONEncoder))
+            response = json.loads(
+                json.dumps(sorted(list(query_set), key=lambda x: x.rating, reverse=True), cls=AnimeSeriesJSONEncoder))
         else:
             response = 'No anime found.'
 
         return JsonResponse({'data': response})
     return JsonResponse({})
+
 
 def redirect_legacy_anime(request, anime_name, ep=None):
     if ep:
@@ -270,7 +274,7 @@ import json
 
 class List(ListView):
     model = Anime_list
-    context_object_name = 'posts'
+    context_object_name = 'series'
     template_name = 'list.html'
     fields = ['content']
 
@@ -289,56 +293,8 @@ class List(ListView):
         context['tags'] = sorted(set(list(Tags.objects.all().values_list('label_polish', flat=True))))
 
         context['search_term'] = self.request.GET.get('search')
-        context['search_tags'] = [tag.strip().title() for tag in self.request.GET.get('tags').replace('+', ' ').split()] if self.request.GET.get('tags') else []
-
+        context['search_tags'] = [tag.strip().title() for tag in
+                                  self.request.GET.get('tags').replace('+', ' ').split()] if self.request.GET.get(
+            'tags') else []
 
         return context
-
-    def post(self, request, *args, **kwargs):
-        form = QueryTags(request.POST)
-
-        if 'page_ch' in request.POST:
-            self.request.session['page'] = int(request.POST.get('page_ch')) - 1
-
-        # Clear the session (filters) if requested
-        elif 'ses_cl' in request.POST:
-            self.request.session['page'] = 0
-            self.request.session.pop('tags_nm', None)
-            self.request.session.pop('tags', None)
-            return redirect("anime-list")
-
-        # Change the number of items per page
-        elif 'page_12' in request.POST:
-            self.request.session['ile_pozycji'] = 12
-            self.request.session['page'] = 0
-        elif 'page_24' in request.POST:
-            self.request.session['ile_pozycji'] = 24
-            self.request.session['page'] = 0
-        elif 'page_48' in request.POST:
-            self.request.session['ile_pozycji'] = 48
-            self.request.session['page'] = 0
-
-        # Set the initial page to 0
-        elif form.is_valid():
-            self.request.session['page'] = 0
-
-            if form.cleaned_data.get('name') and form.cleaned_data.get('ch_box'):
-                self.request.session['tags_nm'] = form.cleaned_data.get('name')
-                tags = [ix.title for ix in form.cleaned_data.get('ch_box')]
-                self.request.session['tags'] = tags
-
-            elif form.cleaned_data.get('name'):
-                self.request.session.pop('tags', None)
-                self.request.session['tags_nm'] = form.cleaned_data.get('name')
-
-            elif form.cleaned_data.get('ch_box'):
-                self.request.session.pop('tags_nm', None)
-                tags = [ix.title for ix in form.cleaned_data.get('ch_box')]
-                self.request.session['tags'] = tags
-                print(f"Search set - tags: {self.request.session['tags']}")
-
-        else:
-            messages.error(request, 'Nie podałeś nic do wyszukiwania')
-            print("Form is not valid")
-
-        return redirect("anime-list")
