@@ -2,9 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 import uuid
-from PIL import Image, ImageSequence
-from django_cleanup import cleanup
-from django.core.validators import MaxValueValidator, MinValueValidator
+from PIL import Image
+
 
 from users.models import Profile
 
@@ -19,7 +18,7 @@ class Relation(models.Model):
         return f'child: {self.child_series_id} |  ->  | parent: {self.parent_series_id} | -> | type: {self.type}'
 
 
-class Anime_list(models.Model):
+class AnimeSeries(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     anilist_id = models.CharField(max_length=100, null=True, blank=True)
@@ -38,22 +37,9 @@ class Anime_list(models.Model):
         return f'{self.web_name}'
 
 
-class Harmonogram(models.Model):
+class SeriesComment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    key_map = models.ForeignKey(Anime_list, on_delete=models.CASCADE)
-    content = models.TextField()
-    day = models.IntegerField(
-        default=1,
-        validators=[MaxValueValidator(100), MinValueValidator(1)]
-    )
-
-    def __str__(self):
-        return f'{self.key_map}'
-
-
-class Series_comment(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    key_map = models.ForeignKey(Anime_list, on_delete=models.CASCADE, null=True)
+    key_map = models.ForeignKey(AnimeSeries, on_delete=models.CASCADE, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     content = models.CharField(max_length=254)
@@ -62,7 +48,7 @@ class Series_comment(models.Model):
         return (f'post {self.author}, {self.content} do anime {self.key_map}.')
 
 
-class Info_bd(models.Model):
+class Announcement(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     idd = models.IntegerField()
     title = models.CharField(max_length=100)
@@ -85,9 +71,9 @@ class Info_bd(models.Model):
         return self.title
 
 
-class Post_comment(models.Model):
+class PostComment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    post_map = models.ForeignKey(Info_bd, on_delete=models.CASCADE, null=True)
+    post_map = models.ForeignKey(Announcement, on_delete=models.CASCADE, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     content = models.CharField(max_length=254)
@@ -96,15 +82,15 @@ class Post_comment(models.Model):
         return (f'post {self.author}, {self.content} do anime {self.post_map}.')
 
 
-class Url_redirects(models.Model):
+class UrlRedirect(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     old_url = models.CharField(max_length=100)
     new_url = models.CharField(max_length=100)
 
 
-class Staff_credits(models.Model):
+class StaffCredit(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    series = models.ForeignKey(Anime_list, on_delete=models.CASCADE, null=True)
+    series = models.ForeignKey(AnimeSeries, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     role = models.CharField(max_length=100)
 

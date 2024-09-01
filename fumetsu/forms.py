@@ -18,5 +18,5 @@ class EditCommentForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Post_comment
+        model = PostComment
         fields = ['content']

@@ -1,7 +1,7 @@
 from django.db import migrations, models, transaction
 import time
-from anime.models import Tags_map, Tags
-from fumetsu.models import Anime_list
+from anime.models import Tag
+from fumetsu.models import AnimeSeries
 from utils.anilist import get_series_by_id
 from utils.utils import tag_label_to_polish
 
@@ -9,19 +9,19 @@ tags_to_create = []
 
 def clear_and_import_tags(apps, schema_editor):
     with transaction.atomic():
-        db_anime = Anime_list.objects.all()
+        db_anime = AnimeSeries.objects.all()
         for series in db_anime:
             print(f'Getting tags for {series.name_english}')
             time.sleep(1)
             anilist_series = get_series_by_id(series.anilist_id)
             for tag in anilist_series.genres:
-                tag_instance = Tags(
+                tag_instance = Tag(
                     anime_anilist_id=series.anilist_id,
                     label=tag,
                     label_polish=tag_label_to_polish(tag)
                 )
                 tags_to_create.append(tag_instance)
-        Tags.objects.bulk_create(tags_to_create)
+        Tag.objects.bulk_create(tags_to_create)
 
 class Migration(migrations.Migration):
     dependencies = [

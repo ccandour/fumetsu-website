@@ -1,6 +1,6 @@
 from django import forms
-from fumetsu.models import Series_comment
-from .models import Episode_comment
+from fumetsu.models import SeriesComment
+from .models import EpisodeComment
 
 
 class CreateComment(forms.ModelForm):
@@ -16,7 +16,7 @@ class CreateComment(forms.ModelForm):
         )
 
     class Meta:
-        model = Series_comment
+        model = SeriesComment
         fields = ['content']
 
 
@@ -33,5 +33,5 @@ class CreateCommentEp(forms.ModelForm):
         )
 
     class Meta:
-        model = Episode_comment
+        model = EpisodeComment
         fields = ['content']

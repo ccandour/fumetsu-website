@@ -4,12 +4,12 @@ from django.contrib import messages
 
 import os
 
-from fumetsu.models import Staff_credits
+from fumetsu.models import StaffCredit
 from django.views.generic.base import TemplateView
 from anime.forms import *
 from .forms import *
 from datetime import datetime, timezone
-from anime.models import Episode_comment
+from anime.models import EpisodeComment
 from django.db.models import Q
 
 from django.contrib.auth import authenticate, login, update_session_auth_hash
@@ -181,7 +181,7 @@ class EditProfile(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        is_staff = True if self.request.user.profile.id in Staff_credits.objects.values_list('user_id', flat=True) or self.request.user.is_superuser else False
+        is_staff = True if self.request.user.profile.id in StaffCredit.objects.values_list('user_id', flat=True) or self.request.user.is_superuser else False
 
         context['username_form'] = UsernameUpdateForm(instance=self.request.user)
         context['mail_form'] = MailUpdateForm(instance=self.request.user)
@@ -250,15 +250,15 @@ class ProfilePage(TemplateView):
         context['q_profile'] = q_profile
 
         credits_list = []
-        db_credits = Staff_credits.objects.filter(user=q_profile)
+        db_credits = StaffCredit.objects.filter(user=q_profile)
         for credit in db_credits:
             credit_tuple = (credit.series, credit.role)
             credits_list.append(credit_tuple)
         context['credits'] = list(reversed(credits_list)) if credits_list else []
 
         context['com_ed'] = CreateComment()
-        context['com_ser'] = list(reversed(list(Series_comment.objects.filter(author=q_user))))
-        context['com_ep'] = list(reversed(list(Episode_comment.objects.filter(author=q_user))))
+        context['com_ser'] = list(reversed(list(SeriesComment.objects.filter(author=q_user))))
+        context['com_ep'] = list(reversed(list(EpisodeComment.objects.filter(author=q_user))))
         context['ban_form'] = BanForm()
         return context
 

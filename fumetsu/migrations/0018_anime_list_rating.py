@@ -3,11 +3,11 @@ import time
 
 from django.db import migrations, models
 
-from fumetsu.models import Anime_list
+from fumetsu.models import AnimeSeries
 from utils.anilist import get_series_by_id
 
 def add_rating(apps, schema_editor):
-    db_series = Anime_list.objects.all()
+    db_series = AnimeSeries.objects.all()
     for series in db_series:
         time.sleep(2)  # Be mindful of rate limiting
         anilist_id = series.anilist_id

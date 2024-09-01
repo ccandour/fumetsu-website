@@ -1,9 +1,8 @@
 from django.contrib import admin
 from .models import *
 
-admin.site.register(Post)
-admin.site.register(Odc_name)
-admin.site.register(Anime_url)
-admin.site.register(Tags)
-admin.site.register(Episode_comment)
-admin.site.register(Player_valid)
+admin.site.register(AnimePost)
+admin.site.register(AnimeEpisode)
+admin.site.register(Player)
+admin.site.register(Tag)
+admin.site.register(EpisodeComment)

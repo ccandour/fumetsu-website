@@ -3,14 +3,14 @@
 from django.conf import settings
 from django.db import migrations
 
-from anime.models import Odc_name
-from fumetsu.models import Anime_list
+from anime.models import AnimeEpisode
+from fumetsu.models import AnimeSeries
 
 
 def fix_episode_numbering(apps, schema_editor):
-    db_series = Anime_list.objects.all()
+    db_series = AnimeSeries.objects.all()
     for series in db_series:
-        episodes = Odc_name.objects.filter(key_map=series)
+        episodes = AnimeEpisode.objects.filter(key_map=series)
         for i, episode in enumerate(episodes):
             episode.ep_nr = i + 1
             episode.save()

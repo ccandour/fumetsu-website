@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 
-from fumetsu.models import Url_redirects
+from fumetsu.models import UrlRedirect
 
 
 class AnimeUrlConverter:

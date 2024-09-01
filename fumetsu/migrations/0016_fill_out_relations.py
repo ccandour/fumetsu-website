@@ -4,7 +4,7 @@ import uuid
 
 from django.db import migrations, models
 
-from fumetsu.models import Anime_list, Relation
+from fumetsu.models import AnimeSeries, Relation
 from utils import anilist
 
 
@@ -12,7 +12,7 @@ from django.db import transaction
 
 relations_to_create = []
 def fill_out_the_relations_from_anilist(apps, schema_editor):
-    db_series = Anime_list.objects.all()
+    db_series = AnimeSeries.objects.all()
     db_anilist_ids = [series.anilist_id for series in db_series if series.anilist_id]
     print(db_anilist_ids)
 

@@ -19,8 +19,8 @@ class Profile(models.Model):
         return f'Profil {self.user.username}'
 
     def check_staff(self):
-        from fumetsu.models import Staff_credits
-        if self.user.is_superuser or self.id in Staff_credits.objects.values_list('user_id', flat=True):
+        from fumetsu.models import StaffCredit
+        if self.user.is_superuser or self.id in StaffCredit.objects.values_list('user_id', flat=True):
             return True
 
         return False

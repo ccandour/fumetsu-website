@@ -75,10 +75,10 @@ def tag_label_to_english(tag):
 
 class AnimeSeriesJSONEncoder(DjangoJSONEncoder):
     def default(self, obj):
-        from fumetsu.models import Anime_list
-        from anime.models import Tags
-        if isinstance(obj, Anime_list):
-            tags = list(Tags.objects.filter(anime_anilist_id=obj.anilist_id).values_list('label_polish', flat=True))
+        from fumetsu.models import AnimeSeries
+        from anime.models import Tag
+        if isinstance(obj, AnimeSeries):
+            tags = list(Tag.objects.filter(anime_anilist_id=obj.anilist_id).values_list('label_polish', flat=True))
 
             return {
                 "name_english": (

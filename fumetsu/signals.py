@@ -10,6 +10,6 @@ def create_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_info(sender, instance, **kwargs):
-    instance.Info_bd.save()
+    instance.Announcement.save()
 
 """

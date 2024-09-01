@@ -4,26 +4,26 @@ from django.views.generic.base import TemplateView
 
 from .forms import *
 from django.contrib import messages
-from anime.models import Episode_comment
+from anime.models import EpisodeComment
 
-from anime.models import Post
+from anime.models import AnimePost
 
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 
 class Home(ListView):
-    model = Post
+    model = AnimePost
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['anime'] = Post.objects.all().order_by('-odc_nm__date_posted')[:12]
+        context['anime'] = AnimePost.objects.all().order_by('-odc_nm__date_posted')[:12]
         return context
 
 
 class About(ListView):
-    model = Post
+    model = AnimePost
     template_name = 'about.html'
     fields = ['content']
 
@@ -36,15 +36,15 @@ class About(ListView):
         translators = []
         editors = []
 
-        db_credits = Staff_credits.objects.all()
+        db_credits = StaffCredit.objects.all()
         for credit in db_credits:
             if credit.role == 'Tłumaczenie' and [credit.user, len(list(
-                    Staff_credits.objects.filter(user=credit.user, role='Tłumaczenie')))] not in translators:
+                    StaffCredit.objects.filter(user=credit.user, role='Tłumaczenie')))] not in translators:
                 translators.append(
-                    [credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Tłumaczenie')))])
+                    [credit.user, len(list(StaffCredit.objects.filter(user=credit.user, role='Tłumaczenie')))])
             elif credit.role == 'Korekta' and [credit.user, len(list(
-                    Staff_credits.objects.filter(user=credit.user, role='Korekta')))] not in editors:
-                editors.append([credit.user, len(list(Staff_credits.objects.filter(user=credit.user, role='Korekta')))])
+                    StaffCredit.objects.filter(user=credit.user, role='Korekta')))] not in editors:
+                editors.append([credit.user, len(list(StaffCredit.objects.filter(user=credit.user, role='Korekta')))])
 
         translators.sort(key=lambda x: x[1], reverse=True)
         editors.sort(key=lambda x: x[1], reverse=True)
@@ -57,14 +57,14 @@ class About(ListView):
 
 
 class Announcements(ListView):
-    model = Post
+    model = AnimePost
     context_object_name = 'announcements'
-    queryset = Info_bd.objects.all().order_by('-date_posted')
+    queryset = Announcement.objects.all().order_by('-date_posted')
     template_name = 'announcements.html'
 
 
 class PrivacyPolicy(ListView):
-    model = Post
+    model = AnimePost
     template_name = 'privacy_policy.html'
 
     def get_context_data(self, **kwargs):
@@ -73,7 +73,7 @@ class PrivacyPolicy(ListView):
 
 
 class TermsOfService(ListView):
-    model = Post
+    model = AnimePost
     template_name = 'terms_of_service.html'
 
     def get_context_data(self, **kwargs):
@@ -83,12 +83,12 @@ class TermsOfService(ListView):
 
 class DeleteComment(TemplateView):
     def post(self, request, *args, **kwargs):
-        episode_comments = Episode_comment.objects.filter(id=kwargs['pk'])
+        episode_comments = EpisodeComment.objects.filter(id=kwargs['pk'])
         if episode_comments and (episode_comments.first().author == request.user or request.user.is_superuser):
             episode_comments.delete()
             messages.success(request, 'Komentarz usunięty.')
         else:
-            series_comments = Series_comment.objects.filter(id=kwargs['pk'])
+            series_comments = SeriesComment.objects.filter(id=kwargs['pk'])
             if series_comments and (series_comments.first().author == request.user or request.user.is_superuser):
                 series_comments.delete()
                 messages.success(request, 'Komentarz usunięty.')
@@ -106,7 +106,7 @@ class DeleteComment(TemplateView):
 
 
 class EditComment(TemplateView):
-    model = Post_comment
+    model = PostComment
     template_name = 'edit_comment.html'
     referer = ''
 
@@ -116,14 +116,14 @@ class EditComment(TemplateView):
             self.request.session['previous_referer'] = self.request.META['HTTP_REFERER']
 
         context = super().get_context_data(**kwargs)
-        episode_comments = Episode_comment.objects.filter(id=kwargs['pk'])
+        episode_comments = EpisodeComment.objects.filter(id=kwargs['pk'])
         if episode_comments and (episode_comments.first().author == self.request.user):
             context['form'] = EditCommentForm(instance=episode_comments.first())
             context['comment'] = episode_comments.first()
             context['type'] = 'episode'
             return context
         else:
-            series_comments = Series_comment.objects.filter(id=kwargs['pk'])
+            series_comments = SeriesComment.objects.filter(id=kwargs['pk'])
             if series_comments and (series_comments.first().author == self.request.user):
                 context['form'] = EditCommentForm(instance=series_comments.first())
                 context['comment'] = series_comments.first()
@@ -133,7 +133,7 @@ class EditComment(TemplateView):
                 redirect('fumetsu-home')
 
     def post(self, request, *args, **kwargs):
-        episode_comments = Episode_comment.objects.filter(id=kwargs['pk'])
+        episode_comments = EpisodeComment.objects.filter(id=kwargs['pk'])
         if episode_comments and (episode_comments.first().author == request.user):
             form = EditCommentForm(request.POST, instance=episode_comments.first())
             if form.is_valid():
@@ -142,7 +142,7 @@ class EditComment(TemplateView):
             else:
                 messages.error(request, 'Nie udało się zaktualizować komentarza.')
         else:
-            series_comments = Series_comment.objects.filter(id=kwargs['pk'])
+            series_comments = SeriesComment.objects.filter(id=kwargs['pk'])
             if series_comments and (series_comments.first().author == request.user):
                 form = EditCommentForm(request.POST, instance=series_comments.first())
                 if form.is_valid():
