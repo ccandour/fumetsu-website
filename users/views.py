@@ -243,7 +243,7 @@ class profile(TemplateView):
 
             ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile).save(commit=True)
 
-        if username_form.is_valid() and mail_form.is_valid() and profile_form.is_valid():
+        if (username_form.is_valid() or not username_form.has_changed()) and profile_form.is_valid():
             messages.success(request, f'Zmiany zostały zapisane.')
             return redirect('user-inf', request.user.username)
         else:

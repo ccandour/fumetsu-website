@@ -32,7 +32,7 @@
     </div>
 </div>
 
-    <!-- Relations -->
+<!-- Credits -->
 {% if credits %}
 <div class="card mb-4">
     <div class="card-header d-flex flex-row align-items-center">
@@ -67,11 +67,11 @@
     <div class="card-header d-flex flex-row align-items-center">
         <h4 class="card-title mb-0 py-1">Komentarze ({{ com_ser|add_two_sizes:com_ep }}):</h4>
     </div>
-    <div id="Section_comm" class="d-flex flex-column gap-4 card-body">
+    <div class="d-flex flex-column gap-4 card-body">
         {% for com in com_ser %}
             <a href="{% url 'anime-nm' com.key_map.web_name %}">
                 <div class="d-flex flex-row align-items-start">
-                    <img class="com_img me-3 mt-1" src="{{ com.key_map.image }}">
+                    <img class="com_img me-3 mt-1" src="{{ com.key_map.image }}" alt="Series Cover">
 
                     <div class="d-flex flex-column text-body">
                         <div class="d-flex flex-row gap-2">
@@ -88,7 +88,7 @@
         {% for com in com_ep %}
             <a href="{% url 'ep-nm' com.key_map_ep.key_map.web_name com.key_map_ep.ep_nr %}">
                 <div class="d-flex flex-row align-items-start">
-                    <img class="com_img me-3 mt-1" src="{{ com.key_map_ep.key_map.image }}">
+                    <img class="com_img me-3 mt-1" src="{{ com.key_map_ep.key_map.image }}" alt="Series Cover">
 
                     <div class="d-flex flex-column text-body">
                         <div class="d-flex flex-row gap-2">
@@ -105,7 +105,3 @@
 </div>
 {% endif %}
 {% endblock content %}
-
-{% block scripts %}
-{#<script src="{% static '/js/tooltips.js' %}" defer></script>#}
-{% endblock scripts %}

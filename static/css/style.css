@@ -637,9 +637,16 @@ margin: 0 5px;
 }
 
 .content-wrapper {
-    max-width: calc(100% - 320px); /* Adjust the width to account for the sidebar */
+    max-width: calc(100% - 280px); /* Adjust the width to account for the sidebar */
 	height: fit-content;
     overflow-x: hidden; /* Allow horizontal scrolling if needed */
+}
+
+.messages-wrapper {
+	max-width: calc(100% - 280px - 60px); /* Adjust the width to account for the sidebar */
+	min-width: calc(100% - 280px - 60px); /* Adjust the width to account for the sidebar */
+	height: fit-content;
+	overflow-x: hidden; /* Allow horizontal scrolling if needed */
 }
 
 .sixteen-nine-img {

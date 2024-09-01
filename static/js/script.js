@@ -34,14 +34,15 @@ function showtime(timerID, timerRunning){
 	timerRunning = true
 }
 
-<!-- Sidebar resize script -->
+// Sidebar resize script
 $(document).ready(function() {
     const sidebar = document.querySelector('.content-section > section');
     const content = document.querySelector('.content-wrapper');
     const mainContainer = document.querySelector('.content-section');
     const footer = document.querySelector('#footer');
     const margin = 80; // Adjust this value as needed
-// Delay the logging to ensure styles are computed
+
+	// Delay the logging to ensure styles are computed
     setTimeout(() => {
         console.log(mainContainer);
         const computedStyles = window.getComputedStyle(mainContainer);
@@ -56,4 +57,10 @@ $(document).ready(function() {
             sidebar.style.height = (content.offsetHeight + contentMargin) + 'px';
         }
     }, 1);
+});
+
+// Messages offset script
+document.addEventListener('DOMContentLoaded', function() {
+    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+    document.getElementById('messages-section').style.marginTop = (navbarHeight + 6) + 'px';
 });

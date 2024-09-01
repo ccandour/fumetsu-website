@@ -84,9 +84,9 @@
         <div class="card-header d-flex flex-row align-items-center">
             <h4 class="card-title mb-0 py-1">Sekcja komentarzy:</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body d-flex flex-column gap-4">
             {% if user.is_authenticated %}
-            <form class="mb-4" method="POST">
+            <form method="POST">
                 {% csrf_token %}
                 {{ comment_form|crispy }}
                 <button class="btn btn-success flex-row d-flex align-items-center gap-2" type="submit">
@@ -96,11 +96,11 @@
             </form>
             {% endif %}
             {% if comment %}
-            <div id="Section_comm" class="d-flex flex-column gap-4">
+            <div class="d-flex flex-column gap-4">
                 {% for com in comment %}
                     <div class="d-flex flex-row align-items-start">
                         <a href="{% url 'user-inf' com.author.username %}" style="color:{{com.color}}">
-                            <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}">
+                            <img class="com_img me-3 mt-1" src="{{ com.author.profile.image.url }}" alt="User Avatar">
                         </a>
 
                         <div class="d-flex flex-column">
