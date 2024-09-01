@@ -21,7 +21,6 @@ from django.conf.urls.static import static
 from users import views as user_views
 from django.contrib.auth.decorators import login_required, permission_required
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('profile/', user_views.profile.as_view(), name='profile'),
@@ -32,19 +31,15 @@ urlpatterns = [
     path('password-reset/', user_views.reset_password, name='password_reset'),
     path('password-reset-confirm/<uidb64>/<token>/', user_views.reset_password_confirm, name='password_reset_confirm'),
     path('profile/<slug:username>/', user_views.Profile_page.as_view(), name='user-inf'),
-    #path('profile_ed/', login_required(user_views.Profile_ed.as_view()), name='user-ed'),
     path('change-password/', user_views.change_password, name='password_change'),
 
     path('login/api/', include('social_django.urls', namespace='social')),
 
     path('', include('fumetsu.urls')),
     path('', include('anime.urls')),
-    path('', include('hentaiterment.urls')),
-    
 
 ]
 
 #if settings.DEBUG:
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-

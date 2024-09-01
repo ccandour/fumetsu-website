@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='anime_list',
-            name='napisy',
+            name='subtitles',
             field=models.FileField(blank=True, upload_to='archiwum/'),
         ),
     ]

@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('ep_nr', models.IntegerField()),
                 ('title', models.TextField()),
                 ('date_posted', models.DateTimeField(default=django.utils.timezone.now)),
-                ('napisy', models.FileField(blank=True, upload_to='napisy/')),
+                ('subtitles', models.FileField(blank=True, upload_to='subtitles/')),
                 ('key_map', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='fumetsu.Key_map')),
             ],
         ),

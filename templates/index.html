@@ -24,25 +24,4 @@
 {% endfor %}
 </div>
 
-
-<!-- 
-	<h2 >Aktualności</h2>
-
-	{% for post in info %}
-
-
-		<div class="col-12 col-lg-8 new-ep alt-bg float-start">
-			<img class="new-img float-start" src="{{ post.image.url }}">
-            <h4>{{ post.title }}</h4>
-            <p>{{ post.date_posted|date:"d.m.o" }}</p>
-            
-            <p>{{ post.content|truncatewords:15|safe}}</p>
-            
-            <a href="{% url 'fumetsu-infod' post.idd %}"> 
-            <button type="button" class="btn btn-op new-btn float-end">Sprawdź</button>
-            </a>
-        </div>
-
-	{% endfor %}
--->
 {% endblock content %}

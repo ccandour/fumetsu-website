@@ -1,3 +1,4 @@
+import json
 import sys
 
 from django.core.serializers.json import DjangoJSONEncoder
@@ -72,7 +73,7 @@ def redirect_legacy_anime(request, anime_name, ep=None):
             return redirect(f'anime-nm', url_redirect.new_url)
 
 
-class Anime_content(TemplateView):
+class Series(TemplateView):
     model = Anime_list
     template_name = 'series.html'
     fields = ['content']
@@ -93,7 +94,7 @@ class Anime_content(TemplateView):
         try:
             if ani.napisy:
                 if Nap_time(self.request.user) or Is_member(self.request.user):
-                    context['napisy'] = ani.napisy
+                    context['subtitles'] = ani.napisy
         except:
             pass
 
@@ -120,7 +121,7 @@ class Anime_content(TemplateView):
 
         context['comment_form'] = CreateComment()
 
-        context['ep'] = Odc_name.objects.filter(key_map_id=ani).order_by('ep_title')
+        context['ep'] = Odc_name.objects.filter(key_map_id=ani).order_by('ep_nr')
 
         db_tags = Tags.objects.filter(anime_anilist_id=ani.anilist_id).only("label")
 
@@ -166,7 +167,7 @@ class Anime_content(TemplateView):
         return redirect('anime-nm', self.kwargs['anime_name'])
 
 
-class Anime_episode(TemplateView):
+class Episode(TemplateView):
     model = Anime_list
     context_object_name = 'posts'
     template_name = 'ep.html'
@@ -196,9 +197,8 @@ class Anime_episode(TemplateView):
         context['odc_html'] = ep_query.ep_nr
 
         try:
-            if ep_query.napisy:
-                if Nap_time() or Is_member(self.request.user):
-                    context['napisy'] = ep_query.napisy
+            if ep_query.subtitles:
+                context['subtitles'] = ep_query.subtitles
         except:
             pass
 
@@ -209,67 +209,12 @@ class Anime_episode(TemplateView):
 
         context['comment_form'] = CreateCommentEp()
 
-        context['next'] = Odc_name.objects.filter(key_map_id=ani, ep_title__gt=ep_query.ep_title).order_by(
-            'ep_title').first()
-        context['prev'] = Odc_name.objects.filter(key_map_id=ani, ep_title__lt=ep_query.ep_title).order_by(
-            '-ep_title').first()
+        context['next'] = Odc_name.objects.filter(key_map_id=ani, ep_nr__gt=ep_query.ep_nr).order_by(
+            'ep_nr').first()
+        context['prev'] = Odc_name.objects.filter(key_map_id=ani, ep_nr__lt=ep_query.ep_nr).order_by(
+            '-ep_nr').first()
 
         return context
-
-    def post(self, request, *args, **kwargs):
-        form = CreateCommentEp(request.POST)
-        ani = get_object_or_404(Anime_list, web_name=self.kwargs['anime_name'])
-        ep_query = Odc_name.objects.filter(key_map_id=ani, ep_nr=self.kwargs['ep']).first()
-        if form.is_valid():
-            if len(form.cleaned_data.get('content')) > 9:
-                f_save = form.save(commit=False)
-                f_save.key_map_ep = ep_query
-                f_save.author = request.user
-                f_save.save()
-                messages.success(request, 'Dodatno komentarz.')
-            else:
-                messages.warning(request, 'Komentarz jest za krótki (minimum 10 znaków).')
-
-            if 'com_up_bt' in request.POST:
-                if len(form.cleaned_data.get('content')) > 9:
-                    idd = request.POST.get("idd", "")
-                    t_save = Episode_comment.objects.filter(key_map_ep=ep_query, id=idd).first()
-                    if t_save.author == request.user and idd:
-                        t_save.content = form.cleaned_data.get('content')
-                        t_save.date_posted = datetime.now()
-                        t_save.save()
-                        messages.success(request, 'Poprawiono komentarz')
-
-        elif 'com_up_del' in request.POST:
-            idd = request.POST.get("idd", "")
-            t_save = Episode_comment.objects.filter(key_map_ep=ep_query, id=idd).first()
-            if t_save.author == request.user and idd:
-                t_save.delete()
-                messages.success(request, 'Usunięto komentarz')
-            else:
-                messages.error(request, 'Nie udało się usunąć komentarza')
-
-        elif 'ply_error' in request.POST:
-            t_save = Player_valid.objects.filter(episode=ep_query).first()
-            if t_save:
-                t_save.ilosc += 1
-                t_save.save()
-            else:
-                Player_valid(key_map_ep=ep_query).save()
-            messages.success(request, 'Dodano skargę')
-
-        return redirect('ep-nm', self.kwargs['anime_name'], self.kwargs['ep'])
-
-
-from django.shortcuts import redirect
-from django.contrib import messages
-from django.contrib.auth import logout
-from django.db.models import Count
-import math
-from .models import Anime_list, Tags
-# from .forms import QueryTags
-from fumetsu.ban import check_ban
-import json
 
 
 class List(ListView):

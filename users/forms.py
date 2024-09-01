@@ -1,13 +1,11 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
-from django.forms import CharField, PasswordInput
 from django.utils.safestring import mark_safe
 from django_password_eye.widgets import PasswordEyeWidget
 
 from .models import Profile
 
-from django_recaptcha.fields import ReCaptchaField, ReCaptchaV2Checkbox
 from django_password_eye.fields import PasswordEye
 import datetime
 
@@ -50,10 +48,6 @@ class SignupForm(UserCreationForm):
         )
     )
 
-    #captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox(attrs={
-    #        'data-theme': 'dark',
-    #    })) 
-
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
@@ -81,10 +75,6 @@ class UserLoginForm(forms.Form):
             }
         )
     )
-
-    #captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox(attrs={
-    #        'data-theme': 'dark',
-    #    }))
 
     class Meta:
         fields = ['username', 'password']

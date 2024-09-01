@@ -2,16 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 from PIL import Image
-from django_cleanup import cleanup
 from django.utils import timezone
-
-from fumetsu.templatetags import utils_extras
+from utils.utils import generate_upload_path
 
 
 class Profile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to=utils_extras.generate_upload_path)
+    image = models.ImageField(default='default.jpg', upload_to=generate_upload_path)
     time_vip  = models.DateTimeField(default=timezone.now)
     nap_vip = models.DateTimeField(default=timezone.now)
     ban = models.DateTimeField(null=True, blank=True)
@@ -45,9 +43,9 @@ class Profile(models.Model):
         alphanumeric = [character for character in self.nick if character.isalnum()]
         self.web_name = "".join(alphanumeric)
 
-        size = [256,256] #wymiary 128 x 128
+        size = [256, 256]
         if User.objects.filter(is_superuser=True, username = self.user.username).first():
-            size = [1024,1024]
+            size = [1024, 1024]
 
         img = Image.open(self.image.path)
 

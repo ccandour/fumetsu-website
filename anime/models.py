@@ -2,7 +2,6 @@ from django.db import models
 import uuid
 from django.utils import timezone
 from fumetsu.models import Anime_list
-from django_cleanup import cleanup
 from PIL import Image
 from django.contrib.auth.models import User
 
@@ -11,10 +10,9 @@ class Odc_name(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     key_map = models.ForeignKey(Anime_list, on_delete=models.CASCADE, null=True)
     ep_nr = models.IntegerField(null=True, blank=True)
-    ep_title = models.FloatField()
     title = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
-    napisy = models.FileField(upload_to='napisy/', blank=True)
+    subtitles = models.FileField(upload_to='subtitles/', blank=True)
 
     def __str__(self):
         return (f'{self.key_map}. Ep nr: {self.ep_nr} tutuł: {self.title}.')
@@ -92,4 +90,4 @@ class Player_valid(models.Model):
     ilosc = models.IntegerField(default=1)
 
     def __str__(self):
-        return (f'anime {self.key_map_ep.key_map}, odc: {self.key_map_ep.ep_title}, i ilość: {self.ilosc}.')
+        return (f'anime {self.key_map_ep.key_map}, odc: {self.key_map_ep.ep_nr}, i ilość: {self.ilosc}.')

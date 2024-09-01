@@ -44,13 +44,13 @@ def signup(request):
             if User.objects.filter(email=form.cleaned_data.get('email')).first() or User.objects.filter(
                     username=form.cleaned_data['username']).first():
                 messages.error(request, f'Ten email lub nick już istnieje.')
-                return render(request, 'users/signup.html', {'form': form})
+                return render(request, 'signup.html', {'form': form})
             else:
                 user.is_active = False
                 user.username = form.cleaned_data['username']
                 user.save()
                 current_site = get_current_site(request)
-                message = render_to_string('users/signup_email.html', {
+                message = render_to_string('signup_email.html', {
                     'user': user,
                     'domain': current_site.domain,
                     'protocol': request.scheme,
@@ -66,9 +66,9 @@ def signup(request):
                 return redirect('fumetsu-home')
         else:
             messages.error(request, f'Nieprawidłowe dane.')
-            return render(request, 'users/signup.html', {'form': form})
+            return render(request, 'signup.html', {'form': form})
     else:
-        return render(request, 'users/signup.html', {'form': SignupForm()})
+        return render(request, 'signup.html', {'form': SignupForm()})
 
 
 def activate(request, uidb64, token):
@@ -114,10 +114,10 @@ def login_cas(request):
             except:
                 messages.success(request, f"Nie ma takiego konta.")
         else:
-            return render(request, 'users/login.html', {'form': form})
+            return render(request, 'login.html', {'form': form})
     else:
         form = UserLoginForm()
-    return render(request, 'users/login.html', {'form': form})
+    return render(request, 'login.html', {'form': form})
 
 
 def change_password(request):
@@ -146,7 +146,7 @@ def reset_password(request):
             if user:
                 current_site = get_current_site(request)
                 reset_token = default_token_generator.make_token(user)
-                message = render_to_string('users/password_reset_email.html', {
+                message = render_to_string('password_reset_email.html', {
                     'user': user,
                     'domain': current_site.domain,
                     'protocol': request.scheme,
@@ -161,7 +161,7 @@ def reset_password(request):
             messages.success(request, 'Na podany adres e-mail został wysłany link do resetowania hasła.')
             return redirect('fumetsu-home')
     else:
-        return render(request, 'users/password_reset.html', {'form': CustomPasswordResetForm()})
+        return render(request, 'password_reset.html', {'form': CustomPasswordResetForm()})
 
 
 def reset_password_confirm(request, uidb64, token, token_generator=default_token_generator):
@@ -184,7 +184,7 @@ def reset_password_confirm(request, uidb64, token, token_generator=default_token
     else:
         user = User.objects.get(pk=urlsafe_base64_decode(uidb64))
         form = CustomSetPasswordForm(user)
-        return render(request, 'users/password_reset_confirm.html', {'form': form})
+        return render(request, 'password_reset_confirm.html', {'form': form})
 
 
 def logout_view(request):

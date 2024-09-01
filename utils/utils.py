@@ -2,13 +2,17 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import QuerySet
 from slugify import slugify
 
-from anime.models import Tags
-from fumetsu.models import Anime_list
+
+def generate_upload_path(instance, filename):
+    file_extension = filename.split('.')[-1]
+    # Delete the old image
+    return f'profile_pics/{instance.user.username}.{file_extension}'
 
 
-def generate_web_name(anime: Anime_list):
+def generate_web_name(anime):
     title = anime.name_english if anime.name_english else anime.name_romaji
     return slugify(title)
+
 
 def translate_status(status):
     if status == 'FINISHED':
@@ -17,6 +21,7 @@ def translate_status(status):
         return 'Wychodzi'
     else:
         return status
+
 
 def tag_label_to_polish(tag):
     if tag == 'Action':
@@ -41,6 +46,7 @@ def tag_label_to_polish(tag):
         return 'Nadnaturalne'
     else:
         return tag
+
 
 def tag_label_to_english(tag):
     if tag == 'Akcja':
@@ -67,14 +73,16 @@ def tag_label_to_english(tag):
         return tag
 
 
-
 class AnimeSeriesJSONEncoder(DjangoJSONEncoder):
     def default(self, obj):
+        from fumetsu.models import Anime_list
+        from anime.models import Tags
         if isinstance(obj, Anime_list):
             tags = list(Tags.objects.filter(anime_anilist_id=obj.anilist_id).values_list('label_polish', flat=True))
 
             return {
-                "name_english": (obj.name_english.replace('"', '\\"') if obj.name_english else obj.name_romaji.replace('"', '\\"')),
+                "name_english": (
+                    obj.name_english.replace('"', '\\"') if obj.name_english else obj.name_romaji.replace('"', '\\"')),
                 "name_romaji": obj.name_romaji.replace('"', '\\"'),
                 "image": obj.image,
                 "tags": tags,

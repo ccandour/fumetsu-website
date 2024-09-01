@@ -34,8 +34,6 @@ class Anime_list(models.Model):
     episode_count = models.IntegerField(null=True, blank=True)
     rating = models.IntegerField(null=True, blank=True)
 
-    napisy = models.FileField(upload_to='archiwum/', blank=True)
-
     def __str__(self):
         return f'{self.web_name}'
 
@@ -70,7 +68,7 @@ class Info_bd(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
-    image = models.ImageField(default='akt_default.gif', upload_to='akt_post')
+    image = models.ImageField(default='default.jpg', upload_to='akt_post')
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
