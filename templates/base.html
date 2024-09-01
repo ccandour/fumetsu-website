@@ -38,7 +38,6 @@
 
 </head>
 <body class="bg-dark-subtle">
-<!-- Główny Kontener -->
 
 <!-- Navbar -->
 <header class="site-header">
@@ -67,7 +66,7 @@
                 </ul>
 
                 <ul class="navbar-nav ms-auto d-flex">
-                    <!-- Dropdown usera -->
+                    <!-- User dropdown -->
                     <li class="nav-item dropdown p-0">
                         <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
                             {% if user.is_authenticated %}
@@ -97,50 +96,51 @@
     </nav>
 </header>
 
+<!-- Messages -->
+<section class="container container-fluid px-0">
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <div class="alert alert-success d-flex align-items-center" role="alert">
+                <svg class="me-2" height="1.4em" width="1.4em" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                </svg>
+                <div>{{ message }}</div>
+            </div>
+        {% elif message.tags == 'danger' %}
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <svg class="me-2" height="1.4em" width="1.4em" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"></path>
+                </svg>
+                <div>{{ message }}</div>
+            </div>
+        {% else %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+</section>
+
 <!-- Page -->
-<section class="content-section container container-fluid px-0 mb-5">
-
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.tags == 'success' %}
-                <div class="alert alert-success d-flex align-items-center" role="alert">
-                    <svg class="me-2" height="1.4em" width="1.4em" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
-                    </svg>
-                    <div>{{ message }}</div>
-                </div>
-            {% elif message.tags == 'danger' %}
-                <div class="alert alert-danger d-flex align-items-center" role="alert">
-                    <svg class="me-2" height="1.4em" width="1.4em" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"></path>
-                    </svg>
-                    <div>{{ message }}</div>
-                </div>
-            {% else %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-
+<section class="content-section container container-fluid px-0 mb-auto">
     <!-- Content -->
     <div>
         {% block content%}{% endblock content %}
     </div>
-
 </section>
 
-<div class="clearfix"></div>
-
-{#<!--Stopka-->#}
-<div class="clearfix"></div>
-<footer id="footer" class="gap-4 p-4 border-top">
+<!-- Footer -->
+<footer id="footer" class="gap-4 p-4 border-top mt-5">
     <a href="{% url 'fumetsu-terms-of-service' %}">Regulamin Serwisu</a>
     <a href="{% url 'fumetsu-privacy-policy' %}">Polityka prywatności</a>
-        <div class="">
-            <div class="float-end p-2 d-none d-md-block">© Fumetsu 2024 All Rights Reserved</div>
-        </div>
+    <div>© Fumetsu 2024 All Rights Reserved</div>
+    <div class="d-flex flex-row justify-content-between gap-4">
+        <a href="https://www.facebook.com/fumetsusubs/" target="_blank"><i class="fab fa-facebook-f fa-lg"></i></a>
+        <a href="https://discord.gg/t5phVKT" target="_blank"><i class="fab fa-discord fa-lg"></i></a>
+        <a href="https://patronite.pl/fumetsu" target="_blank"><i class="fa-solid fa-crown fa-lg"></i></a>
+    </div>
 </footer>
 
 </body>

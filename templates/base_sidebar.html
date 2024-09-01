@@ -66,7 +66,7 @@
                 </ul>
 
                 <ul class="navbar-nav ms-auto d-flex">
-                    <!-- Dropdown usera -->
+                    <!-- User dropdown -->
                     <li class="nav-item dropdown p-0">
                         <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
                             {% if user.is_authenticated %}
@@ -174,37 +174,20 @@
                 </a>
             {% endfor %}
         </div>
-{#        <a href="https://www.facebook.com/fumetsusubs/" target="_blank"><div class="social facebook text-bg-primary"><div></div><i class="fab fa-facebook-f"></i> Bądź na bieżąco!</div></a>#}
-{#        <a href="https://discord.gg/t5phVKT" target="_blank"><div class="social text-bg-secondary"><i class="fab fa-discord"></i> Dołącz do nas!</div></a>#}
-{#        <a href="https://patronite.pl/fumetsu" target="_blank"><div class="social text-bg-danger"><i class="fa-solid fa-crown"></i> Wesprzyj nas!</div></a>#}
-{#        <div class="on-air">#}
-{#            <div id="clock"></div>#}
-{#            <p id="schedule">Harmonogram</p>#}
-{#            {% for series in harmon %}#}
-{#            <a href="{% url 'anime-nm' series.key_map.web_name %}">#}
-{#            <div class="schedule-series">#}
-{#                <div class="fs-5 text-primary-emphasis">{{series.key_map.name_english}}</div><div>{{series.day}}, {{series.content}}</div>#}
-{#            </div>#}
-{#            </a>#}
-{#            {% endfor %}#}
-{#        </div>#}
     </section>
 </section>
 
 <!-- Footer -->
-<div class="clearfix"></div>
 <footer id="footer" class="gap-4 p-4 border-top mt-5">
     <a href="{% url 'fumetsu-terms-of-service' %}">Regulamin Serwisu</a>
     <a href="{% url 'fumetsu-privacy-policy' %}">Polityka prywatności</a>
-        <div class="">
-            <div class="float-end p-2 d-none d-md-block">© Fumetsu 2024 All Rights Reserved</div>
-        </div>
+    <div>© Fumetsu 2024 All Rights Reserved</div>
+    <div class="d-flex flex-row justify-content-between gap-4">
+        <a href="https://www.facebook.com/fumetsusubs/" target="_blank"><i class="fab fa-facebook-f fa-lg"></i></a>
+        <a href="https://discord.gg/t5phVKT" target="_blank"><i class="fab fa-discord fa-lg"></i></a>
+        <a href="https://patronite.pl/fumetsu" target="_blank"><i class="fa-solid fa-crown fa-lg"></i></a>
+    </div>
 </footer>
-
-
-{#<div id="consent-popup" class="hidden text-center">#}
-{#    Ta strona wykorzystuje pliki cookie. Korzystając z ni1ej, akceptujesz je. <a id="accept" href=""><button class="btn btn-op ml-4">Rozumiem</button></a>#}
-{#</div>#}
 
 </body>
 </html>
