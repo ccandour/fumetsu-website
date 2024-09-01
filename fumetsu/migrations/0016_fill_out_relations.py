@@ -17,7 +17,7 @@ def fill_out_the_relations_from_anilist(apps, schema_editor):
     print(db_anilist_ids)
 
     for series in db_series:
-        time.sleep(1)  # Be mindful of rate limiting
+        time.sleep(2)  # Be mindful of rate limiting
         if series.anilist_id:
             try:
                 anilist_series = anilist.get_series_by_id(series.anilist_id)

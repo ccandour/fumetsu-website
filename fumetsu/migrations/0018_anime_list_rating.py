@@ -9,7 +9,7 @@ from utils.anilist import get_series_by_id
 def add_rating(apps, schema_editor):
     db_series = Anime_list.objects.all()
     for series in db_series:
-        time.sleep(1)  # Be mindful of rate limiting
+        time.sleep(2)  # Be mindful of rate limiting
         anilist_id = series.anilist_id
         if anilist_id:
             series_data = get_series_by_id(anilist_id)
@@ -26,10 +26,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='anime_list',
-            name='rating',
-            field=models.IntegerField(blank=True, null=True),
-        ),
         migrations.RunPython(add_rating)
     ]

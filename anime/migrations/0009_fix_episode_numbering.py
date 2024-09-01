@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('anime', '0008_add_tags_label_polish'),
+        ('anime', '0007_clear_tags_and_drop_tags_map'),
     ]
 
     operations = [

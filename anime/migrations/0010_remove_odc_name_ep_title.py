@@ -11,13 +11,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Tags_map',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('title', models.TextField()),
-            ],
-        ),
         migrations.RemoveField(
             model_name='odc_name',
             name='ep_title',

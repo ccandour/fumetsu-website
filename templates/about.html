@@ -7,7 +7,7 @@
     </div>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 card-body">
         {% for member in administators %}
-            <a href="{% url 'user-inf' member.user.username %}">
+            <a href="{% url 'profile' member.user.username %}">
             <div class="card bg-body-secondary p-2 pe-3">
                 <div class="d-flex flex-row">
                     <img class="com_img me-3" src="{{ member.image.url }}" alt="Staff Image">
@@ -26,7 +26,7 @@
     </div>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 card-body">
         {% for member in translators %}
-            <a href="{% url 'user-inf' member.0.user.username %}">
+            <a href="{% url 'profile' member.0.user.username %}">
             <div class="card bg-body-secondary p-2 pe-3">
                 <div class="d-flex flex-row">
                     <img class="com_img me-3" src="{{ member.0.image.url }}" alt="Staff Image">
@@ -46,7 +46,7 @@
     </div>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4 card-body">
         {% for member in editors %}
-            <a href="{% url 'user-inf' member.0.user.username %}">
+            <a href="{% url 'profile' member.0.user.username %}">
             <div class="card bg-body-secondary p-2 pe-3">
                 <div class="d-flex flex-row">
                     <img class="com_img me-3" src="{{ member.0.image.url }}" alt="Staff Image">

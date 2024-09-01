@@ -3,21 +3,12 @@ from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 
 from .forms import *
-from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from anime.models import Episode_comment
 
-from django.forms import modelformset_factory
+from anime.models import Post
 
-from anime.models import Tags, Post, Player_valid
-from datetime import datetime
-
-from .ban import check_ban
-from django.contrib.auth import logout
-
-from django.db.models import Q
-
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 
@@ -37,11 +28,6 @@ class About(ListView):
     fields = ['content']
 
     def get_context_data(self, **kwargs):
-        try:
-            if check_ban(self.request.user):
-                logout(self.request)
-        except:
-            pass
 
         context = super().get_context_data(**kwargs)
 

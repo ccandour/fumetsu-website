@@ -44,7 +44,7 @@
     <nav class="navbar navbar-expand-md card rounded-0"  style="border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
         <div class="container-fluid justify-content-center px-0">
             <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
-                <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36"/>
+                <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36" alt="Fumetsu"/>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fas fa-bars"></span>
@@ -70,14 +70,14 @@
                     <li class="nav-item dropdown p-0">
                         <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
                             {% if user.is_authenticated %}
-                                <img src="{{ user.profile.image.url }}" class="rounded-circle" height="40" width="40" alt="Profile picture">
+                                <img src="{{ user.profile.image.url }}" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                             {% else %}
-                                <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle" height="40" width="40" alt="Profile picture">
+                                <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                             {% endif %}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
                             {% if user.is_authenticated%}
-                            <li><a class="dropdown-item" href="{% url 'user-inf' user.username %}">Profil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Profil</a></li>
                             <li>
                                 <form method="POST" action="{% url 'logout' %}">
                                     {% csrf_token %}
@@ -117,7 +117,7 @@
             </div>
         {% elif message.tags == 'danger' %}
             <div class="alert alert-danger d-flex align-items-center" role="alert">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <svg class="me-2" height="1.4em" width="1.4em" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
                 </svg>
                 <div>{{ message }}</div>

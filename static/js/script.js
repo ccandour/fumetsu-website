@@ -64,3 +64,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const navbarHeight = document.querySelector('.navbar').offsetHeight;
     document.getElementById('messages-section').style.marginTop = (navbarHeight + 6) + 'px';
 });
+
+// Initialize all tooltips on the page
+document.addEventListener('DOMContentLoaded', function () {
+	const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+	const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+		return new bootstrap.Tooltip(tooltipTriggerEl);
+	});
+});

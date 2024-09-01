@@ -125,6 +125,17 @@ class ProfileUpdateForm(forms.ModelForm):
             }
         ),
     )
+    color = forms.CharField(
+        max_length=7,
+        label=mark_safe('Kolor (dostępny dla <a href="https://www.patronite.pl/fumetsu" target="_blank">Patronów</a>)'),
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': '#000000',
+                "class": "form-control form-control-lg focus-ring focus-ring-primary"
+            }
+        ),
+        required=False,
+    )
     description = forms.CharField(
         max_length=1024,
         label=mark_safe('Opis (obsługuje <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown</a>)'),
@@ -138,7 +149,13 @@ class ProfileUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['image', 'description']
+        fields = ['image', 'color', 'description']
+
+    def __init__(self, staff=False, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if not staff:
+            self.fields['color'].widget.attrs['disabled'] = 'true'
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):

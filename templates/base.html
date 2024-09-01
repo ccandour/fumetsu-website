@@ -41,10 +41,10 @@
 
 <!-- Navbar -->
 <header class="site-header">
-    <nav class="navbar navbar-expand-md card rounded-0" style="border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
+    <nav class="navbar navbar-expand-md card rounded-0"  style="border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
         <div class="container-fluid justify-content-center px-0">
             <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
-                <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36"/>
+                <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36" alt="Fumetsu"/>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fas fa-bars"></span>
@@ -52,16 +52,16 @@
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active menu-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
+                        <a class="nav-link {% active_url 'fumetsu-home' %} menu-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active menu-link" href="{% url 'anime-list' %}">Anime</a>
+                        <a class="nav-link {% active_url 'anime-list' %} menu-link" href="{% url 'anime-list' %}">Anime</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="{% url 'fumetsu-announcements' %}">Aktualności</a>
+                        <a class="nav-link {% active_url 'fumetsu-announcements' %} menu-link" href="{% url 'fumetsu-announcements' %}">Aktualności</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="{% url 'fumetsu-about' %}">O nas</a>
+                        <a class="nav-link {% active_url 'fumetsu-about' %} menu-link" href="{% url 'fumetsu-about' %}">O nas</a>
                     </li>
                 </ul>
 
@@ -70,14 +70,14 @@
                     <li class="nav-item dropdown p-0">
                         <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
                             {% if user.is_authenticated %}
-                                <img src="{{ user.profile.image.url }}" class="rounded-circle" height="40" width="40" alt="Profile picture">
+                                <img src="{{ user.profile.image.url }}" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                             {% else %}
-                                <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle" height="40" width="40" alt="Profile picture">
+                                <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                             {% endif %}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
                             {% if user.is_authenticated%}
-                            <li><a class="dropdown-item" href="{% url 'user-inf' user.username %}">Profil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Profil</a></li>
                             <li>
                                 <form method="POST" action="{% url 'logout' %}">
                                     {% csrf_token %}

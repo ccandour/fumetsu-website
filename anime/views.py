@@ -21,11 +21,9 @@ from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 from datetime import datetime
 from django.db.models import Count, Q
-from django.forms import modelformset_factory
 
-from fumetsu.ban import check_ban, Nap_time, Is_member, Get_color
-from django.contrib.auth import logout
-import math
+from fumetsu.ban import get_color
+
 
 
 def search_anime(request):
@@ -79,24 +77,12 @@ class Series(TemplateView):
     fields = ['content']
 
     def get_context_data(self, **kwargs):
-        try:
-            if check_ban(self.request.user):
-                logout(self.request)
-        except:
-            pass
 
         context = super().get_context_data(**kwargs)
         ani = Anime_list.objects.filter(web_name=self.kwargs['anime_name']).first()
         context['series'] = ani
 
         context['form'] = CreateComment()
-
-        try:
-            if ani.napisy:
-                if Nap_time(self.request.user) or Is_member(self.request.user):
-                    context['subtitles'] = ani.napisy
-        except:
-            pass
 
         relations = []
         db_relations = Relation.objects.filter(parent_series_id=ani.anilist_id)
@@ -115,8 +101,8 @@ class Series(TemplateView):
         context['staff'] = staff
 
         comment = Series_comment.objects.filter(key_map_id=ani).order_by('-date_posted')
-        for comm in comment:
-            comm.color = Get_color(comm.author)
+        for com in comment:
+            com.color = com.author.profile.color
         context['comment'] = comment
 
         context['comment_form'] = CreateComment()
@@ -181,11 +167,6 @@ class Episode(TemplateView):
             return redirect('fumetsu-home')
 
     def get_context_data(self, **kwargs):
-        try:
-            if check_ban(self.request.user):
-                logout(self.request)
-        except:
-            pass
 
         context = super().get_context_data(**kwargs)
         ani = get_object_or_404(Anime_list, web_name=self.kwargs['anime_name'])
@@ -203,8 +184,8 @@ class Episode(TemplateView):
             pass
 
         comment = Episode_comment.objects.filter(key_map_ep=ep_query).order_by('-date_posted')
-        for comm in comment:
-            comm.color = Get_color(comm.author)
+        for com in comment:
+            com.color = com.author.profile.color
         context['comment'] = comment
 
         context['comment_form'] = CreateCommentEp()
@@ -216,6 +197,50 @@ class Episode(TemplateView):
 
         return context
 
+    def post(self, request, *args, **kwargs):
+        form = CreateCommentEp(request.POST)
+        ani = get_object_or_404(Anime_list, web_name=self.kwargs['anime_name'])
+        ep_query = Odc_name.objects.filter(key_map_id=ani, ep_nr=self.kwargs['ep']).first()
+        if form.is_valid():
+            if len(form.cleaned_data.get('content')) > 9:
+                f_save = form.save(commit=False)
+                f_save.key_map_ep = ep_query
+                f_save.author = request.user
+                f_save.save()
+                messages.success(request, 'Dodatno komentarz.')
+            else:
+                messages.warning(request, 'Komentarz jest za krótki (minimum 10 znaków).')
+
+            if 'com_up_bt' in request.POST:
+                if len(form.cleaned_data.get('content')) > 9:
+                    idd = request.POST.get("idd", "")
+                    t_save = Episode_comment.objects.filter(key_map_ep=ep_query, id=idd).first()
+                    if t_save.author == request.user and idd:
+                        t_save.content = form.cleaned_data.get('content')
+                        t_save.date_posted = datetime.now()
+                        t_save.save()
+                        messages.success(request, 'Poprawiono komentarz')
+
+        elif 'com_up_del' in request.POST:
+            idd = request.POST.get("idd", "")
+            t_save = Episode_comment.objects.filter(key_map_ep=ep_query, id=idd).first()
+            if t_save.author == request.user and idd:
+                t_save.delete()
+                messages.success(request, 'Usunięto komentarz')
+            else:
+                messages.error(request, 'Nie udało się usunąć komentarza')
+
+        elif 'ply_error' in request.POST:
+            t_save = Player_valid.objects.filter(episode=ep_query).first()
+            if t_save:
+                t_save.ilosc += 1
+                t_save.save()
+            else:
+                Player_valid(key_map_ep=ep_query).save()
+            messages.success(request, 'Dodano skargę')
+
+        return redirect('ep-nm', self.kwargs['anime_name'], self.kwargs['ep'])
+
 
 class List(ListView):
     model = Anime_list
@@ -224,13 +249,6 @@ class List(ListView):
     fields = ['content']
 
     def get_context_data(self, **kwargs):
-        # Check if user is banned
-        try:
-            if check_ban(self.request.user):
-                logout(self.request)
-                print("User banned, logging out")
-        except Exception as e:
-            print(f"Error checking ban: {e}")
 
         context = super().get_context_data(**kwargs)
 

@@ -1,13 +1,10 @@
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.tokens import default_token_generator, PasswordResetTokenGenerator
+from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 
 import os
-from django.shortcuts import get_object_or_404
 
-from fumetsu.models import Series_comment, Staff_credits
+from fumetsu.models import Staff_credits
 from django.views.generic.base import TemplateView
 from anime.forms import *
 from .forms import *
@@ -17,18 +14,15 @@ from django.db.models import Q
 
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 
-from django.contrib.auth.backends import ModelBackend
-
-from django.http import HttpResponse
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode, base36_to_int
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.contrib.auth.models import User
-from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.core.mail import EmailMessage
 
-from fumetsu.ban import check_ban, Get_color
+from fumetsu.ban import get_color
 from django.contrib.auth import logout
 
 import re
@@ -96,17 +90,6 @@ def login_cas(request):
             username = form.cleaned_data.get('username')
 
             try:
-                users = User.objects.get(username=username)
-                if users.is_active == False:
-                    now = datetime.now(timezone.utc)
-                    q_user = Profile.objects.filter(user=users)
-                    q_users = q_user.filter(Q(ban__isnull=True) | Q(ban__gt=now))
-                    if q_users.count() > 0 and q_user.first().ban != None:
-                        messages.success(request, f"jesteś zbanowany do {q_users.first().ban}")
-                    else:
-                        users.is_active = True
-                        users.save()
-
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
@@ -127,7 +110,7 @@ def change_password(request):
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Twoje hasło zostało pomyślnie zmienione!')
-            return redirect('user-inf', request.user.username)
+            return redirect('profile', request.user.username)
         else:
             messages.error(request, 'Zmiana hasła nie powiodła się.')
     else:
@@ -167,7 +150,7 @@ def reset_password(request):
 def reset_password_confirm(request, uidb64, token, token_generator=default_token_generator):
     if request.method == 'POST':
         user = User.objects.get(id=urlsafe_base64_decode(uidb64))
-        form = CustomSetPasswordForm(request.user, request.POST)\
+        form = CustomSetPasswordForm(request.user, request.POST)
 
         if form.is_valid() and token_generator.check_token(user, token):
             new_password = form.cleaned_data['new_password2']
@@ -175,11 +158,11 @@ def reset_password_confirm(request, uidb64, token, token_generator=default_token
             user = User.objects.get(pk=uid)
             user.set_password(new_password)
             user.save()
-            messages.success(request, 'Twoje haslo zostalo zmienione.')
+            messages.success(request, 'Twoje hasło zostało zmienione.')
             return redirect('fumetsu-home')
         else:
             print(f'User: {user.username} - Token: {token} - Valid: {token_generator.check_token(user, token)}')
-            messages.error(request, 'Nie udalo sie zmienic hasla.')
+            messages.error(request, 'Nie udało się zmienić hasła.')
             return redirect('fumetsu-home')
     else:
         user = User.objects.get(pk=urlsafe_base64_decode(uidb64))
@@ -193,15 +176,16 @@ def logout_view(request):
     return redirect('fumetsu-home')
 
 
-class profile(TemplateView):
-    template_name = 'profile.html'
+class EditProfile(TemplateView):
+    template_name = 'edit_profile.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        is_staff = True if self.request.user.profile.id in Staff_credits.objects.values_list('user_id', flat=True) or self.request.user.is_superuser else False
 
         context['username_form'] = UsernameUpdateForm(instance=self.request.user)
         context['mail_form'] = MailUpdateForm(instance=self.request.user)
-        context['p_form'] = ProfileUpdateForm(instance=self.request.user.profile)
+        context['p_form'] = ProfileUpdateForm(instance=self.request.user.profile, staff=is_staff)
         context['users'] = self.request.user
         context['r_valid'] = ["<hr>", "<br>", "<a>", "<center>"]
 
@@ -210,8 +194,8 @@ class profile(TemplateView):
     def post(self, request, *args, **kwargs):
 
         username_form = UsernameUpdateForm(request.POST, initial={'username': request.user.username})
-        mail_form = MailUpdateForm(request.POST, initial={'email': request.user.email})
         profile_form = ProfileUpdateForm(request.POST, request.FILES, initial={'image': request.user.profile.image,
+                                                                               'color': request.user.profile.color,
                                                                                'description': request.user.profile.description})
 
         # Username form
@@ -234,7 +218,7 @@ class profile(TemplateView):
 
         # Save description and image
         if profile_form.is_valid() and profile_form.has_changed():
-            if request.user.profile.image and request.user.profile.image.name != 'default.jpg':
+            if request.user.profile.image and request.user.profile.image.name != 'default.jpg' and profile_form.cleaned_data.get('image') != request.user.profile.image:
                 image_name = request.user.profile.image.name.replace("\\", "/");
                 if os.path.exists(image_name):
                     os.remove(image_name)
@@ -245,31 +229,23 @@ class profile(TemplateView):
 
         if (username_form.is_valid() or not username_form.has_changed()) and profile_form.is_valid():
             messages.success(request, f'Zmiany zostały zapisane.')
-            return redirect('user-inf', request.user.username)
+            return redirect('profile', request.user.username)
         else:
             return redirect('profile')
 
 
-class Profile_page(TemplateView):
+class ProfilePage(TemplateView):
     model = Profile
     context_object_name = 'posts'
-    template_name = 'user.html'
+    template_name = 'profile.html'
     fields = ['content']
-
-    def dispatch(self, *args, **kwargs):
-
-        try:
-            User.objects.get(username=self.kwargs['username'])
-            return super(Profile_page, self).dispatch(*args, **kwargs)
-        except:
-            return redirect('fumetsu-home')
 
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
         q_profile = Profile.objects.get(user__username=self.kwargs['username'])
         q_user = User.objects.get(id=q_profile.user.id)
-        q_user.color = Get_color(q_user)
+        q_user.color = get_color(q_user)
         context['f_user'] = q_user
         context['q_profile'] = q_profile
 
@@ -286,48 +262,3 @@ class Profile_page(TemplateView):
         context['ban_form'] = BanForm()
         return context
 
-    # def post(self, request, *args, **kwargs):
-    #     form = CreateComment(request.POST)
-    #     idd = request.POST.get("idd", "")
-    #     ban_form = BanForm(request.POST)
-    #     q_profile = Profile.objects.get(web_name=self.kwargs['user_name'])
-    #     users = User.objects.get(id=q_profile.user.id)
-    #
-    #     if ban_form.is_valid():
-    #         messages.success(request, users.is_active)
-    #
-    #         users.is_active = False
-    #         users.save()
-    #         prof = Profile.objects.filter(user=users).first()
-    #         prof.ban = ban_form.cleaned_data['ban']
-    #         prof.save()
-    #
-    #         messages.success(request, users.is_active)
-    #
-    #         messages.success(request, f'Zbanowano użytkownika')
-    #         return redirect('user-inf', self.kwargs['user_name'])
-    #
-    #     if form.is_valid():
-    #         if 'com_up_bt' in request.POST:
-    #
-    #             if len(form.cleaned_data.get('content')) > 9:
-    #                 t_save = Episode_comment.objects.filter(id=idd).first()
-    #                 if not t_save:
-    #                     t_save = Series_comment.objects.filter(id=idd).first()
-    #
-    #                 if t_save.author == users and idd:
-    #                     t_save.content = form.cleaned_data.get('content')
-    #                     t_save.date_posted = datetime.now()
-    #                     t_save.save()
-    #                     messages.success(request, f'Poprawiono komentarz')
-    #
-    #     elif 'com_up_del' in request.POST and idd:
-    #         t_save = Episode_comment.objects.filter(id=idd).first()
-    #         if not t_save:
-    #             t_save = Series_comment.objects.filter(id=idd).first()
-    #
-    #         if t_save.author == users and idd:
-    #             t_save.delete()
-    #         messages.success(request, f'Usunięto komentarz')
-    #
-    #     return redirect('user-inf', self.kwargs['user_name'])

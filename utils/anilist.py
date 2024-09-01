@@ -2,7 +2,7 @@ from pyanilist import AniList, MediaType
 
 
 def get_series_by_name(name: str):
-    return AniList().search(name, type=MediaType.ANIME)
+    return AniList().get(name, type=MediaType.ANIME)
 
 
 def get_series_by_id(anilist_id):
