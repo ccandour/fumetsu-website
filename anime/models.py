@@ -14,6 +14,9 @@ class AnimeEpisode(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     subtitles = models.FileField(upload_to='subtitles/', blank=True)
 
+    class Meta:
+        db_table = 'fumetsu_anime_episode'
+
     def __str__(self):
         return f'{self.key_map}. Ep nr: {self.ep_nr} tutuł: {self.title}.'
 
@@ -23,6 +26,9 @@ class AnimePost(models.Model):
     odc_nm = models.ForeignKey(AnimeEpisode, on_delete=models.CASCADE, null=True)
     content = models.TextField()
     image = models.ImageField(default='anime_default.jpg', upload_to='anime_post')
+
+    class Meta:
+        db_table = 'fumetsu_anime_post'
 
     def __str__(self):
         return f'{self.odc_nm}'
@@ -51,6 +57,9 @@ class Player(models.Model):
     ep_nr = models.IntegerField()
     link = models.TextField()
 
+    class Meta:
+        db_table = 'fumetsu_player'
+
     def __str__(self):
         return self.title
 
@@ -60,6 +69,9 @@ class Tag(models.Model):
     anime_anilist_id = models.CharField(max_length=100)
     label = models.CharField(max_length=100)
     label_polish = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = 'fumetsu_tag'
 
     def __str__(self):
         return f'tag {self.label} dla anime {self.anime_anilist_id}.'
@@ -71,6 +83,9 @@ class EpisodeComment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     content = models.CharField(max_length=254)
+
+    class Meta:
+        db_table = 'fumetsu_episode_comment'
 
     def __str__(self):
         return f'post {self.author}, {self.content} do anime {self.key_map_ep}.'
