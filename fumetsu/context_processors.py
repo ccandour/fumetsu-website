@@ -1,6 +1,6 @@
 
 def posts(request):
-    from anime.models import AnimePost
+    from .models import AnimePost
     post_html = AnimePost.objects.all().order_by('-odc_nm__date_posted')
     return {
         'posts': post_html,

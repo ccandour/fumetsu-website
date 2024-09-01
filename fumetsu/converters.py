@@ -1,7 +1,3 @@
-from django.shortcuts import redirect
-
-from fumetsu.models import UrlRedirect
-
 
 class AnimeUrlConverter:
     regex = '[\w]+'

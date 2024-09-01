@@ -4,12 +4,12 @@ from django.contrib import messages
 
 import os
 
-from fumetsu.models import StaffCredit
+from fumetsu.forms import CreateComment
+from fumetsu.models import StaffCredit, SeriesComment
 from django.views.generic.base import TemplateView
-from anime.forms import *
 from .forms import *
 from datetime import datetime, timezone
-from anime.models import EpisodeComment
+from fumetsu.models import EpisodeComment
 from django.db.models import Q
 
 from django.contrib.auth import authenticate, login, update_session_auth_hash

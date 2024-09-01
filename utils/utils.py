@@ -1,5 +1,4 @@
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import QuerySet
 from slugify import slugify
 
 
@@ -75,8 +74,7 @@ def tag_label_to_english(tag):
 
 class AnimeSeriesJSONEncoder(DjangoJSONEncoder):
     def default(self, obj):
-        from fumetsu.models import AnimeSeries
-        from anime.models import Tag
+        from fumetsu.models import AnimeSeries, Tag
         if isinstance(obj, AnimeSeries):
             tags = list(Tag.objects.filter(anime_anilist_id=obj.anilist_id).values_list('label_polish', flat=True))
 
