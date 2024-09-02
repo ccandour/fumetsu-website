@@ -98,3 +98,5 @@ pyanilist
 django-password-eye
 markdown
 markdown-link-attr-modifier
+gunicorn
+python-slugify

@@ -1,6 +1,8 @@
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, register_converter, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
 
 from . import converters
 from .views import *
@@ -26,6 +28,8 @@ urlpatterns = [
     path('terms-of-service/', TermsOfService.as_view(), name='fumetsu-terms-of-service'),
     path('edit-comment/<uuid:pk>', EditComment.as_view(), name='edit-cmt'),
     path('delete-comment/<uuid:pk>', DeleteComment.as_view(), name='del-cmt'),
+
+    path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('images/favicon.ico'))),
 
     path('', include('users.urls')),
 ]
