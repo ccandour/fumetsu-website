@@ -16,14 +16,14 @@
                 </div>
             </form>
     </div>
-    <div class="mt-2 flex-row d-flex justify-content-center gap-4">
-        <p class="text-muted">
+    <div class="mt-2 flex-column flex-md-row d-flex justify-content-center gap-2 gap-md-4">
+        <p class="text-muted mb-0">
             Zapomniałeś hasła? –
-            <a class="ml-1" href="{% url 'password_reset' %}">Zresetuj je</a>
+            <a href="{% url 'password_reset' %}">Zresetuj je</a>
         </p>
-        <p class="text-muted">
+        <p class="text-muted mb-0">
             Nie masz konta? –
-            <a class="ml-1" href="{% url 'register' %}">Zarejestruj się</a>
+            <a href="{% url 'register' %}">Zarejestruj się</a>
         </p>
     </div>
 </div>
