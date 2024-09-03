@@ -17,7 +17,7 @@
                     Odcinek {{post.odc_nm.ep_nr|floatformat}} - {{ post.odc_nm.title }}
                 </h6>
                 <p class="card-text mb-4">{{ post.content|trimwords:16}}</p>
-                <a href="{% url 'ep-nm' post.odc_nm.key_map.web_name post.odc_nm.ep_nr %}" class="btn btn-primary btn-lg w-75 w-lg-100 py-2 py-md-1 pymt-auto ms-auto me-auto">Oglądaj</a>
+                <a href="{% url 'ep-nm' post.odc_nm.key_map.web_name post.odc_nm.ep_nr %}" class="btn btn-primary btn-lg w-75 w-lg-100 py-2 py-md-1 mb-0 mt-auto ms-auto me-auto">Oglądaj</a>
             </div>
         </div>
     </div>
