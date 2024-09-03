@@ -186,6 +186,12 @@ h2
 	width: auto;
 }
 
+@media (max-width: 991px) {
+	.content-section {
+		margin: 40px 5vw 0 5vw;
+	}
+}
+
 .new-img{
 	height: 200px;
 	width: 100%;
@@ -637,9 +643,28 @@ margin: 0 5px;
 }
 
 .content-wrapper {
-    max-width: calc(100% - 280px); /* Adjust the width to account for the sidebar */
+	max-width: calc(100% - 280px); /* Adjust the width to account for the sidebar */
 	height: fit-content;
-    overflow-x: hidden; /* Allow horizontal scrolling if needed */
+	overflow-x: hidden; /* Allow horizontal scrolling if needed */
+}
+
+@media (max-width: 991px) {
+	.content-wrapper {
+		max-width: 100%;
+		overflow-x: hidden; /* Allow horizontal scrolling if needed */
+	}
+}
+
+.messages-section {
+	margin: 0 12vw 0 12vw;
+	width: calc(100% - 24vw);
+}
+
+@media (max-width: 991px) {
+	.messages-section {
+		margin: 0 5vw 0 5vw;
+		width: calc(100% - 10vw);
+	}
 }
 
 .messages-wrapper {
@@ -647,6 +672,14 @@ margin: 0 5px;
 	min-width: calc(100% - 280px - 60px); /* Adjust the width to account for the sidebar */
 	height: fit-content;
 	overflow-x: hidden; /* Allow horizontal scrolling if needed */
+}
+
+@media (max-width: 991px) {
+	.messages-wrapper {
+		max-width: 100%;
+		min-width: 100%;
+		overflow-x: hidden; /* Allow horizontal scrolling if needed */
+	}
 }
 
 .sixteen-nine-img {
@@ -663,4 +696,25 @@ margin: 0 5px;
   	left: 50%;
  	width: 100%;
   	transform: translate(-50%, -50%);
+}
+
+.footer {
+	font-size: 14px;
+}
+
+@media (max-width: 767px) {
+	.footer {
+		font-size: 12px;
+	}
+}
+
+.announcement-img {
+	width: 30%;
+	display: inline-block;
+}
+
+@media (max-width: 767px) {
+	.announcement-img {
+		width: 100%;
+	}
 }

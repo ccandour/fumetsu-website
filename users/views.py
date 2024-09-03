@@ -231,7 +231,7 @@ class EditProfile(TemplateView):
             messages.success(request, f'Zmiany zostały zapisane.')
             return redirect('profile', request.user.username)
         else:
-            return redirect('profile')
+            return redirect('edit_profile')
 
 
 class ProfilePage(TemplateView):

@@ -7,10 +7,10 @@
 
 
 
-<div class="d-flex flex-row gap-3 align-items-start bg-body-secondary card p-3 mb-4">
+<div class="d-flex flex-column align-items-center align-items-md-start flex-md-row gap-3 align-items-start bg-body-secondary card p-3 mb-4">
 	<img class="user-img float-start mt-1" src="{{ f_user.profile.image.url  }}" alt="Profile Picture">
     <div class="d-flex flex-column">
-        <h3 class="d-flex flex-row align-items-center gap-2" style="color:{{f_user.profile.color}}">
+        <h3 class="d-flex flex-row align-items-center justify-content-center gap-2" style="color:{{f_user.profile.color}}">
             {{ f_user.username }}
             {% if f_user.is_staff %}
                 <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Członek ekipy">
@@ -76,7 +76,9 @@
                     <div class="d-flex flex-column text-body">
                         <div class="d-flex flex-row gap-2">
                             <h5 class="fw-semibold mb-0">{{com.key_map.name_english}}</h5>
-                            {{com.date_posted}}
+                            <span class="d-none d-md-block">
+                                {{com.date_posted}}
+                            </span>
                         </div>
                         {{com.content}}
                         <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">
@@ -93,7 +95,9 @@
                     <div class="d-flex flex-column text-body">
                         <div class="d-flex flex-row gap-2">
                             <h5 class="fw-semibold mb-0">{{com.key_map_ep.key_map.name_english}} – Odcinek {{com.key_map_ep.ep_nr}}</h5>
-                            {{com.date_posted}}
+                            <span class="d-none d-md-block">
+                                {{com.date_posted}}
+                            </span>
                         </div>
                         {{com.content}}
                         <input type="hidden" name="idd" value="{{com.pk}}" class="pdk">

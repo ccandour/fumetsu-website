@@ -14,7 +14,7 @@
             </div>
             <div class="card-body px-4">
                 {{ post.content|convert_markdown|safe }}
-                <a href="{{ post.image.url }}" target="_blank" style="width: 30%; display: inline-block">
+                <a class="announcement-img" href="{{ post.image.url }}" target="_blank">
                     <img src="{{ post.image.url }}" alt="Announcement image">
                 </a>
             </div>

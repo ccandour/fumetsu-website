@@ -40,7 +40,7 @@
                 </div>
             </nav>
             <!-- Tab content (players) -->
-            <div class="tab-content rounded-3 bg-body-secondary mt-3" style="height: 32vw" id="js-tabs-content-2">
+            <div class="tab-content rounded-3 bg-body-secondary mt-3" style="aspect-ratio: 16 / 9" id="js-tabs-content-2">
                 {% for player in link %}
                     {% if forloop.counter == 1 %}
                     <div class="tab-pane active" id="nav-{{player.web_site}}" role="tabpanel" aria-labelledby="nav-{{player.web_site}}-tab" tabindex="0">
@@ -105,7 +105,9 @@
                                     <div class="fs-5 fw-semibold">{{com.author.username}}</div>
                                 </a>
 
+                            <span class="d-none d-md-block">
                                 {{com.date_posted}}
+                            </span>
 
                                 {% if com.author == user %}
                                 <div class="dropend float-end ms-0">

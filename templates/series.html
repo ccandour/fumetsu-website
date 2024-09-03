@@ -10,18 +10,11 @@
 
 {% block content %}
 
-<!-- Metadata (mobile version) -->
-<div class="d-block d-md-none">
-    <div class="col-12 text-center">
-        <img class="ser-m-img" src="{{ series.image }}">
-    </div>
-</div>
-
 <div class="d-flex flex-column gap-4">
     <!-- Metadata (desktop version) -->
-    <div class="d-none d-md-block bg-body-secondary card p-3">
-        <div class ="d-flex flex-row mb-3">
-            <div class="me-4">
+    <div class="bg-body-secondary card p-3">
+        <div class ="d-flex flex-column flex-md-row gap-4 gap-md-3 align-items-center align-items-md-start mb-3">
+            <div class="">
                 <img class="ser-cover" src="{{ series.image }}">
             </div>
 
@@ -124,7 +117,7 @@
         <div class="card-header d-flex flex-row align-items-center">
             <h4 class="card-title mb-0 py-1">Powiązane:</h4>
         </div>
-        <div class="d-flex flex-row flex-wrap gap-3 card-body">
+        <div class="d-flex flex-row overflow-scroll gap-3 card-body">
             {% for relation in relations %}
                 <a href="{% url 'anime-nm' relation.0.web_name %}">
                 <div class="card relations-card bg-body-secondary text-center" style="width: 10rem;">
@@ -184,7 +177,9 @@
                                     <div class="fs-5 fw-semibold">{{com.author.username}}</div>
                                 </a>
 
-                                {{com.date_posted}}
+                                <span class="d-none d-md-block">
+                                    {{com.date_posted}}
+                                </span>
 
                                 {% if com.author == user %}
                                 <div class="dropend float-end ms-0">
