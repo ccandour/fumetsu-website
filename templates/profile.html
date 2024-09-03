@@ -10,7 +10,7 @@
 <div class="d-flex flex-column align-items-center align-items-md-start flex-md-row gap-3 align-items-start bg-body-secondary card p-3 mb-4">
 	<img class="user-img float-start mt-1" src="{{ f_user.profile.image.url  }}" alt="Profile Picture">
     <div class="d-flex flex-column">
-        <h3 class="d-flex flex-row align-items-center justify-content-center gap-2" style="color:{{f_user.profile.color}}">
+        <h3 class="d-flex flex-row align-items-center justify-content-center justify-content-md-start gap-2" style="color:{{f_user.profile.color}}">
             {{ f_user.username }}
             {% if f_user.is_staff %}
                 <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Członek ekipy">
