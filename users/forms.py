@@ -48,6 +48,8 @@ class SignupForm(UserCreationForm):
         )
     )
 
+    usable_password = None
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
