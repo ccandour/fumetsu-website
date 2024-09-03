@@ -61,6 +61,12 @@ a {
 .navbar {
 	padding-inline: 12vw;
 }
+
+@media (max-width: 991px) {
+	.navbar {
+		padding-inline: 5vw;
+	}
+}
 .menu
 {
 	z-index: 500;
