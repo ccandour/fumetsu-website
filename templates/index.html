@@ -4,10 +4,10 @@
 
 {% block content %}
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-4">
+<div class="row index-grid g-4">
 {% for post in anime %}
     <div class="col mx-sm-auto">
-        <div class="card specific-w-md-200 specific-w-sm-300 w-sm-100 mw-100 h-100 mx-auto">
+        <div class="card specific-w-sm-300 w-sm-100 mw-100 h-100 mx-auto">
             <img src="{{ post.image.url }}" class="card-img-top" alt="Episode thumbnail">
             <div class="card-body d-flex flex-column">
                 <a href="{% url 'anime-nm' post.odc_nm.key_map.web_name %}">

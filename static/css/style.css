@@ -718,3 +718,26 @@ margin: 0 5px;
 		width: 100%;
 	}
 }
+
+.index-grid > * {
+	flex: 0 0 auto;
+	width: 25%;
+}
+
+@media (max-width: 1700px) {
+	.index-grid > * {
+		width: 33.33%;
+	}
+}
+
+@media (max-width: 1400px) {
+	.index-grid > * {
+		width: 50%;
+	}
+}
+
+@media (max-width: 767px) {
+	.index-grid > * {
+		width: 100%;
+	}
+}
