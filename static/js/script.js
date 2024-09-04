@@ -9,10 +9,7 @@ $(document).ready(function() {
 
 	// Delay the logging to ensure styles are computed
     setTimeout(() => {
-        console.log(mainContainer);
         const computedStyles = window.getComputedStyle(mainContainer);
-        console.log(computedStyles);
-        console.log(computedStyles.marginBottom);
 
         if (content.offsetHeight > window.innerHeight) {
             sidebar.style.height = (content.offsetHeight) + 'px';
