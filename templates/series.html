@@ -11,17 +11,17 @@
 {% block content %}
 
 <div class="d-flex flex-column gap-4">
-    <!-- Metadata (desktop version) -->
+    <!-- Metadata -->
     <div class="bg-body-secondary card p-3">
-        <div class ="d-flex flex-column flex-md-row gap-4 gap-md-3 align-items-center align-items-md-start mb-3">
-            <div class="">
-                <img class="ser-cover" src="{{ series.image }}">
+        <div class ="d-flex flex-column flex-md-row gap-4 gap-md-3 align-items-start mb-3">
+            <div class="ser-img-container d-flex flex-column justify-content-center">
+                <img class="ser-cover w-auto" src="{{ series.image }}" alt="Series Cover">
             </div>
 
             <div>
                <h3 class="text-start pb-0 mb-1">{{series.name_english}}
                     <a href="https://anilist.co/anime/{{series.anilist_id}}" target="_blank">
-                        <img class="d-inline-block align-middle rounded-1" height="24em" src="{% static 'img/anilist_icon.svg' %}"></img>
+                        <img class="d-inline-block align-middle rounded-1" height="24em" src="{% static 'img/anilist_icon.svg' %}" alt="Anilist Icon"></img>
                     </a>
                 </h3>
 

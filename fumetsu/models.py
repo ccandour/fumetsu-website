@@ -73,11 +73,11 @@ class AnimePost(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        size = [300, 300]  #wymiary
+        size = (854, 480)
 
         img = Image.open(self.image.path)
 
-        if img.height > size[0] or img.width > size[1]:
+        if img.width > size[0] or img.height > size[1]:
             img.thumbnail(size)
             img.save(self.image.path)
 

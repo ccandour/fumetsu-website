@@ -120,7 +120,7 @@ const renderSeries = (data) => {
         <div class="card list-card overflow-hidden">
             <div class="row g-0">
                 <div class="col-sm-2">
-                    <img src="${series.image}" alt="...">
+                    <img src="${series.image}" alt="Series Cover">
                 </div>
          
                 <div class="col-sm-10 ps-4 card-body flex-row d-flex align-items-center justify-content-between">

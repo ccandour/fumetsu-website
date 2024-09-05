@@ -1,6 +1,7 @@
 {% extends "base_sidebar.html" %}
 {% load static %}
 {% load poll_extras %}
+{% load utils_extras %}
 
 {% block content %}
 
@@ -16,7 +17,7 @@
                 <h6 class="card-subtitle mb-2 fw-normal text-body-secondary">
                     Odcinek {{post.odc_nm.ep_nr|floatformat}} - {{ post.odc_nm.title }}
                 </h6>
-                <p class="card-text mb-4">{{ post.content|trimwords:16}}</p>
+                <div class="card-text mb-2">{{ post.content|trimwords:16|convert_markdown|safe}}</div>
                 <a href="{% url 'ep-nm' post.odc_nm.key_map.web_name post.odc_nm.ep_nr %}" class="btn btn-primary btn-lg w-75 w-lg-100 py-2 py-md-1 mb-0 mt-auto ms-auto me-auto">Oglądaj</a>
             </div>
         </div>
