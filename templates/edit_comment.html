@@ -13,7 +13,7 @@
             {% if type == 'series' %}
             <a href="{% url 'anime-nm' comment.key_map.web_name %}"><h3 class="mb-4 d-flex flex-row justify-content-center">{{ comment.key_map.name_english}}</h3></a>
             {% elif type == 'episode' %}
-            <a href="{% url 'ep-nm' comment.key_map_ep.key_map.web_name comment.key_map_ep.ep_nr %}"><h3 class="mb-4 d-flex flex-row justify-content-center">{{ comment.key_map_ep.key_map.name_english}} - Odcinek {{ comment.key_map_ep.ep_nr }}</h3></a>
+            <a href="{% url 'ep-nm' comment.key_map.key_map.web_name comment.key_map.ep_nr %}"><h3 class="mb-4 d-flex flex-row justify-content-center">{{ comment.key_map.key_map.name_english}} - Odcinek {{ comment.key_map.ep_nr }}</h3></a>
             {% endif %}
 			{{form|crispy}}
 			

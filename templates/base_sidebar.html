@@ -176,15 +176,15 @@
         </div>
         <div class="d-flex flex-column gap-3 mx-4 my-3">
             {% for post in posts|slice:3 %}
-                <a href="{% url 'ep-nm' post.odc_nm.key_map.web_name post.odc_nm.ep_nr %}">
+                <a href="{% url 'ep-nm' post.key_map.key_map.web_name post.key_map.ep_nr %}">
                 <div class="card d-flex flex-column">
                     <div class="">
                         <img src="{{ post.image.url }}" class="w-100 card-img-top" alt="Episode thumbnail">
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title fs-6">{{post.odc_nm.key_map.name_english}}</h5>
+                        <h5 class="card-title fs-6">{{post.key_map.key_map.name_english}}</h5>
                         <h6 class="card-subtitle fw-normal text-body-secondary">
-                            Odcinek {{post.odc_nm.ep_nr|floatformat}} - {{ post.odc_nm.title }}
+                            Odcinek {{post.key_map.ep_nr|floatformat}} - {{ post.key_map.title }}
                         </h6>
                     </div>
                 </div>

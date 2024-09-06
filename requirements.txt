@@ -100,3 +100,4 @@ markdown
 markdown-link-attr-modifier
 gunicorn
 python-slugify
+djangorestframework

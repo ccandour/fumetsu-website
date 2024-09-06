@@ -8,12 +8,12 @@
 <div class="d-flex flex-column gap-4">
     <!-- Title and Episode Navigation -->
     <div class="d-flex flex-column align-items-center">
-        <a href="{% url 'anime-nm' anime_nm.web_name %}"><h2>{{anime_nm.name_english}}</h2></a>
+        <a href="{% url 'anime-nm' series.web_name %}"><h2>{{series.name_english}}</h2></a>
         <h5>
             {% if prev %}
                 <a class="ps-4" href="{% url 'ep-nm' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i></a>
             {% else %}
-                <i class="fas fa-chevron-left control-disabled ps-4"></i></a>
+                <i class="fas fa-chevron-left control-disabled ps-4"></i>
             {% endif %}
              Odcinek {{odc_html|floatformat}}
             {% if next %}
@@ -32,9 +32,9 @@
                 <div class="nav nav-justified nav-tabs px-5 gap-3" id="js-tabs-2" role="tablist">
                     {% for player in link %}
                         {% if forloop.counter == 1 %}
-                        <button class="nav-link active player-btn fw-bold fs-5 py-2" id="nav-{{player.web_site}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{player.web_site}}" type="button" role="tab" aria-controls="nav-{{player.web_site}}" aria-selected="true">{{player.web_site}}</button>
+                        <button class="nav-link active player-btn fw-bold fs-5 py-2" id="nav-{{player.website}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{player.website}}" type="button" role="tab" aria-controls="nav-{{player.website}}" aria-selected="true">{{player.website}}</button>
                         {% else %}
-                        <button class="nav-link player-btn fw-bold fs-5 py-2" id="nav-{{player.web_site}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{player.web_site}}" type="button" role="tab" aria-controls="nav-{{player.web_site}}" aria-selected="false">{{player.web_site}}</button>
+                        <button class="nav-link player-btn fw-bold fs-5 py-2" id="nav-{{player.website}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{player.website}}" type="button" role="tab" aria-controls="nav-{{player.website}}" aria-selected="false">{{player.website}}</button>
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -43,7 +43,7 @@
             <div class="tab-content rounded-3 bg-body-secondary mt-3" style="aspect-ratio: 16 / 9" id="js-tabs-content-2">
                 {% for player in link %}
                     {% if forloop.counter == 1 %}
-                    <div class="tab-pane active" id="nav-{{player.web_site}}" role="tabpanel" aria-labelledby="nav-{{player.web_site}}-tab" tabindex="0">
+                    <div class="tab-pane active" id="nav-{{player.website}}" role="tabpanel" aria-labelledby="nav-{{player.website}}-tab" tabindex="0">
                         <div class="">
                             <div class="video_cont">
                                 <iframe src="{{player.link}}" allowfullscreen></iframe>
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     {% else %}
-                    <div class="tab-pane fade" id="nav-{{player.web_site}}" role="tabpanel" aria-labelledby="nav-{{player.web_site}}-tab" tabindex="0">
+                    <div class="tab-pane fade" id="nav-{{player.website}}" role="tabpanel" aria-labelledby="nav-{{player.website}}-tab" tabindex="0">
                         <div class="">
                             <div class="video_cont">
                                 <iframe src="{{player.link}}" allowfullscreen></iframe>

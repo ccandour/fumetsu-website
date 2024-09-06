@@ -18,7 +18,7 @@ $(document).ready(function() {
             const contentMargin = parseInt(computedStyles.marginBottom);
             sidebar.style.height = (content.offsetHeight + contentMargin) + 'px';
         }
-    }, 1);
+    }, 100);
 });
 
 // Messages offset script

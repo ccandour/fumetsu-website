@@ -60,7 +60,7 @@ class AnimeEpisode(models.Model):
 
 class AnimePost(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    odc_nm = models.ForeignKey(AnimeEpisode, on_delete=models.CASCADE, null=True)
+    key_map = models.ForeignKey(AnimeEpisode, on_delete=models.CASCADE, null=True)
     content = models.TextField()
     image = models.ImageField(default='anime_default.jpg', upload_to='anime_post')
 
@@ -68,7 +68,7 @@ class AnimePost(models.Model):
         db_table = 'fumetsu_anime_post'
 
     def __str__(self):
-        return f'{self.odc_nm}'
+        return f'{self.key_map}'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -82,15 +82,14 @@ class AnimePost(models.Model):
             img.save(self.image.path)
 
         if AnimePost.objects.all().count() > 12:
-            AnimePost.objects.all().order_by('odc_nm__date_posted').first().delete()
+            AnimePost.objects.all().order_by('key_map__date_posted').first().delete()
 
 
 class Player(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    key_map = models.ForeignKey(AnimeSeries, on_delete=models.CASCADE, null=True)
-    odc_nm = models.ForeignKey(AnimeEpisode, on_delete=models.CASCADE, null=True)
+    key_map = models.ForeignKey(AnimeEpisode, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=100)
-    web_site = models.CharField(max_length=100)
+    website = models.CharField(max_length=100)
     ep_nr = models.IntegerField()
     link = models.TextField()
 
@@ -116,7 +115,7 @@ class Tag(models.Model):
 
 class EpisodeComment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    key_map_ep = models.ForeignKey(AnimeEpisode, on_delete=models.CASCADE, null=True)
+    key_map = models.ForeignKey(AnimeEpisode, on_delete=models.CASCADE, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     content = models.CharField(max_length=254)
@@ -125,7 +124,7 @@ class EpisodeComment(models.Model):
         db_table = 'fumetsu_episode_comment'
 
     def __str__(self):
-        return f'post {self.author}, {self.content} do anime {self.key_map_ep}.'
+        return f'post {self.author}, {self.content} do anime {self.key_map}.'
 
 
 class SeriesComment(models.Model):

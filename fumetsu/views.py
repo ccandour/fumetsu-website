@@ -145,14 +145,14 @@ class Series(TemplateView):
 
 
 class Episode(TemplateView):
-    model = AnimeSeries
+    model = AnimeEpisode
     context_object_name = 'posts'
     template_name = 'ep.html'
     fields = ['content']
 
     def dispatch(self, *args, **kwargs):
         ani = get_object_or_404(AnimeSeries, web_name=self.kwargs['anime_name'])
-        if AnimeEpisode.objects.filter(key_map_id=ani, ep_nr=self.kwargs['ep']).first():
+        if AnimeEpisode.objects.filter(key_map=ani, ep_nr=self.kwargs['ep']).first():
             return super().dispatch(*args, **kwargs)
         else:
             return redirect('fumetsu-home')
@@ -160,30 +160,29 @@ class Episode(TemplateView):
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
-        ani = get_object_or_404(AnimeSeries, web_name=self.kwargs['anime_name'])
-        ep = self.kwargs['ep']
-        context['link'] = Player.objects.filter(key_map_id=ani, ep_nr=ep)
-        context['anime_nm'] = ani
+        series = get_object_or_404(AnimeSeries, web_name=self.kwargs['anime_name'])
+        episode = AnimeEpisode.objects.filter(key_map=series, ep_nr=self.kwargs['ep']).first()
+        context['link'] = Player.objects.filter(key_map=episode)
+        context['series'] = series
 
-        ep_query = AnimeEpisode.objects.filter(key_map_id=ani, ep_nr=ep).first()
-        context['odc_html'] = ep_query.ep_nr
+        context['odc_html'] = episode.ep_nr
 
         try:
-            if ep_query.subtitles:
-                context['subtitles'] = ep_query.subtitles
+            if episode.subtitles:
+                context['subtitles'] = episode.subtitles
         except:
             pass
 
-        comment = EpisodeComment.objects.filter(key_map_ep=ep_query).order_by('-date_posted')
+        comment = EpisodeComment.objects.filter(key_map=episode).order_by('-date_posted')
         for com in comment:
             com.color = com.author.profile.color
         context['comment'] = comment
 
         context['comment_form'] = CreateCommentEp()
 
-        context['next'] = AnimeEpisode.objects.filter(key_map_id=ani, ep_nr__gt=ep_query.ep_nr).order_by(
+        context['next'] = AnimeEpisode.objects.filter(key_map_id=series, ep_nr__gt=episode.ep_nr).order_by(
             'ep_nr').first()
-        context['prev'] = AnimeEpisode.objects.filter(key_map_id=ani, ep_nr__lt=ep_query.ep_nr).order_by(
+        context['prev'] = AnimeEpisode.objects.filter(key_map_id=series, ep_nr__lt=episode.ep_nr).order_by(
             '-ep_nr').first()
 
         return context
@@ -195,7 +194,7 @@ class Episode(TemplateView):
         if form.is_valid():
             if len(form.cleaned_data.get('content')) > 9:
                 f_save = form.save(commit=False)
-                f_save.key_map_ep = ep_query
+                f_save.key_map = ep_query
                 f_save.author = request.user
                 f_save.save()
                 messages.success(request, 'Dodatno komentarz.')
@@ -205,7 +204,7 @@ class Episode(TemplateView):
             if 'com_up_bt' in request.POST:
                 if len(form.cleaned_data.get('content')) > 9:
                     idd = request.POST.get("idd", "")
-                    t_save = EpisodeComment.objects.filter(key_map_ep=ep_query, id=idd).first()
+                    t_save = EpisodeComment.objects.filter(key_map=ep_query, id=idd).first()
                     if t_save.author == request.user and idd:
                         t_save.content = form.cleaned_data.get('content')
                         t_save.date_posted = datetime.now()
@@ -214,7 +213,7 @@ class Episode(TemplateView):
 
         elif 'com_up_del' in request.POST:
             idd = request.POST.get("idd", "")
-            t_save = EpisodeComment.objects.filter(key_map_ep=ep_query, id=idd).first()
+            t_save = EpisodeComment.objects.filter(key_map=ep_query, id=idd).first()
             if t_save.author == request.user and idd:
                 t_save.delete()
                 messages.success(request, 'Usunięto komentarz')
@@ -251,7 +250,7 @@ class Home(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['anime'] = AnimePost.objects.all().order_by('-odc_nm__date_posted')[:12]
+        context['anime'] = AnimePost.objects.all().order_by('-key_map__date_posted')[:12]
         return context
 
 

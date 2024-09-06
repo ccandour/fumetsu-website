@@ -11,14 +11,14 @@
         <div class="card specific-w-sm-300 w-sm-100 mw-100 h-100 mx-auto">
             <img src="{{ post.image.url }}" class="card-img-top" alt="Episode thumbnail">
             <div class="card-body d-flex flex-column">
-                <a href="{% url 'anime-nm' post.odc_nm.key_map.web_name %}">
-                    <h5 class="card-title">{{post.odc_nm.key_map.name_english}}</h5>
+                <a href="{% url 'anime-nm' post.key_map.key_map.web_name %}">
+                    <h5 class="card-title">{{post.key_map.key_map.name_english}}</h5>
                 </a>
                 <h6 class="card-subtitle mb-2 fw-normal text-body-secondary">
-                    Odcinek {{post.odc_nm.ep_nr|floatformat}} - {{ post.odc_nm.title }}
+                    Odcinek {{post.key_map.ep_nr|floatformat}} - {{ post.key_map.title }}
                 </h6>
                 <div class="card-text mb-2">{{ post.content|trimwords:16|convert_markdown|safe}}</div>
-                <a href="{% url 'ep-nm' post.odc_nm.key_map.web_name post.odc_nm.ep_nr %}" class="btn btn-primary btn-lg w-75 w-lg-100 py-2 py-md-1 mb-0 mt-auto ms-auto me-auto">Oglądaj</a>
+                <a href="{% url 'ep-nm' post.key_map.key_map.web_name post.key_map.ep_nr %}" class="btn btn-primary btn-lg w-75 w-lg-100 py-2 py-md-1 mb-0 mt-auto ms-auto me-auto">Oglądaj</a>
             </div>
         </div>
     </div>
