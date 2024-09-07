@@ -88,16 +88,14 @@ class AnimePost(models.Model):
 class Player(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     key_map = models.ForeignKey(AnimeEpisode, on_delete=models.CASCADE, null=True)
-    title = models.CharField(max_length=100)
     website = models.CharField(max_length=100)
-    ep_nr = models.IntegerField()
     link = models.TextField()
 
     class Meta:
         db_table = 'fumetsu_player'
 
     def __str__(self):
-        return self.title
+        return f'{self.key_map.key_map.name_english} - {self.key_map.ep_nr} - {self.website}.'
 
 
 class Tag(models.Model):

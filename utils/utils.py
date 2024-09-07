@@ -9,6 +9,8 @@ def generate_upload_path(instance, filename):
 
 
 def generate_web_name(anime):
+    if isinstance(anime, str):
+        return slugify(anime)
     title = anime.name_english if anime.name_english else anime.name_romaji
     return slugify(title)
 
