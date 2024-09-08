@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from fumetsu.models import AnimeSeries, AnimeEpisode, AnimePost, Player, Relation
+from fumetsu.models import AnimeSeries, AnimeEpisode, AnimePost, Player, Relation, Announcement
 
 
 class SeriesSerializer(serializers.ModelSerializer):
@@ -31,6 +31,11 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AnimePost
+        fields = '__all__'
+
+class AnnouncementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Announcement
         fields = '__all__'
 
 class EpisodePOSTSerializer(serializers.ModelSerializer):

@@ -141,7 +141,6 @@ class SeriesComment(models.Model):
 
 class Announcement(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    idd = models.IntegerField()
     title = models.CharField(max_length=100)
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)

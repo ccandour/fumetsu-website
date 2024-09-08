@@ -10,8 +10,9 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 
 from fumetsu.models import AnimeSeries, AnimePost, Player, Relation
 from utils.utils import generate_web_name
-from .serializers import SeriesSerializer, EpisodeSerializer, RelationSerializer, PostSerializer, PlayerSerializer, EpisodePOSTSerializer, \
-    PostPOSTSerializer
+from .serializers import SeriesSerializer, EpisodeSerializer, RelationSerializer, PostSerializer, PlayerSerializer, \
+    EpisodePOSTSerializer, \
+    PostPOSTSerializer, AnnouncementSerializer
 
 
 @api_view(['GET'])
@@ -21,6 +22,7 @@ def getSeries(request):
     series = AnimeSeries.objects.all()
     serializer = SeriesSerializer(series, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -164,3 +166,32 @@ def addEpisode(request):
         subtitles.close()
         os.remove(f'media/temp/{subtitles_name}')
         return Response(episode_serializer.errors)
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def addAnnouncement(request):
+    # Image handling
+    image_url = request.data.get('image_url')
+    image_name = request.data.get('image_name')
+    res = requests.get(image_url)
+    with open(f'media/temp/{image_name}', 'wb') as f:
+        f.write(res.content)
+    image = open(f'media/temp/{image_name}', 'rb')
+
+    data = {
+        'title': request.data.get('title'),
+        'content': request.data.get('content'),
+        'image': File(image, name=image_name)
+    }
+    serializer = AnnouncementSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        image.close()
+        os.remove(f'media/temp/{image_name}')
+        return Response(serializer.data)
+    else:
+        image.close()
+        os.remove(f'media/temp/{image_name}')
+        return Response(serializer.errors)

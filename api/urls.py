@@ -7,4 +7,5 @@ urlpatterns = [
     path('get-posts/', views.getPosts, name='get-posts'),
     path('add-series/', views.addSeries, name='add-series'),
     path('add-episode/', views.addEpisode, name='add-episode'),
+    path('add-announcement/', views.addAnnouncement, name='add-announcement'),
 ]
