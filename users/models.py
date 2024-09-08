@@ -26,6 +26,12 @@ class Profile(models.Model):
         return False
 
     def save(self, *args, **kwargs):
+
+        # Check if the profile is being created
+        if self.pk is None or Profile.objects.filter(pk=self.pk).exists() is False:
+            super().save(*args, **kwargs)
+            return
+
         # Check if the image has changed
         if self.pk:
             old_image = Profile.objects.get(pk=self.pk).image

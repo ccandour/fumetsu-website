@@ -8,9 +8,7 @@ from fumetsu.forms import CreateComment
 from fumetsu.models import StaffCredit, SeriesComment
 from django.views.generic.base import TemplateView
 from .forms import *
-from datetime import datetime, timezone
 from fumetsu.models import EpisodeComment
-from django.db.models import Q
 
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 
@@ -37,12 +35,17 @@ def signup(request):
             user = form.save(commit=False)
             if User.objects.filter(email=form.cleaned_data.get('email')).first() or User.objects.filter(
                     username=form.cleaned_data['username']).first():
-                messages.error(request, f'Ten email lub nick już istnieje.')
+                messages.error(request, f'Ten email jest już zarejestrowany.')
                 return render(request, 'signup.html', {'form': form})
             else:
                 user.is_active = False
                 user.username = form.cleaned_data['username']
+
                 user.save()
+                # db_user = User.objects.get(username=user.username)
+                # Profile.objects.create(user=db_user)
+
+
                 current_site = get_current_site(request)
                 message = render_to_string('signup_email.html', {
                     'user': user,
@@ -59,7 +62,14 @@ def signup(request):
                 messages.success(request, f'Na podany adres e-mail został wysłany link aktywacyjny.')
                 return redirect('fumetsu-home')
         else:
-            messages.error(request, f'Nieprawidłowe dane.')
+            if form.has_error('username'):
+                messages.error(request, list(form.errors['username']).pop(0))
+            elif form.has_error('email'):
+                messages.error(request, list(form.errors['email']).pop(0))
+            elif form.has_error('password1'):
+                messages.error(request, list(form.errors['password1']).pop(0))
+            elif form.has_error('password2'):
+                messages.error(request, list(form.errors['password2']).pop(0))
             return render(request, 'signup.html', {'form': form})
     else:
         return render(request, 'signup.html', {'form': SignupForm()})
@@ -83,7 +93,7 @@ def activate(request, uidb64, token):
 
 def login_cas(request):
     if request.method == 'POST':
-        form = UserLoginForm(request.POST)
+        form = UserLoginForm(data=request.POST)
 
         if form.is_valid():
             password = form.cleaned_data.get('password')
@@ -93,10 +103,15 @@ def login_cas(request):
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
+                    messages.success(request, f'Pomyślnie zalogowano.')
                     return redirect('fumetsu-home')
+                else:
+                    messages.error(request, f"Nazwa użytkownika lub hasło jest nieprawidłowe.")
+                    return render(request, 'login.html', {'form': form})
             except:
-                messages.success(request, f"Nie ma takiego konta.")
+                messages.error(request, f"Nie udało się zalogować.")
         else:
+            messages.error(request, f"Nazwa użytkownika lub hasło jest nieprawidłowe.")
             return render(request, 'login.html', {'form': form})
     else:
         form = UserLoginForm()
@@ -241,7 +256,6 @@ class ProfilePage(TemplateView):
     fields = ['content']
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
         q_profile = Profile.objects.get(user__username=self.kwargs['username'])
         q_user = User.objects.get(id=q_profile.user.id)
