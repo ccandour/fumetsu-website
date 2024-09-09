@@ -161,7 +161,8 @@ def addEpisode(request):
         image.close()
         os.remove(f'media/temp/{image_name}')
 
-        return Response(episode_serializer.data)
+        episode_url = f'https://fumetsu.pl/anime/{episode.key_map.web_name}/{episode.ep_nr}/'
+        return Response({'url': episode_url})
     else:
         subtitles.close()
         os.remove(f'media/temp/{subtitles_name}')
