@@ -38,6 +38,7 @@ class AnimeSeries(models.Model):
 
     class Meta:
         db_table = 'fumetsu_anime_series'
+        ordering = ['name_english']
 
     def __str__(self):
         return f'{self.web_name}'
@@ -53,6 +54,7 @@ class AnimeEpisode(models.Model):
 
     class Meta:
         db_table = 'fumetsu_anime_episode'
+        ordering = ['date_posted']
 
     def __str__(self):
         return f'{self.key_map}. Ep nr: {self.ep_nr} tutuł: {self.title}.'
@@ -66,6 +68,7 @@ class AnimePost(models.Model):
 
     class Meta:
         db_table = 'fumetsu_anime_post'
+        ordering = ['key_map__date_posted']
 
     def __str__(self):
         return f'{self.key_map}'
@@ -93,6 +96,7 @@ class Player(models.Model):
 
     class Meta:
         db_table = 'fumetsu_player'
+        ordering = ['key_map__date_posted']
 
     def __str__(self):
         return f'{self.key_map.key_map.name_english} - {self.key_map.ep_nr} - {self.website}.'
@@ -120,6 +124,7 @@ class EpisodeComment(models.Model):
 
     class Meta:
         db_table = 'fumetsu_episode_comment'
+        ordering = ['date_posted']
 
     def __str__(self):
         return f'post {self.author}, {self.content} do anime {self.key_map}.'
@@ -134,6 +139,7 @@ class SeriesComment(models.Model):
 
     class Meta:
         db_table = 'fumetsu_series_comment'
+        ordering = ['date_posted']
 
     def __str__(self):
         return (f'post {self.author}, {self.content} do anime {self.key_map}.')
@@ -148,6 +154,7 @@ class Announcement(models.Model):
 
     class Meta:
         db_table = 'fumetsu_announcement'
+        ordering = ['date_posted']
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -173,6 +180,7 @@ class PostComment(models.Model):
 
     class Meta:
         db_table = 'fumetsu_post_comment'
+        ordering = ['date_posted']
 
     def __str__(self):
         return (f'post {self.author}, {self.content} do anime {self.post_map}.')
