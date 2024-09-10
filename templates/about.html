@@ -12,7 +12,7 @@
                 <div class="d-flex flex-row">
                     <img class="com_img me-3" src="{{ member.image.url }}" alt="Staff Image">
                     <div class="d-flex flex-column justify-content-center">
-                        <div class="" style="color:{{member.0.color}}">{{ member.user.username }}</div>
+                        <div class="" style="color:{{member.color}}">{{ member.user.username }}</div>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,11 @@
                     <img class="com_img me-3" src="{{ member.0.image.url }}" alt="Staff Image">
                     <div class="d-flex flex-column justify-content-center">
                         <div class="" style="color:{{member.0.color}}">{{ member.0.user.username }}</div>
+                        {% if member.1 == 1 %}
+                        <div class="text-secondary-emphasis">{{ member.1 }} seria</div>
+                        {% else %}
                         <div class="text-secondary-emphasis">{{ member.1 }} serii</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
