@@ -39,7 +39,7 @@ def getSeriesEpisodes(request, series_id):
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def getPosts(request):
-    posts = AnimePost.objects.all()
+    posts = AnimePost.objects.all().order_by('-key_map__date_posted')
     for post in posts:
         post.key_map.players = Player.objects.filter(key_map=post.key_map)
     serializer = PostSerializer(posts, many=True)
