@@ -40,82 +40,80 @@
 <body class="bg-dark-subtle">
 
 <!-- Navbar -->
-<header class="site-header">
-    <nav class="navbar navbar-expand-md card rounded-0"  style="border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
-        <div class="container-fluid justify-content-center gap-3 gap-md-0 px-0">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="fas fa-bars fa-lg text-white"></span>
-            </button>
-            <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
-                <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36" alt="Fumetsu"/>
+<nav class="navbar sticky-top navbar-expand-md card rounded-0"  style="border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
+    <div class="container-fluid justify-content-center gap-3 gap-md-0 px-0">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="fas fa-bars fa-lg text-white"></span>
+        </button>
+        <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
+            <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36" alt="Fumetsu"/>
+        </a>
+        <!-- User dropdown mobile -->
+        <div class="ms-auto d-flex d-md-none nav-item dropdown p-0">
+            <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
+                {% if user.is_authenticated %}
+                    <img src="{{ user.profile.image.url }}" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
+                {% else %}
+                    <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
+                {% endif %}
             </a>
-            <!-- User dropdown mobile -->
-            <div class="ms-auto d-flex d-md-none nav-item dropdown p-0">
-                <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
-                    {% if user.is_authenticated %}
-                        <img src="{{ user.profile.image.url }}" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
-                    {% else %}
-                        <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
-                    {% endif %}
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
-                    {% if user.is_authenticated%}
-                    <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Profil</a></li>
-                    <li>
-                        <form method="POST" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button class="dropdown-item">Wyloguj</button>
-                        </form>
-                    </li>
-                    {% else %}
-                    <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
-                    <li><a class="dropdown-item" href="{% url 'register' %}">Rejestracja</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-            <div class="collapse navbar-collapse" id="navbarToggler">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item d-flex justify-content-center">
-                        <a class="nav-link {% active_url 'fumetsu-home' %} menu-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
-                    </li>
-                    <li class="nav-item d-flex justify-content-center">
-                        <a class="nav-link {% active_url 'anime-list' %} menu-link" href="{% url 'anime-list' %}">Anime</a>
-                    </li>
-                    <li class="nav-item d-flex justify-content-center">
-                        <a class="nav-link {% active_url 'fumetsu-announcements' %} menu-link" href="{% url 'fumetsu-announcements' %}">Aktualności</a>
-                    </li>
-                    <li class="nav-item d-flex justify-content-center">
-                        <a class="nav-link {% active_url 'fumetsu-about' %} menu-link" href="{% url 'fumetsu-about' %}">O nas</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- User dropdown desktop -->
-            <div class="ms-auto d-none d-md-flex nav-item dropdown p-0">
-                <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
-                    {% if user.is_authenticated %}
-                        <img src="{{ user.profile.image.url }}" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
-                    {% else %}
-                        <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
-                    {% endif %}
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
-                    {% if user.is_authenticated%}
-                    <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Profil</a></li>
-                    <li>
-                        <form method="POST" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button class="dropdown-item">Wyloguj</button>
-                        </form>
-                    </li>
-                    {% else %}
-                    <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
-                    <li><a class="dropdown-item" href="{% url 'register' %}">Rejestracja</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+            <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
+                {% if user.is_authenticated%}
+                <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Profil</a></li>
+                <li>
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="dropdown-item">Wyloguj</button>
+                    </form>
+                </li>
+                {% else %}
+                <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                <li><a class="dropdown-item" href="{% url 'register' %}">Rejestracja</a></li>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
-</header>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item d-flex justify-content-center">
+                    <a class="nav-link {% active_url 'fumetsu-home' %} menu-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
+                </li>
+                <li class="nav-item d-flex justify-content-center">
+                    <a class="nav-link {% active_url 'anime-list' %} menu-link" href="{% url 'anime-list' %}">Anime</a>
+                </li>
+                <li class="nav-item d-flex justify-content-center">
+                    <a class="nav-link {% active_url 'fumetsu-announcements' %} menu-link" href="{% url 'fumetsu-announcements' %}">Aktualności</a>
+                </li>
+                <li class="nav-item d-flex justify-content-center">
+                    <a class="nav-link {% active_url 'fumetsu-about' %} menu-link" href="{% url 'fumetsu-about' %}">O nas</a>
+                </li>
+            </ul>
+        </div>
+        <!-- User dropdown desktop -->
+        <div class="ms-auto d-none d-md-flex nav-item dropdown p-0">
+            <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
+                {% if user.is_authenticated %}
+                    <img src="{{ user.profile.image.url }}" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
+                {% else %}
+                    <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
+                {% endif %}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
+                {% if user.is_authenticated%}
+                <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Profil</a></li>
+                <li>
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="dropdown-item">Wyloguj</button>
+                    </form>
+                </li>
+                {% else %}
+                <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                <li><a class="dropdown-item" href="{% url 'register' %}">Rejestracja</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <!-- Messages -->
 <section id="messages-section" class="position-absolute messages-section px-0 z-1">
@@ -181,9 +179,9 @@
                     <div class="">
                         <img src="{{ post.image.url }}" class="w-100 card-img-top" alt="Episode thumbnail">
                     </div>
-                    <div class="card-body">
+                    <div class="card-body bg-body-secondary">
                         <h5 class="card-title fs-6">{{post.key_map.key_map.name_english}}</h5>
-                        <h6 class="card-subtitle fw-normal text-body-secondary">
+                        <h6 class="card-subtitle fw-normal text-body">
                             Odcinek {{post.key_map.ep_nr|floatformat}} - {{ post.key_map.title }}
                         </h6>
                     </div>
@@ -191,7 +189,7 @@
                 </a>
             {% endfor %}
         </div>
-        <div class="card-header border-top mt-2">
+        <div class="card-header border-top">
             <h4 class="text-center mb-0 py-1">Popularne serie</h4>
         </div>
         <div class="d-flex flex-column gap-3 mx-4 my-3">
@@ -201,7 +199,7 @@
                     <div class="sixteen-nine-img card-img-top">
                         <img src="{{ series.image }}" class="w-100" alt="Episode thumbnail">
                     </div>
-                    <div class="card-body d-flex flex-row justify-content-between align-items-center">
+                    <div class="card-body bg-body-secondary d-flex flex-row justify-content-between align-items-center">
                         <h5 class="card-title fs-6 mb-0">
                             {{series.name_english}}
                             <div class="fs-6 text-body fw-normal d-inline-block">({{ series.episode_count }} odc.)</div>
@@ -217,9 +215,11 @@
 
 <!-- Footer -->
 <footer id="footer" class="gap-4 p-4 border-top mt-5 footer">
-    <a class="text-center" href="{% url 'fumetsu-terms-of-service' %}">Regulamin Serwisu</a>
-    <a class="text-center" href="{% url 'fumetsu-privacy-policy' %}">Polityka prywatności</a>
+    <a class="text-center d-none d-md-block" href="{% url 'fumetsu-terms-of-service' %}">Regulamin Serwisu</a>
+    <a class="text-center d-none d-md-block" href="{% url 'fumetsu-privacy-policy' %}">Polityka prywatności</a>
     <div class="d-none d-md-block">© Fumetsu 2024 All Rights Reserved</div>
+    <a class="text-center d-block d-md-none" href="{% url 'fumetsu-terms-of-service' %}">Regulamin</a>
+    <a class="text-center d-block d-md-none text-nowrap" href="{% url 'fumetsu-privacy-policy' %}">Polit. pryw.</a>
     <div class="d-block d-md-none text-nowrap">© Fumetsu</div>
     <div class="d-flex flex-row justify-content-between gap-4">
         <a href="https://www.facebook.com/fumetsusubs/" target="_blank"><i class="fab fa-facebook-f fa-lg"></i></a>
