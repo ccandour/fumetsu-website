@@ -44,7 +44,7 @@
                 <!-- Status -->
                 <div class="d-flex flex-row gap-2">
                     <div class="text-secondary-emphasis">Status:</div>
-                    {% if series.status == 'AIRING' %}
+                    {% if series.status == 'RELEASING' %}
                         Wychodzi
                     {% elif series.status == 'FINISHED' %}
                         Zakończone
@@ -56,7 +56,11 @@
                 <!-- Episode count -->
                 <div class="d-flex flex-row gap-2">
                     <div class="text-secondary-emphasis">Ilość odcinków:</div>
-                    {{ series.episode_count }}
+                    {% if series.episode_count %}
+                        {{ series.episode_count }}
+                    {% else %}
+                        ?
+                    {% endif %}
                 </div>
 
                 <!-- Rating -->
