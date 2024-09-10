@@ -71,7 +71,9 @@ class AnimePost(models.Model):
         ordering = ['key_map__date_posted']
 
     def __str__(self):
-        return f'{self.key_map}'
+        if self.key_map and self.key_map.key_map:
+            return f'{self.key_map.key_map.web_name}. Ep nr: {self.key_map.ep_nr} tutuł: {self.title}.'
+        return 'AnimePost with missing AnimeSeries or AnimeEpisode'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
