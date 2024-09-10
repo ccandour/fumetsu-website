@@ -15,8 +15,11 @@ class Profile(models.Model):
     description = models.CharField(max_length=1024, default='Nic o sobie nie powiem.')
     color = models.CharField(max_length=7, default='#b579d2')
 
+    class Meta:
+        ordering = ['user__username']
+
     def __str__(self):
-        return f'Profil {self.user.username}'
+        return self.user.username
 
     def check_staff(self):
         from fumetsu.models import StaffCredit
