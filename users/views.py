@@ -208,10 +208,13 @@ class EditProfile(TemplateView):
 
     def post(self, request, *args, **kwargs):
 
-        username_form = UsernameUpdateForm(request.POST, initial={'username': request.user.username})
-        profile_form = ProfileUpdateForm(request.POST, request.FILES, initial={'image': request.user.profile.image,
-                                                                               'color': request.user.profile.color,
-                                                                               'description': request.user.profile.description})
+        username_form = UsernameUpdateForm(request.POST, instance=self.request.user)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=self.request.user.profile)
+
+        # Append image and description to profile form because they end up in the username form (bruh)
+        profile_form.data.appendlist('image', username_form.data.get('image'))
+        profile_form.data.appendlist('description', username_form.data.get('description'))
+        profile_form.data.appendlist('color', username_form.data.get('color'))
 
         # Username form
         if username_form.is_valid() and username_form.has_changed():
@@ -221,7 +224,7 @@ class EditProfile(TemplateView):
             if User.objects.filter(username=new_username).count() > 0:
                 messages.error(request, f'Taki nick już istnieje')
             else:
-                UsernameUpdateForm(request.POST, instance=request.user).save(commit=True)
+                username_form.save()
 
         # Check for username length
         elif len(request.POST.get("username", "")) > 24:
@@ -240,7 +243,8 @@ class EditProfile(TemplateView):
                 request.user.profile.image = 'default.jpg'
                 request.user.profile.save()
 
-            ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile).save(commit=True)
+            print(f'saving {profile_form.cleaned_data}')
+            profile_form.save()
 
         if (username_form.is_valid() or not username_form.has_changed()) and profile_form.is_valid():
             messages.success(request, f'Zmiany zostały zapisane.')
