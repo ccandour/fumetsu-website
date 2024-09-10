@@ -57,7 +57,7 @@ class AnimeEpisode(models.Model):
         ordering = ['date_posted']
 
     def __str__(self):
-        return f'{self.key_map}. Ep nr: {self.ep_nr} tutuł: {self.title}.'
+        return f'{self.key_map.web_name}. Ep nr: {self.ep_nr} tutuł: {self.title}.'
 
 
 class AnimePost(models.Model):
