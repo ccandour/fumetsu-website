@@ -274,7 +274,7 @@ class ProfilePage(TemplateView):
         for credit in db_credits:
             credit_tuple = (credit.series, credit.role)
             credits_list.append(credit_tuple)
-        context['credits'] = list(reversed(credits_list)) if credits_list else []
+        context['credits'] = list(reversed(sorted(credits_list, key=lambda c: int(c[0].anilist_id)))) if credits_list else []
 
         context['com_ed'] = CreateComment()
         context['com_ser'] = list(reversed(list(SeriesComment.objects.filter(author=q_user))))
