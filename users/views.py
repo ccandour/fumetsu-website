@@ -45,7 +45,6 @@ def signup(request):
                 # db_user = User.objects.get(username=user.username)
                 # Profile.objects.create(user=db_user)
 
-
                 current_site = get_current_site(request)
                 message = render_to_string('signup_email.html', {
                     'user': user,
@@ -196,7 +195,8 @@ class EditProfile(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        is_staff = True if self.request.user.profile.id in StaffCredit.objects.values_list('user_id', flat=True) or self.request.user.is_superuser else False
+        is_staff = True if self.request.user.profile.id in StaffCredit.objects.values_list('user_id',
+                                                                                           flat=True) or self.request.user.is_superuser else False
 
         context['username_form'] = UsernameUpdateForm(instance=self.request.user)
         context['mail_form'] = MailUpdateForm(instance=self.request.user)
@@ -236,7 +236,8 @@ class EditProfile(TemplateView):
 
         # Save description and image
         if profile_form.is_valid() and profile_form.has_changed():
-            if request.user.profile.image and request.user.profile.image.name != 'default.jpg' and profile_form.cleaned_data.get('image') != request.user.profile.image:
+            if request.user.profile.image and request.user.profile.image.name != 'default.jpg' and profile_form.cleaned_data.get(
+                    'image') != request.user.profile.image:
                 image_name = request.user.profile.image.name.replace("\\", "/");
                 if os.path.exists(image_name):
                     os.remove(image_name)
@@ -264,6 +265,7 @@ class ProfilePage(TemplateView):
         q_profile = Profile.objects.get(user__username=self.kwargs['username'])
         q_user = User.objects.get(id=q_profile.user.id)
         q_user.color = get_color(q_user)
+        q_user.is_staff = True if self.request.user.profile.id in StaffCredit.objects.values_list('user_id', flat=True) or self.request.user.is_superuser else False
         context['f_user'] = q_user
         context['q_profile'] = q_profile
 
@@ -279,4 +281,3 @@ class ProfilePage(TemplateView):
         context['com_ep'] = list(reversed(list(EpisodeComment.objects.filter(author=q_user))))
         context['ban_form'] = BanForm()
         return context
-
