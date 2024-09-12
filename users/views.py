@@ -7,6 +7,9 @@ import os
 from fumetsu.forms import CreateComment
 from fumetsu.models import StaffCredit, SeriesComment
 from django.views.generic.base import TemplateView
+
+from fumetsu.settings import MEDIA_ROOT
+from utils.utils import generate_upload_path
 from .forms import *
 from fumetsu.models import EpisodeComment
 
@@ -208,11 +211,11 @@ class EditProfile(TemplateView):
 
     def post(self, request, *args, **kwargs):
 
-        username_form = UsernameUpdateForm(request.POST, instance=self.request.user)
+        username_form = UsernameUpdateForm(request.POST, request.FILES, instance=self.request.user)
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=self.request.user.profile)
 
         # Append image and description to profile form because they end up in the username form (bruh)
-        profile_form.data.appendlist('image', username_form.data.get('image'))
+        profile_form.data.appendlist('image', username_form.files.get('image'))
         profile_form.data.appendlist('description', username_form.data.get('description'))
         profile_form.data.appendlist('color', username_form.data.get('color'))
 
@@ -235,17 +238,27 @@ class EditProfile(TemplateView):
             messages.error(request, f'Nick może zawierać tylko litery i cyfry')
 
         # Save description and image
-        if profile_form.is_valid() and profile_form.has_changed():
-            if request.user.profile.image and request.user.profile.image.name != 'default.jpg' and profile_form.cleaned_data.get(
+        if profile_form.is_valid() and (profile_form.has_changed() or profile_form.files.get(
+                    'image') != request.user.profile.image):
+            if request.user.profile.image and request.user.profile.image.name != 'default.jpg' and profile_form.files.get(
                     'image') != request.user.profile.image:
-                image_name = request.user.profile.image.name.replace("\\", "/");
+
+                # Remove old image
+                image_name = os.path.join(MEDIA_ROOT, request.user.profile.image.name.replace("/", "\\"))
                 if os.path.exists(image_name):
                     os.remove(image_name)
-                request.user.profile.image = 'default.jpg'
-                request.user.profile.save()
 
-            print(f'saving {profile_form.cleaned_data}')
+                # Save new image
+                new_image_name = generate_upload_path(request.user.profile, request.FILES['image'].name)
+                with open(os.path.join(MEDIA_ROOT, new_image_name), 'wb+') as destination:
+                    for chunk in request.FILES['image'].chunks():
+                        destination.write(chunk)
+
+            # Update the db
+            profile_form.cleaned_data['image'] = new_image_name
+            request.user.profile.image = profile_form.cleaned_data.get('image')
             profile_form.save()
+            request.user.profile.save()
 
         if (username_form.is_valid() or not username_form.has_changed()) and profile_form.is_valid():
             messages.success(request, f'Zmiany zostały zapisane.')

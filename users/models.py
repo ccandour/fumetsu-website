@@ -43,9 +43,9 @@ class Profile(models.Model):
 
         super().save(*args, **kwargs)
 
-        size = [256, 256]
+        size = (256, 256)
         if User.objects.filter(is_superuser=True, username=self.user.username).first():
-            size = [1024, 1024]
+            size = (1024, 1024)
 
         img = Image.open(self.image.path)
 

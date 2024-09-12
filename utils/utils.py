@@ -4,7 +4,6 @@ from slugify import slugify
 
 def generate_upload_path(instance, filename):
     file_extension = filename.split('.')[-1]
-    # Delete the old image
     return f'profile_pics/{instance.user.username}.{file_extension}'
 
 
