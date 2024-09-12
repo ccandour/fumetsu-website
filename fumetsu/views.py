@@ -270,13 +270,13 @@ class About(ListView):
 
         db_credits = StaffCredit.objects.all()
         for credit in db_credits:
-            if credit.role == 'Tłumaczenie' and [credit.user, len(list(
-                    StaffCredit.objects.filter(user=credit.user, role='Tłumaczenie')))] not in translators:
+            if 'Tłumaczenie' in credit.role and [credit.user, len(list(
+                    StaffCredit.objects.filter(user=credit.user, role__contains='Tłumaczenie')))] not in translators:
                 translators.append(
-                    [credit.user, len(list(StaffCredit.objects.filter(user=credit.user, role='Tłumaczenie')))])
-            elif credit.role == 'Korekta' and [credit.user, len(list(
-                    StaffCredit.objects.filter(user=credit.user, role='Korekta')))] not in editors:
-                editors.append([credit.user, len(list(StaffCredit.objects.filter(user=credit.user, role='Korekta')))])
+                    [credit.user, len(list(StaffCredit.objects.filter(user=credit.user, role__contains='Tłumaczenie')))])
+            if 'Korekta' in credit.role and [credit.user, len(list(
+                    StaffCredit.objects.filter(user=credit.user, role__contains='Korekta')))] not in editors:
+                editors.append([credit.user, len(list(StaffCredit.objects.filter(user=credit.user, role__contains='Korekta')))])
 
         translators.sort(key=lambda x: x[1], reverse=True)
         editors.sort(key=lambda x: x[1], reverse=True)
