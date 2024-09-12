@@ -265,7 +265,7 @@ class ProfilePage(TemplateView):
         q_profile = Profile.objects.get(user__username=self.kwargs['username'])
         q_user = User.objects.get(id=q_profile.user.id)
         q_user.color = get_color(q_user)
-        q_user.is_staff = True if self.request.user.profile.id in StaffCredit.objects.values_list('user_id', flat=True) or self.request.user.is_superuser else False
+        q_user.is_staff = StaffCredit.objects.filter(user=q_profile).exists() or q_user.is_superuser
         context['f_user'] = q_user
         context['q_profile'] = q_profile
 
