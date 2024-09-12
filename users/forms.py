@@ -120,7 +120,7 @@ class MailUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     image = forms.ImageField(
         required=False,
-        label='Zdjęcie profilowe',
+        label='Zdjęcie profilowe (max 10MB)',
         error_messages={'invalid': 'Tylko zdj'},
         widget=forms.FileInput(
             attrs={
