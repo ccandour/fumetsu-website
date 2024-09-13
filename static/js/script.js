@@ -8,17 +8,19 @@ $(document).ready(function() {
     const margin = 80; // Adjust this value as needed
 
 	// Delay the logging to ensure styles are computed
-    setTimeout(() => {
-        const computedStyles = window.getComputedStyle(mainContainer);
+    if (sidebar) {
+        setTimeout(() => {
+            const computedStyles = window.getComputedStyle(mainContainer);
 
-        if (content.offsetHeight > window.innerHeight) {
-            sidebar.style.height = (content.offsetHeight) + 'px';
-        } else {
-            sidebar.style.height = (content.offsetHeight) + 'px';
-            const contentMargin = parseInt(computedStyles.marginBottom);
-            sidebar.style.height = (content.offsetHeight + contentMargin) + 'px';
-        }
-    }, 100);
+            if (content.offsetHeight > window.innerHeight) {
+                sidebar.style.height = (content.offsetHeight) + 'px';
+            } else {
+                sidebar.style.height = (content.offsetHeight) + 'px';
+                const contentMargin = parseInt(computedStyles.marginBottom);
+                sidebar.style.height = (content.offsetHeight + contentMargin) + 'px';
+            }
+        }, 100);
+    }
 });
 
 // Messages offset script
