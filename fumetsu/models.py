@@ -57,7 +57,9 @@ class AnimeEpisode(models.Model):
         ordering = ['date_posted']
 
     def __str__(self):
-        return f'{self.key_map.name_english} -- {self.ep_nr} -- {self.title}.'
+        if self.key_map:
+            return f'{self.key_map.name_english} -- {self.ep_nr} -- {self.title}.'
+        return 'An episode with a missing Series'
 
 
 class AnimePost(models.Model):
