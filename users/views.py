@@ -23,10 +23,8 @@ from .tokens import account_activation_token
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 
-from fumetsu.ban import get_color
 from django.contrib.auth import logout
 
-import re
 import unidecode
 
 
@@ -277,7 +275,6 @@ class ProfilePage(TemplateView):
         context = super().get_context_data(**kwargs)
         q_profile = Profile.objects.get(user__username=self.kwargs['username'])
         q_user = User.objects.get(id=q_profile.user.id)
-        q_user.color = get_color(q_user)
         q_user.is_staff = StaffCredit.objects.filter(user=q_profile).exists() or q_user.is_superuser
         context['f_user'] = q_user
         context['q_profile'] = q_profile

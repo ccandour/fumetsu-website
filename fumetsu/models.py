@@ -41,7 +41,7 @@ class AnimeSeries(models.Model):
         ordering = ['name_english']
 
     def __str__(self):
-        return f'{self.web_name}'
+        return f'{self.name_english}'
 
 
 class AnimeEpisode(models.Model):
@@ -57,7 +57,7 @@ class AnimeEpisode(models.Model):
         ordering = ['date_posted']
 
     def __str__(self):
-        return f'{self.key_map.web_name}. Ep nr: {self.ep_nr} tutuł: {self.title}.'
+        return f'{self.key_map.name_english} -- {self.ep_nr} -- {self.title}.'
 
 
 class AnimePost(models.Model):
@@ -72,7 +72,7 @@ class AnimePost(models.Model):
 
     def __str__(self):
         if self.key_map and self.key_map.key_map:
-            return f'{self.key_map.key_map.web_name}. Ep nr: {self.key_map.ep_nr} tutuł: {self.title}.'
+            return f'{self.key_map.key_map.web_name}. Ep nr: {self.key_map.ep_nr} tutuł: {self.key_map.title}.'
         return 'AnimePost with missing AnimeSeries or AnimeEpisode'
 
     def save(self, *args, **kwargs):
@@ -101,7 +101,10 @@ class Player(models.Model):
         ordering = ['key_map__date_posted']
 
     def __str__(self):
-        return f'{self.key_map.key_map.name_english} - {self.key_map.ep_nr} - {self.website}.'
+        if self.key_map:
+            return f'{self.key_map.key_map.name_english} - {self.key_map.ep_nr} - {self.website}.'
+        else:
+            return 'A player with missing Episode relation'
 
 
 class Tag(models.Model):

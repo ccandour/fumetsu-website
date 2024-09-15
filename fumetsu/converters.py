@@ -1,13 +1,12 @@
-
 class AnimeUrlConverter:
     regex = '[\w]+'
 
     def to_python(self, value):
         return value
 
-
     def to_url(self, value):
         return value
+
 
 class AnimeSlug:
     regex = '[a-z0-9-]+'
@@ -18,6 +17,7 @@ class AnimeSlug:
     def to_url(self, value):
         return value
 
+
 class SearchTerm:
     regex = '[a-z0-9-!?,.\'"():]+'
 
@@ -26,6 +26,7 @@ class SearchTerm:
 
     def to_url(self, value):
         return value
+
 
 class TagsString:
     regex = '[a-z-+]+'
