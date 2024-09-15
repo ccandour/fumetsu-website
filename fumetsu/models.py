@@ -57,9 +57,10 @@ class AnimeEpisode(models.Model):
         ordering = ['date_posted']
 
     def __str__(self):
-        if self.key_map:
+        if AnimeSeries.objects.filter(id=self.key_map_id).exists():
             return f'{self.key_map.name_english} -- {self.ep_nr} -- {self.title}.'
-        return 'An episode with a missing Series'
+        else:
+            return 'An episode with a missing Series'
 
 
 class AnimePost(models.Model):
@@ -103,7 +104,7 @@ class Player(models.Model):
         ordering = ['key_map__date_posted']
 
     def __str__(self):
-        if self.key_map:
+        if self and self.key_map and self.key_map.key_map:
             return f'{self.key_map.key_map.name_english} - {self.key_map.ep_nr} - {self.website}.'
         else:
             return 'A player with missing Episode relation'
