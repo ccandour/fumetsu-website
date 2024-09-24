@@ -213,7 +213,7 @@ class EditProfile(TemplateView):
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=self.request.user.profile)
 
         # Append image and description to profile form because they end up in the username form (bruh)
-        profile_form.data.appendlist('image', username_form.files.get('image'))
+        profile_form.files.appendlist('image', username_form.files.get('image'))
         profile_form.data.appendlist('description', username_form.data.get('description'))
         profile_form.data.appendlist('color', username_form.data.get('color'))
 
@@ -239,7 +239,7 @@ class EditProfile(TemplateView):
         if profile_form.is_valid() and (profile_form.has_changed() or profile_form.files.get(
                     'image') != request.user.profile.image):
             if request.user.profile.image and request.user.profile.image.name != 'default.jpg' and profile_form.files.get(
-                    'image') != request.user.profile.image:
+                    'image') and profile_form.files.get('image') != request.user.profile.image:
 
                 # Remove old image
                 image_name = os.path.join(MEDIA_ROOT, request.user.profile.image.name.replace("/", "\\"))
@@ -252,9 +252,9 @@ class EditProfile(TemplateView):
                     for chunk in request.FILES['image'].chunks():
                         destination.write(chunk)
 
-            # Update the db
-            profile_form.cleaned_data['image'] = new_image_name
-            request.user.profile.image = profile_form.cleaned_data.get('image')
+                # Update the db
+                profile_form.cleaned_data['image'] = new_image_name
+                request.user.profile.image = profile_form.cleaned_data.get('image')
             profile_form.save()
             request.user.profile.save()
 
