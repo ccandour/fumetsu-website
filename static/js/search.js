@@ -14,14 +14,11 @@ let series = []
 let scriptFlag = false
 
 const sendSearchData = (searchTerm, selectedTags) => {
-
-    // Change the URL to reflect the search term
     let newUrl = `/anime/`
     if (searchTerm.length > 0) {
         newUrl += `?search=${searchTerm.toLowerCase().replaceAll(' ', '-')}`
     }
 
-    // Add tags to the URL
     if (selectedTags.length > 0 && searchTerm.length > 0) {
         newUrl += '&tags='
         for (let tag of selectedTags) {
@@ -48,33 +45,31 @@ const sendSearchData = (searchTerm, selectedTags) => {
               'csrfmiddlewaretoken': csrf
          },
          success: (response) => {
-             // Reset the results box
              resultsBox.innerHTML = ''
              const data = response.data
-             // data.sort((a, b) => (a.name_english > b.name_english ? 1 : -1));
 
-             // Render the series
              if (Array.isArray(data)) {
                  renderSeries(data.slice(0, 10))
                  series = data.slice(10)
 
-                 // Activate the infinite scroll after initial render
-                 infiniteViewpoint = new Waypoint.Infinite({
-                    element: $('.infinite-container')[0],
-                    offset: 'bottom-in-view',
-                    onBeforePageLoad: function () {
-                        infiniteTrigger.click()
-                    }
-                })
-             }
-             // If no series match the search term, display a message
-             else if (searchInput.value.length > 0) {
+                 if (series.length > 0) {
+                     infiniteViewpoint = new Waypoint.Infinite({
+                        element: $('.infinite-container')[0],
+                        offset: 'bottom-in-view',
+                        onBeforePageLoad: function () {
+                            infiniteTrigger.click()
+                        }
+                    })
+                 } else {
+                     if (infiniteViewpoint) {
+                         infiniteViewpoint.destroy()
+                     }
+                 }
+             } else if (searchInput.value.length > 0) {
                  resultsBox.innerHTML = `<b>${data}</b>`
-             }
-             else {
+             } else {
                  resultsBox.innerHTML = ''
              }
-
          },
          error: (error) => {
               console.log(error)
