@@ -120,9 +120,9 @@ const renderSeries = (data) => {
          
                 <div class="col-sm-10 ps-4 card-body flex-row d-flex align-items-center justify-content-between">
                     <div class="d-flex flex-column pb-1">
-                        <h5 class="d-none d-md-block card-title mb-1">${series.name_english}</h5>
-                        <h6 class="d-block d-md-none card-title mb-1">${series.name_english}</h6>
-                        <div class="card-text mb-2">${series.name_romaji}</div>
+                        <h5 class="d-none d-md-block card-title mb-1">${series.name_english.replace(/\\\"/g, '"')}</h5>
+                        <h6 class="d-block d-md-none card-title mb-1">${series.name_english.replace(/\\\"/g, '"')}</h6>
+                        <div class="card-text mb-2">${series.name_romaji.replace(/\\\"/g, '"')}</div>
                         <div class="d-flex flex-row flex-wrap row-gap-1">
                             ${series.tags.map(tag => `<button class="btn btn-secondary me-1 tag h-25">${tag}</button>`).join('')}
                         </div>

@@ -4,8 +4,6 @@ $(document).ready(function() {
     const sidebar = document.querySelector('.content-section > section');
     const content = document.querySelector('.content-wrapper');
     const mainContainer = document.querySelector('.content-section');
-    const footer = document.querySelector('#footer');
-    const margin = 80; // Adjust this value as needed
 
 	// Delay the logging to ensure styles are computed
     if (sidebar) {

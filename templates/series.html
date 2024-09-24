@@ -19,13 +19,23 @@
             </div>
 
             <div>
-               <h3 class="text-start pb-0 mb-1">{{series.name_english}}
-                    <a href="https://anilist.co/anime/{{series.anilist_id}}" target="_blank">
-                        <img class="d-inline-block align-middle rounded-1" height="24em" src="{% static 'img/anilist_icon.svg' %}" alt="Anilist Icon"></img>
-                    </a>
-                </h3>
+                {% if series.name_english %}
+                	<h3 class="text-start pb-0 mb-1">{{series.name_english}}
+                        <a href="https://anilist.co/anime/{{series.anilist_id}}" target="_blank">
+                            <img class="d-inline-block align-middle rounded-1" height="24em" src="{% static 'img/anilist_icon.svg' %}" alt="Anilist Icon">
+                        </a>
+                    </h3>
+                {% else %}
+                    <h3 class="text-start pb-0 mb-1">{{series.name_romaji}}
+                        <a href="https://anilist.co/anime/{{series.anilist_id}}" target="_blank">
+                            <img class="d-inline-block align-middle rounded-1" height="24em" src="{% static 'img/anilist_icon.svg' %}" alt="Anilist Icon">
+                        </a>
+                    </h3>
+                {% endif %}
 
-               <h5>{{series.name_romaji}}</h5>
+                {% if series.name_romaji %}
+                	<h5>{{series.name_romaji}}</h5>
+                {% endif %}
 
                 <div id="tags" class="mb-3 d-flex flex-row flex-wrap gap-2">
                     {% for tag in tags %}
