@@ -1,3 +1,4 @@
+from django.contrib.sitemaps.views import sitemap
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, register_converter, include
 from django.conf import settings
@@ -5,6 +6,7 @@ from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
 from . import converters
+from .sitemaps import SeriesSitemap, EpisodeSitemap, StaticViewSitemap
 from .views import *
 
 register_converter(converters.AnimeSlug, 'anime_slug')
@@ -12,8 +14,14 @@ register_converter(converters.AnimeUrlConverter, 'legacy_anime_slug')
 register_converter(converters.SearchTerm, 'search_term')
 register_converter(converters.TagsString, 'tags_string')
 
+sitemaps = {
+    'series': SeriesSitemap,
+    'episode': EpisodeSitemap,
+    'static': StaticViewSitemap,
+}
+
 urlpatterns = [
-    path('', Home.as_view(), name='fumetsu-home'),
+    path('', Home.as_view(), name='home'),
 
     path('anime/', List.as_view(), name='anime-list'),
     path('anime/search/', search_anime, name='search'),
@@ -30,6 +38,8 @@ urlpatterns = [
     path('delete-comment/<uuid:pk>', DeleteComment.as_view(), name='del-cmt'),
 
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('images/favicon.ico'))),
+
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
     path('', include('users.urls')),
     path('', include('api.urls')),

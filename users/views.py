@@ -60,7 +60,7 @@ def signup(request):
                 email.send()
 
                 messages.success(request, f'Na podany adres e-mail został wysłany link aktywacyjny.')
-                return redirect('fumetsu-home')
+                return redirect('home')
         else:
             if form.has_error('username'):
                 messages.error(request, list(form.errors['username']).pop(0))
@@ -88,7 +88,7 @@ def activate(request, uidb64, token):
         return redirect('login')
     else:
         messages.error(request, f'Nieprawidłowy link!')
-        return redirect('fumetsu-home')
+        return redirect('home')
 
 
 def login_cas(request):
@@ -104,7 +104,7 @@ def login_cas(request):
                 if user is not None:
                     login(request, user)
                     messages.success(request, f'Pomyślnie zalogowano.')
-                    return redirect('fumetsu-home')
+                    return redirect('home')
                 else:
                     messages.error(request, f"Nazwa użytkownika lub hasło jest nieprawidłowe.")
                     return render(request, 'login.html', {'form': form})
@@ -157,7 +157,7 @@ def reset_password(request):
                 email.send()
 
             messages.success(request, 'Na podany adres e-mail został wysłany link do resetowania hasła.')
-            return redirect('fumetsu-home')
+            return redirect('home')
     else:
         return render(request, 'password_reset.html', {'form': CustomPasswordResetForm()})
 
@@ -174,11 +174,11 @@ def reset_password_confirm(request, uidb64, token, token_generator=default_token
             user.set_password(new_password)
             user.save()
             messages.success(request, 'Twoje hasło zostało zmienione.')
-            return redirect('fumetsu-home')
+            return redirect('home')
         else:
             print(f'User: {user.username} - Token: {token} - Valid: {token_generator.check_token(user, token)}')
             messages.error(request, 'Nie udało się zmienić hasła.')
-            return redirect('fumetsu-home')
+            return redirect('home')
     else:
         user = User.objects.get(pk=urlsafe_base64_decode(uidb64))
         form = CustomSetPasswordForm(user)
@@ -188,7 +188,7 @@ def reset_password_confirm(request, uidb64, token, token_generator=default_token
 def logout_view(request):
     logout(request)
     messages.success(request, f'Pomyślnie wylogowano')
-    return redirect('fumetsu-home')
+    return redirect('home')
 
 
 class EditProfile(TemplateView):

@@ -45,7 +45,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="fas fa-bars fa-lg text-white"></span>
         </button>
-        <a class="navbar-brand pt-0" href="{% url 'fumetsu-home' %}">
+        <a class="navbar-brand pt-0" href="{% url 'home' %}">
             <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36" alt="Fumetsu"/>
         </a>
         <!-- User dropdown mobile -->
@@ -75,7 +75,7 @@
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item d-flex justify-content-center">
-                    <a class="nav-link {% active_url 'fumetsu-home' %} menu-link" href="{% url 'fumetsu-home' %}">Strona Główna</a>
+                    <a class="nav-link {% active_url 'home' %} menu-link" href="{% url 'home' %}">Strona Główna</a>
                 </li>
                 <li class="nav-item d-flex justify-content-center">
                     <a class="nav-link {% active_url 'anime-list' %} menu-link" href="{% url 'anime-list' %}">Anime</a>

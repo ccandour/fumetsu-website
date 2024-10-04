@@ -155,7 +155,7 @@ class Episode(TemplateView):
         if AnimeEpisode.objects.filter(key_map=ani, ep_nr=self.kwargs['ep']).first():
             return super().dispatch(*args, **kwargs)
         else:
-            return redirect('fumetsu-home')
+            return redirect('home')
 
     def get_context_data(self, **kwargs):
 
@@ -334,7 +334,7 @@ class DeleteComment(TemplateView):
             del request.session['previous_referer']
             return HttpResponseRedirect(referer)
         else:
-            return HttpResponseRedirect(reverse('fumetsu-home'))
+            return HttpResponseRedirect(reverse('home'))
 
 
 class EditComment(TemplateView):
@@ -362,7 +362,7 @@ class EditComment(TemplateView):
                 context['type'] = 'series'
                 return context
             else:
-                redirect('fumetsu-home')
+                redirect('home')
 
     def post(self, request, *args, **kwargs):
         episode_comments = EpisodeComment.objects.filter(id=kwargs['pk'])
@@ -390,4 +390,4 @@ class EditComment(TemplateView):
             del request.session['previous_referer']
             return HttpResponseRedirect(referer)
         else:
-            return redirect('fumetsu-home')
+            return redirect('home')

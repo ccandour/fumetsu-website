@@ -43,6 +43,9 @@ class AnimeSeries(models.Model):
     def __str__(self):
         return f'{self.name_english}'
 
+    def get_absolute_url(self):
+        return f'/anime/{self.web_name}/' if self.web_name else '/anime/'
+
 
 class AnimeEpisode(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -61,6 +64,12 @@ class AnimeEpisode(models.Model):
             return f'{self.key_map.name_english} -- {self.ep_nr} -- {self.title}.'
         else:
             return 'An episode with a missing Series'
+
+    def get_absolute_url(self):
+        if self.key_map_id is not None and self.key_map.web_name:
+            print(self.key_map.web_name)
+            return f'/anime/{self.key_map.web_name}/{self.ep_nr}/'
+        return '/anime/'
 
 
 class AnimePost(models.Model):
