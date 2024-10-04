@@ -2,8 +2,9 @@
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
-{% block content %}
+{% block title %}Edytowanie komentarza - Fumetsu{% endblock title %}
 
+{% block content %}
 <div class="d-flex flex-column align-items-center">
 <div class="col-12 col-lg-8 card mb-4 p-4">
 	<form method="POST" enctype="multipart/form-data">
@@ -27,7 +28,6 @@
     <form id="delete-form" method="POST" action="{% url 'del-cmt' comment.id %}">
         {% csrf_token %}
     </form>
-
 </div>
 </div>
 {% endblock content %}

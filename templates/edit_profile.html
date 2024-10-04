@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
+{% block title %}Edytowanie profilu - Fumetsu{% endblock title %}
 
 {% block content %}
-
 <div class="d-flex flex-column align-items-center">
 <div class="col-12 col-lg-8 card mb-4 p-4">
-
 	<form method="POST" enctype="multipart/form-data">
 		{% csrf_token %}
 
@@ -23,8 +22,6 @@
             <a href="{% url 'password_change' %}" class="btn btn-secondary btn-lg">Zmień hasło</a>
 		</div>
 	</form>
-
-
 </div>
 </div>
 {% endblock content %}

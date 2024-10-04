@@ -3,8 +3,8 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+{% block title %}{{series.name_english}}, Odcinek {{odc_html|floatformat}} - Fumetsu{% endblock title %}
 {% block content %}
-
 <div class="d-flex flex-column gap-4">
     <!-- Title and Episode Navigation -->
     <div class="d-flex flex-column align-items-center">
@@ -141,5 +141,4 @@
     </div>
     {% endif %}
 </div>
-
 {% endblock content %}

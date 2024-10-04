@@ -3,10 +3,9 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% load utils_extras %}
+
+{% block title %}Profil {{ f_user.username }} - Fumetsu{% endblock title %}
 {% block content %}
-
-
-
 <div class="d-flex flex-column align-items-center align-items-md-start flex-md-row gap-3 align-items-start bg-body-secondary card p-3 mb-4">
 	<img class="user-img float-start mt-1" src="{{ f_user.profile.image.url  }}" alt="Profile Picture">
     <div class="d-flex flex-column">
