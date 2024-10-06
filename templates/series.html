@@ -9,9 +9,11 @@
 {% endblock scripts %}
 
 {% block title %}{{ series.name_english }} - Fumetsu{% endblock title %}
+{% block meta %}
+	<meta name="description" content="{{ series.content|safe }}">
+{% endblock %}
 
 {% block content %}
-
 <div class="d-flex flex-column gap-4">
     <!-- Metadata -->
     <div class="bg-body-secondary card p-3">

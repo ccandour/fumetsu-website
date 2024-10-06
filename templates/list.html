@@ -3,6 +3,9 @@
 {% load crispy_forms_tags %}
 
 {% block title %}Lista Anime - Fumetsu{% endblock title %}
+{% block meta %}
+    <meta name="description" content="Oglądaj anime z napisami PL. Wszystkie odcinki dostępne online, po polsku, bez reklam.">
+{% endblock meta %}
 
 {% block scripts %}
     {{ search_term|json_script:"search-term" }}

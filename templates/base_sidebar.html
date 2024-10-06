@@ -3,12 +3,11 @@
 <!DOCTYPE html>
 <html xml:lang="pl" lang="pl" data-bs-theme="dark" data-bs-core="modern">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{% block title %}{% endblock %}</title>
-	<meta name="Description" content="Fumetsu" />
-	<meta name="Keywords" content="" />
-	<link rel="Shortcut icon" href="" />
+    <meta name="robots" content="nosnippet">
+	{% block meta %}{% endblock %}
 
     <!-- Halfmoon CSS -->
     <link href="{% static 'css/halfmoon.css' %}" rel="stylesheet">

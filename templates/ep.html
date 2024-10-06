@@ -4,6 +4,10 @@
 {% load crispy_forms_tags %}
 
 {% block title %}{{series.name_english}}, Odcinek {{odc_html|floatformat}} - Fumetsu{% endblock title %}
+{% block meta %}
+    <meta name="description" content="{{series.name_english}}, Odcinek {{odc_html|floatformat}} - Oglądaj online z napisami PL.">
+{% endblock %}
+
 {% block content %}
 <div class="d-flex flex-column gap-4">
     <!-- Title and Episode Navigation -->
