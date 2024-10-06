@@ -101,4 +101,4 @@ markdown-link-attr-modifier
 gunicorn
 python-slugify
 djangorestframework
-django-resized
+django-lazy-srcset

@@ -1,5 +1,6 @@
 {% extends "base_sidebar.html" %}
 {% load static %}
+{% load lazy_srcset %}
 {% load poll_extras %}
 {% load utils_extras %}
 
@@ -13,7 +14,9 @@
 {% for post in anime %}
     <div class="col mx-sm-auto">
         <div class="card specific-w-sm-300 w-sm-100 mw-100 h-100 mx-auto">
-            <img src="{{ post.image.url }}" class="card-img-top" alt="Episode thumbnail">
+            <div class="aspect-ratio-16-9">
+                <img {% srcset post.image %} class="card-img-top" alt="Episode thumbnail">
+            </div>
             <div class="card-body bg-body-secondary d-flex flex-column">
                 <a href="{% url 'anime-nm' post.key_map.key_map.web_name %}">
                     <h5 class="card-title">{{post.key_map.key_map.name_english}}</h5>

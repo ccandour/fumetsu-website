@@ -1,5 +1,7 @@
 {% load static %}
+{% load lazy_srcset %}
 {% load utils_extras %}
+
 <!DOCTYPE html>
 <html xml:lang="pl" lang="pl" data-bs-theme="dark" data-bs-core="modern">
 <head>
@@ -51,7 +53,7 @@
         <div class="ms-auto d-flex d-md-none nav-item dropdown p-0">
             <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
                 {% if user.is_authenticated %}
-                    <img src="{{ user.profile.image.url }}" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
+                    <img {% srcset user.profile.image %} class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% else %}
                     <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% endif %}

@@ -43,7 +43,7 @@ def search_anime(request):
             response = json.loads(
                 json.dumps(sorted(list(query_set), key=lambda x: x.rating, reverse=True), cls=AnimeSeriesJSONEncoder))
         else:
-            response = 'No anime found.'
+            response = 'Nie znaleziono anime.'
 
         return JsonResponse({'data': response})
     return JsonResponse({})

@@ -1,6 +1,7 @@
 {% extends "base_sidebar.html" %}
 {% load utils_extras %}
 {% load static %}
+{% load lazy_srcset %}
 {% load poll_extras %}
 
 {% block title %}Ogłoszenia - Fumetsu{% endblock title %}
@@ -20,7 +21,7 @@
             <div class="card-body px-4">
                 {{ post.content|convert_markdown|safe }}
                 <a class="announcement-img" href="{{ post.image.url }}" target="_blank">
-                    <img src="{{ post.image.url }}" alt="Announcement image">
+                    <img {% srcset post.image %} alt="Announcement image">
                 </a>
             </div>
         </div>

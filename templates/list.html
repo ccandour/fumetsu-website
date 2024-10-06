@@ -1,6 +1,5 @@
 {% extends "base_sidebar.html" %}
 {% load static %}
-{% load crispy_forms_tags %}
 
 {% block title %}Lista Anime - Fumetsu{% endblock title %}
 {% block meta %}
@@ -45,7 +44,7 @@
 </div>
 
 <!-- Actual list of anime (managed by search.js) -->
-<div id="results-box" class=" infinite-container d-flex flex-column anime-list gap-3"></div>
+<div id="results-box" class=" infinite-container d-flex flex-column anime-list gap-3 min-vh-100"></div>
 <!-- Invisible button to trigger infinite scrolling -->
 <button id="infinite-trigger" class="d-none infinite-more-link"></button>
 
