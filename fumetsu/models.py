@@ -3,7 +3,6 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 import uuid
 from PIL import Image
-from django_resized import ResizedImageField
 
 from users.models import Profile
 
@@ -76,7 +75,7 @@ class AnimePost(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     key_map = models.ForeignKey(AnimeEpisode, on_delete=models.CASCADE, null=True)
     content = models.TextField()
-    image = ResizedImageField(default='anime_default.jpg', force_format='WEBP', quality=75, upload_to='anime_post')
+    image = models.ImageField(default='anime_default.jpg', upload_to='anime_post')
 
     class Meta:
         db_table = 'fumetsu_anime_post'
@@ -167,7 +166,7 @@ class Announcement(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
-    image = ResizedImageField(default='default.jpg', force_format='WEBP', quality=75, upload_to='akt_post')
+    image = models.ImageField(default='default.jpg', upload_to='akt_post')
 
     class Meta:
         db_table = 'fumetsu_announcement'
