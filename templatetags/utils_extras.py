@@ -24,3 +24,7 @@ def convert_markdown(text):
         },
     }
     return markdown(text, extensions=extensions, extension_configs=extension_configs)
+
+@register.filter(name='large_to_medium')
+def large_to_medium(value):
+    return value.replace('large', 'medium')
