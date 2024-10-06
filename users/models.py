@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 import uuid
 from PIL import Image
 from django.utils import timezone
-from django_resized import ResizedImageField
 
 from utils.utils import generate_upload_path
 
@@ -11,7 +10,7 @@ from utils.utils import generate_upload_path
 class Profile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = ResizedImageField(default='default.jpg', force_format='WEBP', quality=75, upload_to=generate_upload_path)
+    image = models.ImageField(default='default.jpg', upload_to=generate_upload_path)
     time_joined = models.DateTimeField(default=timezone.now)
     description = models.CharField(max_length=1024, default='Nic o sobie nie powiem.')
     color = models.CharField(max_length=7, default='#b579d2')
