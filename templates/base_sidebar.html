@@ -119,8 +119,8 @@
 </nav>
 
 <script>
-    document.getElementById('navbar').addEventListener('click', function(event) {
-        if (window.innerWidth <= 768 && !event.target.closest('.navbar-toggler') && !event.target.closest('#navbarDropdown') && !event.target.closest('.navbar-brand')) {
+   document.getElementById('navbar').addEventListener('click', function(event) {
+        if (window.innerWidth <= 768 && !event.target.closest('.navbar-toggler') && !event.target.closest('.navbar-brand') && !event.target.closest('#navbarDropdown') && !event.target.closest('.dropdown-item')) {
             document.querySelector('.navbar-toggler').click();
         }
     });
