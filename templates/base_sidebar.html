@@ -19,10 +19,10 @@
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
-    
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    
+
     <!-- Custom JS & CSS -->
     <script src="{% static '/js/script.js' %}"></script>
     <link href="{% static 'css/style_min.css' %}" rel="stylesheet">
@@ -43,7 +43,7 @@
 <body class="bg-dark-subtle">
 
 <!-- Navbar -->
-<nav class="navbar sticky-top navbar-expand-md card rounded-0"  style="border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);">
+<nav class="navbar sticky-top navbar-expand-md card rounded-0" style="border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);" id="navbar">
     <div class="container-fluid justify-content-center gap-3 gap-md-0 px-0">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="fas fa-bars fa-lg text-white"></span>
@@ -57,21 +57,21 @@
                 {% if user.is_authenticated %}
                     <img {% srcset user.profile.image %} class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% else %}
-                    <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% endif %}
+                    <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
             </a>
-            <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
+            <ul class="dropdown-menu dropdown-menu-end md-3 mt-3 rounded-top-0">
                 {% if user.is_authenticated%}
-                <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Profil</a></li>
+                <li><a class="dropdown-item fs-5" href="{% url 'profile' user.username %}">Profil</a></li>
                 <li>
                     <form method="POST" action="{% url 'logout' %}">
                         {% csrf_token %}
-                        <button class="dropdown-item">Wyloguj</button>
+                        <button class="dropdown-item fs-5">Wyloguj</button>
                     </form>
                 </li>
                 {% else %}
-                <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
-                <li><a class="dropdown-item" href="{% url 'register' %}">Rejestracja</a></li>
+                <li><a class="dropdown-item fs-5" href="{% url 'login' %}">Login</a></li>
+                <li><a class="dropdown-item fs-5" href="{% url 'register' %}">Rejestracja</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -97,8 +97,8 @@
                 {% if user.is_authenticated %}
                     <img src="{{ user.profile.image.url }}" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% else %}
-                    <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% endif %}
+                    <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
             </a>
             <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
                 {% if user.is_authenticated%}
@@ -117,6 +117,14 @@
         </div>
     </div>
 </nav>
+
+<script>
+    document.getElementById('navbar').addEventListener('click', function(event) {
+        if (window.innerWidth <= 768 && !event.target.closest('.navbar-toggler') && !event.target.closest('#navbarDropdown') && !event.target.closest('.navbar-brand')) {
+            document.querySelector('.navbar-toggler').click();
+        }
+    });
+</script>
 
 <!-- Messages -->
 <section id="messages-section" class="position-fixed messages-section px-0 z-1">
