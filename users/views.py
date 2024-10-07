@@ -106,13 +106,11 @@ def login_cas(request):
                     messages.success(request, f'Pomyślnie zalogowano.')
                     return redirect('home')
                 else:
-                    messages.error(request, f"Nazwa użytkownika lub hasło jest nieprawidłowe.")
-                    return render(request, 'login.html', {'form': form})
+                    messages.error(request, f"Nazwa użytkownika lub hasło są nieprawidłowe.")
             except:
-                messages.error(request, f"Nie udało się zalogować.")
+                messages.error(request, f"Nazwa użytkownika lub hasło są nieprawidłowe.")
         else:
-            messages.error(request, f"Nazwa użytkownika lub hasło jest nieprawidłowe.")
-            return render(request, 'login.html', {'form': form})
+            messages.error(request, f"Nazwa użytkownika lub hasło są nieprawidłowe.")
     else:
         form = UserLoginForm()
     return render(request, 'login.html', {'form': form})
