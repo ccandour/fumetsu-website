@@ -57,8 +57,8 @@
                 {% if user.is_authenticated %}
                     <img {% srcset user.profile.image %} class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% else %}
-                {% endif %}
                     <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
+                {% endif %}
             </a>
             <ul class="dropdown-menu dropdown-menu-end md-3 mt-3 rounded-top-0">
                 {% if user.is_authenticated%}
@@ -97,8 +97,8 @@
                 {% if user.is_authenticated %}
                     <img src="{{ user.profile.image.url }}" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% else %}
-                {% endif %}
                     <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
+                {% endif %}
             </a>
             <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
                 {% if user.is_authenticated%}
