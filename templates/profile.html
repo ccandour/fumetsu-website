@@ -7,7 +7,7 @@
 {% block title %}Profil {{ f_user.username }} - Fumetsu{% endblock title %}
 {% block content %}
 <div class="d-flex flex-column align-items-center align-items-md-start flex-md-row gap-3 align-items-start bg-body-secondary card p-3 mb-4">
-	<img class="user-img float-start mt-1" src="{{ f_user.profile.image.url  }}" alt="Profile Picture">
+	<img {% srcset f_user.profile.image  %} class="user-img float-start mt-1" alt="Profile Picture">
     <div class="d-flex flex-column">
         <h3 class="d-flex flex-row align-items-center justify-content-center justify-content-md-start gap-2" style="color:{{f_user.profile.color}}">
             {{ f_user.username }}

@@ -55,7 +55,7 @@
         <div class="ms-auto d-flex d-md-none nav-item dropdown p-0">
             <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
                 {% if user.is_authenticated %}
-                    <img {% srcset user.profile.image %} class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
+                    <img {% srcset user.profile.image max_width=40 %} class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% else %}
                     <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% endif %}
@@ -95,7 +95,7 @@
         <div class="ms-auto d-none d-md-flex nav-item dropdown p-0">
             <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
                 {% if user.is_authenticated %}
-                    <img src="{{ user.profile.image.url }}" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
+                     <img {% srcset user.profile.image max_width=40 %} class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% else %}
                     <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
                 {% endif %}
