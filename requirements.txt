@@ -24,6 +24,7 @@ django-captcha
 django-cleanup
 django-crispy-forms
 django-recaptcha
+python-dotenv
 EasyProcess
 entrypoint2
 facebook-sdk
