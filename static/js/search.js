@@ -1,12 +1,11 @@
-
 const url = window.location.href
 const searchForm = document.getElementById('search-form')
 const searchInput = document.getElementById('search-input')
 const tagsFilter = document.getElementById('tags-filter')
 const resultsBox = document.getElementById('results-box')
 const infiniteTrigger = document.getElementById('infinite-trigger')
-const sidebar = document.querySelector('.content-section > section');
-const content = document.querySelector('.content-wrapper');
+const sidebar = document.querySelector('.content-section > section')
+const content = document.querySelector('.content-wrapper')
 const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
 
 let infiniteViewpoint
@@ -109,8 +108,12 @@ const insertSearchQuery = (searchTerm) => {
 
 const renderSeries = (data) => {
     data.forEach(series => {
-         const animeUrl = `/anime/${series.web_name}/` // Construct the URL
-         let seriesHtml = `
+        const animeUrl = `/anime/${series.web_name}/` // Construct the URL
+       let englishTitles = $.cookie("englishTitles") === 'true';
+        console.log(englishTitles);
+        let primaryTitle = englishTitles ? series.name_english : series.name_romaji;
+        let secondaryTitle = englishTitles ? series.name_romaji : series.name_english;
+        let seriesHtml = `
         <a href="${animeUrl}" class="infinite-item">
         <div class="card list-card overflow-hidden">
             <div class="row g-0">
@@ -120,10 +123,10 @@ const renderSeries = (data) => {
          
                 <div class="col-sm-10 ps-4 card-body flex-row d-flex align-items-center justify-content-between">
                     <div class="d-flex flex-column pb-1">
-                        <h5 class="d-none d-md-block card-title mb-1">${series.name_english.replace(/\\\"/g, '"')}</h5>
-                        <h6 class="d-block d-md-none card-title mb-1">${series.name_english.replace(/\\\"/g, '"')}</h6>
-                        <div class="card-text mb-2">${series.name_romaji.replace(/\\\"/g, '"')}</div>
-                        <div class="d-flex flex-row flex-wrap row-gap-1">
+                        <h5 class="d-none d-md-block card-title mb-1">${primaryTitle.replace(/\\\"/g, '"')}</h5>
+                        <h6 class="d-block d-md-none card-title mb-1">${primaryTitle.replace(/\\\"/g, '"')}</h6>
+                        <div class="card-text mb-2">${secondaryTitle.replace(/\\\"/g, '"')}</div>
+                                <div class="d-flex flex-row flex-wrap row-gap-1">
                             ${series.tags.map(tag => `<button class="btn btn-secondary me-1 tag h-25">${tag}</button>`).join('')}
                         </div>
                     </div>
@@ -138,7 +141,7 @@ const renderSeries = (data) => {
         </a>
     `
         if (series.rating > 65) {
-             seriesHtml = seriesHtml.replace('text-bg-success', 'text-bg-success')
+            seriesHtml = seriesHtml.replace('text-bg-success', 'text-bg-success')
         }
         else if (series.rating > 50) {
             seriesHtml = seriesHtml.replace('text-bg-success', 'text-bg-warning')

@@ -19,7 +19,13 @@
             </div>
             <div class="card-body bg-body-secondary d-flex flex-column">
                 <a href="{% url 'anime-nm' post.key_map.key_map.web_name %}">
-                    <h5 class="card-title">{{post.key_map.key_map.name_english}}</h5>
+                    <h5 class="card-title">
+                        {% if english_titles %}
+                        {{post.key_map.key_map.name_english}}
+                        {% else %}
+                        {{post.key_map.key_map.name_romaji}}
+                        {% endif %}
+                    </h5>
                 </a>
                 <h6 class="card-subtitle mb-2 fw-normal text-body-secondary">
                     Odcinek {{post.key_map.ep_nr|floatformat}} - {{ post.key_map.title }}

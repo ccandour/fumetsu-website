@@ -44,10 +44,18 @@
                 <img src="{{ credit.0.image }}" class="card-img-top" alt="Relation Cover Image">
                  <div class="card-body d-flex flex-column">
                     <h6 class="card-title">
-                        {% if credit.0.name_english|length < 30 %}
-                        {{credit.0.name_english}}
+                        {% if english_titles %}
+                            {% if credit.0.name_english|length < 30 %}
+                            {{credit.0.name_english}}
+                            {% else %}
+                            {{credit.0.name_english|slice:":30"|strip}}...
+                            {% endif %}
                         {% else %}
-                        {{credit.0.name_english|slice:":30"|strip}}...
+                            {% if credit.0.name_romaji|length < 30 %}
+                            {{credit.0.name_romaji}}
+                            {% else %}
+                            {{credit.0.name_romaji|slice:":30"|strip}}...
+                            {% endif %}
                         {% endif %}
                     </h6>
                     <p class="card-text mt-auto ms-auto me-auto" style="font-size: 0.95rem">
@@ -74,7 +82,13 @@
 
                     <div class="d-flex flex-column text-body">
                         <div class="d-flex flex-row gap-2">
-                            <h5 class="fw-semibold mb-0">{{com.key_map.name_english}}</h5>
+                            <h5 class="fw-semibold mb-0">
+                                {% if english_titles %}
+                                {{com.key_map.name_english}}
+                                {% else %}
+                                {{com.key_map.name_romaji}}
+                                {% endif %}
+                            </h5>
                             <span class="d-none d-md-block">
                                 {{com.date_posted|date:"d.m.o"}}
                             </span>
@@ -93,7 +107,13 @@
 
                     <div class="d-flex flex-column text-body">
                         <div class="d-flex flex-row gap-2">
-                            <h5 class="fw-semibold mb-0">{{com.key_map.key_map.name_english}} – Odcinek {{com.key_map.ep_nr}}</h5>
+                            <h5 class="fw-semibold mb-0">
+                                {% if english_titles %}
+                                {{com.key_map.key_map.name_english}} – Odcinek {{com.key_map.ep_nr}}
+                                {% else %}
+                                {{com.key_map.key_map.name_romaji}} – Odcinek {{com.key_map.ep_nr}}
+                                {% endif %}
+                            </h5>
                             <span class="d-none d-md-block">
                                 {{com.date_posted|date:"d.m.o"}}
                             </span>

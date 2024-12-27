@@ -13,3 +13,9 @@ def popular(request):
     return {
         'popular': post_html,
     }
+
+def english_titles(request):
+    english = request.COOKIES.get('englishTitles') == 'true'
+    return {
+        'english_titles': english,
+    }

@@ -7,6 +7,11 @@
             </div>
             <div class="modal-body">
                 <p class="text-start">Używamy plików cookies jedynie do zapewnienia poprawnego funkcjonowania niezbędnych części strony takich jak logowanie, komentowanie i pokazywanie powiadomień. Jeśli chcesz dowiedzieć się więcej, sprawdź naszą <a href="/privacy-policy/">Politykę prywatności</a>.</p>
+                <!-- English titles switch -->
+                <div class="form-check form-switch p-0 d-flex flex-row align-items-center">
+                    <label class="form-check label p-0" for="englishTitlesSwitch">Tytuły serii w języku angielskim</label>
+                    <input class="form-check-input ms-2 mt-0 mb-1 fs-5" type="checkbox" id="englishTitlesSwitch">
+                </div>
             </div>
             <div class="modal-footer d-flex flex-row justify-content-center">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" id="acceptCookies">Akceptuję</button>
@@ -48,11 +53,13 @@
     // Handle cookie consent choices
     $('#acceptCookies').on('click', function(){
         setCookie('cookiesAccepted', 'true', 365);
+        setCookie('englishTitles', $('#englishTitlesSwitch').is(':checked') ? 'true' : 'false', 365);
         $('#cookieModal').modal('hide');
     });
 
     $('#rejectCookies').on('click', function(){
         setCookie('cookiesAccepted', 'false', 365);
+        setCookie('englishTitles', $('#englishTitlesSwitch').is(':checked') ? 'true' : 'false', 365);
         $('#cookieModal').modal('hide');
     });
   });

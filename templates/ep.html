@@ -12,7 +12,13 @@
 <div class="d-flex flex-column gap-4">
     <!-- Title and Episode Navigation -->
     <div class="d-flex flex-column align-items-center">
-        <a href="{% url 'anime-nm' series.web_name %}"><h2>{{series.name_english}}</h2></a>
+        <a href="{% url 'anime-nm' series.web_name %}"><h2>
+            {% if english_titles %}
+            {{series.name_english}}
+            {% else %}
+            {{series.name_romaji}}
+            {% endif %}
+        </h2></a>
         <h5>
             {% if prev %}
                 <a class="ps-4" href="{% url 'ep-nm' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i></a>
