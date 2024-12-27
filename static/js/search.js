@@ -110,7 +110,6 @@ const renderSeries = (data) => {
     data.forEach(series => {
         const animeUrl = `/anime/${series.web_name}/` // Construct the URL
        let englishTitles = $.cookie("englishTitles") === 'true';
-        console.log(englishTitles);
         let primaryTitle = englishTitles ? series.name_english : series.name_romaji;
         let secondaryTitle = englishTitles ? series.name_romaji : series.name_english;
         let seriesHtml = `
