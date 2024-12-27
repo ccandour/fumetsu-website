@@ -6,7 +6,7 @@ const resultsBox = document.getElementById('results-box')
 const infiniteTrigger = document.getElementById('infinite-trigger')
 const sidebar = document.querySelector('.content-section > section')
 const content = document.querySelector('.content-wrapper')
-const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
+const csrf = $.cookie('csrftoken')
 
 let infiniteViewpoint
 let series = []
@@ -109,7 +109,7 @@ const insertSearchQuery = (searchTerm) => {
 const renderSeries = (data) => {
     data.forEach(series => {
         const animeUrl = `/anime/${series.web_name}/` // Construct the URL
-       let englishTitles = $.cookie("englishTitles") === 'true';
+        let englishTitles = $.cookie("englishTitles") === 'true';
         let primaryTitle = englishTitles ? series.name_english : series.name_romaji;
         let secondaryTitle = englishTitles ? series.name_romaji : series.name_english;
         let seriesHtml = `
