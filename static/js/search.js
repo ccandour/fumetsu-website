@@ -6,7 +6,7 @@ const resultsBox = document.getElementById('results-box')
 const infiniteTrigger = document.getElementById('infinite-trigger')
 const sidebar = document.querySelector('.content-section > section')
 const content = document.querySelector('.content-wrapper')
-const csrf = $.cookie('csrftoken')
+const csrf = getCookie('csrftoken')
 
 let infiniteViewpoint
 let series = []
@@ -109,7 +109,7 @@ const insertSearchQuery = (searchTerm) => {
 const renderSeries = (data) => {
     data.forEach(series => {
         const animeUrl = `/anime/${series.web_name}/` // Construct the URL
-        let englishTitles = $.cookie("englishTitles") === 'true';
+        let englishTitles = getCookie('englishTitles') === 'true'
         let primaryTitle = englishTitles ? series.name_english : series.name_romaji;
         let secondaryTitle = englishTitles ? series.name_romaji : series.name_english;
         let seriesHtml = `
@@ -191,4 +191,20 @@ searchInput.oninput = e => {
 infiniteTrigger.onclick = e => {
     renderSeries(series.slice(0, 5))
     series = series.slice(5)
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
