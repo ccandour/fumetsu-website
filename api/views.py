@@ -59,7 +59,7 @@ def addSeries(request):
         'format': anilist_entry.format,
         'status': anilist_entry.status,
         'episode_count': anilist_entry.episodes,
-        'rating': anilist_entry.average_score,
+        'rating': anilist_entry.average_score if anilist_entry.average_score is not None else 0,
         'content': anilist_entry.description.default,
         'image': str(anilist_entry.cover_image.extra_large),
         'web_name': generate_web_name(anilist_entry.title.english)
