@@ -236,7 +236,7 @@ class EditProfile(TemplateView):
         # Save description and image
         if profile_form.is_valid() and (profile_form.has_changed() or profile_form.files.get(
                     'image') != request.user.profile.image):
-            if request.user.profile.image and request.user.profile.image.name != 'default.jpg' and profile_form.files.get(
+            if request.user.profile.image and request.user.profile.image.name != 'default.png' and profile_form.files.get(
                     'image') and profile_form.files.get('image') != request.user.profile.image:
 
                 # Remove old image

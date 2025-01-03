@@ -10,7 +10,7 @@ from utils.utils import generate_upload_path
 class Profile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to=generate_upload_path)
+    image = models.ImageField(default='default.png', upload_to=generate_upload_path)
     time_joined = models.DateTimeField(default=timezone.now)
     description = models.CharField(max_length=1024, default='Nic o sobie nie powiem.')
     color = models.CharField(max_length=7, default='#ffffff')
@@ -58,6 +58,6 @@ class Profile(models.Model):
             img.save(self.image.path)
 
         # Restore the old image if it hasn't changed
-        if old_image and self.image == 'default.jpg':
+        if old_image and self.image == 'default.png':
             self.image = old_image
             super().save(update_fields=['image'])
