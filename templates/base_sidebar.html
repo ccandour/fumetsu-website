@@ -48,7 +48,7 @@
 <!-- Navbar -->
 <nav class="navbar sticky-top navbar-expand-md card rounded-0" style="border-bottom: var(--bs-border-width) solid var(--bs-content-border-color);" id="navbar">
     <div class="container-fluid justify-content-center gap-3 gap-md-0 px-0">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation" id="navbar-hamburger">
             <span class="fas fa-bars fa-lg text-white"></span>
         </button>
         <a class="navbar-brand pt-0" href="{% url 'home' %}">
@@ -121,13 +121,15 @@
     document.getElementById('navbar').addEventListener('click', function(event) {
         if (window.innerWidth <= 768 && !event.target.closest('.navbar-toggler') && !event.target.closest('.navbar-brand') && !event.target.closest('#navbarDropdown') && !event.target.closest('.dropdown-item') && !event.target.closest('.navbar-nav')) {
             document.querySelector('.navbar-toggler').click();
+        }
+    });
+    document.getElementById('navbar-hamburger').addEventListener('click', function(event) {
             if (document.querySelector('#login-buttons').classList.contains('me-auto')) {
                 document.querySelector('#login-buttons').classList.remove('me-auto');
             }
             else {
                 document.querySelector('#login-buttons').classList.add('me-auto');
             }
-        }
     });
 </script>
 
