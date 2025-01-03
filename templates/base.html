@@ -31,7 +31,6 @@
     <link href="{% static 'css/style_min.css' %}" rel="stylesheet">
     {% block scripts %}{% endblock scripts %}
 
-
 	<!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/fb9c73f96c.js" crossorigin="anonymous"></script>
 
@@ -55,29 +54,22 @@
             <img class="d-inline-block align-text-top my-1" src="{% static '/img/logo.png' %}" height="36" alt="Fumetsu"/>
         </a>
         <!-- User dropdown mobile -->
+        {% if user.is_authenticated %}
         <div class="ms-auto d-flex d-md-none nav-item dropdown p-0">
             <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
-                {% if user.is_authenticated %}
-                    <img {% srcset user.profile.image max_width=40 %} class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
-                {% else %}
-                    <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
-                {% endif %}
+                <img {% srcset user.profile.image max_width=40 %} class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
             </a>
             <ul class="dropdown-menu dropdown-menu-end md-3 mt-3 rounded-top-0">
-                {% if user.is_authenticated%}
-                <li><a class="dropdown-item fs-5" href="{% url 'profile' user.username %}">Profil</a></li>
+                <li><a class="dropdown-item py-2" href="{% url 'profile' user.username %}">Profil</a></li>
                 <li>
                     <form method="POST" action="{% url 'logout' %}">
                         {% csrf_token %}
-                        <button class="dropdown-item fs-5">Wyloguj</button>
+                        <button class="dropdown-item py-2">Wyloguj</button>
                     </form>
                 </li>
-                {% else %}
-                <li><a class="dropdown-item fs-5" href="{% url 'login' %}">Login</a></li>
-                <li><a class="dropdown-item fs-5" href="{% url 'register' %}">Rejestracja</a></li>
-                {% endif %}
             </ul>
         </div>
+        {% endif %}
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item d-flex justify-content-center">
@@ -95,16 +87,12 @@
             </ul>
         </div>
         <!-- User dropdown desktop -->
+        {% if user.is_authenticated%}
         <div class="ms-auto d-none d-md-flex nav-item dropdown p-0">
             <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px">
-                {% if user.is_authenticated %}
-                     <img {% srcset user.profile.image max_width=40 %} class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
-                {% else %}
-                    <img src="{% get_media_prefix %}user_icon.png" class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
-                {% endif %}
+                 <img {% srcset user.profile.image max_width=40 %} class="rounded-circle object-fit-cover" height="40" width="40" alt="Profile picture">
             </a>
             <ul class="dropdown-menu dropdown-menu-end mt-md-3 rounded-top-0">
-                {% if user.is_authenticated%}
                 <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Profil</a></li>
                 <li>
                     <form method="POST" action="{% url 'logout' %}">
@@ -112,19 +100,32 @@
                         <button class="dropdown-item">Wyloguj</button>
                     </form>
                 </li>
-                {% else %}
-                <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
-                <li><a class="dropdown-item" href="{% url 'register' %}">Rejestracja</a></li>
-                {% endif %}
             </ul>
         </div>
+        {% else %}
+        <!-- Not-logged-in menu -->
+        <ul id="login-buttons" class="navbar-nav ms-auto flex-row">
+            <li class="nav-item d-flex justify-content-center">
+                <a class="nav-link {% active_url 'login' %} menu-link" href="{% url 'login' %}">Zaloguj się</a>
+            </li>
+            <li class="nav-item d-flex justify-content-center">
+                <a class="nav-link {% active_url 'register' %} menu-link" href="{% url 'register' %}">Załóż konto</a>
+            </li>
+            </ul>
+        {% endif %}
     </div>
 </nav>
 
 <script>
     document.getElementById('navbar').addEventListener('click', function(event) {
-        if (window.innerWidth <= 768 && !event.target.closest('.navbar-toggler') && !event.target.closest('.navbar-brand') && !event.target.closest('#navbarDropdown') && !event.target.closest('.dropdown-item')) {
+        if (window.innerWidth <= 768 && !event.target.closest('.navbar-toggler') && !event.target.closest('.navbar-brand') && !event.target.closest('#navbarDropdown') && !event.target.closest('.dropdown-item') && !event.target.closest('.navbar-nav')) {
             document.querySelector('.navbar-toggler').click();
+            if (document.querySelector('#login-buttons').classList.contains('me-auto')) {
+                document.querySelector('#login-buttons').classList.remove('me-auto');
+            }
+            else {
+                document.querySelector('#login-buttons').classList.add('me-auto');
+            }
         }
     });
 </script>

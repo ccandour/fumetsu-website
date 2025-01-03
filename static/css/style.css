@@ -140,7 +140,8 @@ html {
 }
 
 .menu-link {
-	font-size: 18px !important;
+	font-size: 16px !important;
+	padding-inline: 12px;
 }
 
 .messages-section {
@@ -165,6 +166,8 @@ html {
 
 .navbar {
 	padding-inline: 12vw;
+	padding-top: 6px;
+	padding-bottom: 6px;
 }
 
 .navbar-toggler:focus {
