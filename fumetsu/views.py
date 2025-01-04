@@ -146,39 +146,33 @@ class Episode(TemplateView):
     fields = ['content']
 
     def dispatch(self, *args, **kwargs):
-        ani = get_object_or_404(AnimeSeries, web_name=self.kwargs['anime_name'])
-        if AnimeEpisode.objects.filter(key_map=ani, ep_nr=self.kwargs['ep']).first():
+        self.series = get_object_or_404(AnimeSeries, web_name=self.kwargs['anime_name'])
+        self.episode = AnimeEpisode.objects.filter(key_map=self.series, ep_nr=self.kwargs['ep']).first()
+        if self.episode:
             return super().dispatch(*args, **kwargs)
         else:
             return redirect('home')
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
-        series = get_object_or_404(AnimeSeries, web_name=self.kwargs['anime_name'])
-        episode = AnimeEpisode.objects.filter(key_map=series, ep_nr=self.kwargs['ep']).first()
-        context['link'] = Player.objects.filter(key_map=episode)
-        context['series'] = series
+        context['series'] = self.series
+        context['episode'] = self.episode
+        context['link'] = Player.objects.filter(key_map=self.episode)
 
-        context['odc_html'] = episode.ep_nr
+        context['odc_html'] = self.episode.ep_nr
 
-        try:
-            if episode.subtitles:
-                context['subtitles'] = episode.subtitles
-        except:
-            pass
+        if self.episode.subtitles:
+            context['subtitles'] = self.episode.subtitles
 
-        comment = EpisodeComment.objects.filter(key_map=episode).order_by('-date_posted')
-        for com in comment:
+        comments = EpisodeComment.objects.filter(key_map=self.episode).select_related('author__profile').order_by('-date_posted')
+        for com in comments:
             com.color = com.author.profile.color
-        context['comment'] = comment
+        context['comment'] = comments
 
         context['comment_form'] = CreateCommentEp()
 
-        context['next'] = AnimeEpisode.objects.filter(key_map_id=series, ep_nr__gt=episode.ep_nr).order_by(
-            'ep_nr').first()
-        context['prev'] = AnimeEpisode.objects.filter(key_map_id=series, ep_nr__lt=episode.ep_nr).order_by(
-            '-ep_nr').first()
+        context['next'] = AnimeEpisode.objects.filter(key_map=self.series, ep_nr__gt=self.episode.ep_nr).order_by('ep_nr').first()
+        context['prev'] = AnimeEpisode.objects.filter(key_map=self.series, ep_nr__lt=self.episode.ep_nr).order_by('-ep_nr').first()
 
         return context
 
