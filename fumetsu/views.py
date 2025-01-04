@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.base import TemplateView
@@ -24,18 +24,18 @@ def search_anime(request):
 
         if len(search_text) > 0:
             # Search for anime series with the given search text
+            tags_prefetch = Prefetch('tags', queryset=Tag.objects.only('label_polish'))
             query_set = AnimeSeries.objects.filter(
                 Q(name_english__icontains=search_text) |
                 Q(name_romaji__icontains=search_text)
-            )
+            ).prefetch_related(tags_prefetch)
         else:
-            query_set = AnimeSeries.objects.all()
+            tags_prefetch = Prefetch('tags', queryset=Tag.objects.only('label_polish'))
+            query_set = AnimeSeries.objects.all().prefetch_related(tags_prefetch)
         if any(tag.strip() for tag in tags):
             # Check if the series has all the selected tags
             for series in query_set:
-                series_tags = Tag.objects.filter(anime_anilist_id=series.anilist_id).values_list('label_polish',
-                                                                                                 flat=True)
-                if not set(tags).issubset(set(series_tags)):
+                if not any(tag in series.tags.all() for tag in tags):
                     query_set = query_set.exclude(anilist_id=series.anilist_id)
 
         # Return appropriate json response
@@ -230,10 +230,14 @@ class List(ListView):
     fields = ['content']
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
+        from django.db.models import Prefetch
 
-        context['qs_json'] = json.dumps(list(AnimeSeries.objects.all()), cls=AnimeSeriesJSONEncoder)
+        # Prefetch related tags to reduce the number of queries
+        tags_prefetch = Prefetch('tags', queryset=Tag.objects.only('label_polish'))
+        anime_series = AnimeSeries.objects.all().prefetch_related(tags_prefetch)
+
+        context['qs_json'] = json.dumps(sorted(list(anime_series), key=lambda x: x.rating, reverse=True), cls=AnimeSeriesJSONEncoder)
         context['tags'] = sorted(set(list(Tag.objects.all().values_list('label_polish', flat=True))))
 
         context['search_term'] = self.request.GET.get('search')

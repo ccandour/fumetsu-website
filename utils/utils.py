@@ -77,14 +77,13 @@ class AnimeSeriesJSONEncoder(DjangoJSONEncoder):
     def default(self, obj):
         from fumetsu.models import AnimeSeries, Tag
         if isinstance(obj, AnimeSeries):
-            tags = list(Tag.objects.filter(anime_anilist_id=obj.anilist_id).values_list('label_polish', flat=True))
 
             return {
                 "name_english": (
                     obj.name_english.replace('"', '\\"') if obj.name_english else obj.name_romaji.replace('"', '\\"')),
                 "name_romaji": obj.name_romaji.replace('"', '\\"'),
                 "image": obj.image,
-                "tags": tags,
+                "tags": [tag.label_polish for tag in obj.tags.all()],
                 "web_name": obj.web_name,
                 "format": obj.format,
                 "rating": obj.rating,

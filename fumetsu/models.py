@@ -34,6 +34,8 @@ class AnimeSeries(models.Model):
     status = models.CharField(max_length=100, null=True, blank=True)
     episode_count = models.IntegerField(null=True, blank=True)
     rating = models.IntegerField(null=True, blank=True)
+    tags = models.ManyToManyField('Tag', related_name='anime_series')
+
 
     class Meta:
         db_table = 'fumetsu_anime_series'
@@ -120,7 +122,6 @@ class Player(models.Model):
 
 class Tag(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    anime_anilist_id = models.CharField(max_length=100)
     label = models.CharField(max_length=100)
     label_polish = models.CharField(max_length=100)
 

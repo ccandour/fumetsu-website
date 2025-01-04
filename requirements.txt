@@ -23,6 +23,7 @@ Django
 django-captcha
 django-cleanup
 django-crispy-forms
+django-debug-toolbar
 django-environ
 django-recaptcha
 EasyProcess

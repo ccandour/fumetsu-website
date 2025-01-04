@@ -1,3 +1,4 @@
+from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib.sitemaps.views import sitemap
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, register_converter, include
@@ -43,7 +44,7 @@ urlpatterns = [
 
     path('', include('users.urls')),
     path('', include('api.urls')),
-]
+] + debug_toolbar_urls()
 
 #if settings.DEBUG:
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
