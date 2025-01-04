@@ -1,4 +1,5 @@
 from django.contrib.auth.tokens import default_token_generator
+from django.db.models import Prefetch
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
@@ -271,14 +272,16 @@ class ProfilePage(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        q_profile = Profile.objects.get(user__username=self.kwargs['username'])
+        q_profile = Profile.objects.prefetch_related(
+            Prefetch('staffcredit_set', queryset=StaffCredit.objects.select_related('series'))
+        ).get(user__username=self.kwargs['username'])
         q_user = User.objects.get(id=q_profile.user.id)
         q_user.is_staff = StaffCredit.objects.filter(user=q_profile).exists() or q_user.is_superuser
         context['f_user'] = q_user
         context['q_profile'] = q_profile
 
         credits_list = []
-        db_credits = StaffCredit.objects.filter(user=q_profile)
+        db_credits = q_profile.staffcredit_set.all()
         for credit in db_credits:
             credit_tuple = (credit.series, credit.role)
             credits_list.append(credit_tuple)
