@@ -35,7 +35,8 @@ def search_anime(request):
         if any(tag.strip() for tag in tags):
             # Check if the series has all the selected tags
             for series in query_set:
-                if not any(tag in series.tags.all() for tag in tags):
+                print(series.tags.all().values('label_polish', ))
+                if not all(tag in series.tags.all().values_list('label_polish', flat=True) for tag in tags):
                     query_set = query_set.exclude(anilist_id=series.anilist_id)
 
         # Return appropriate json response

@@ -129,7 +129,7 @@ class Tag(models.Model):
         db_table = 'fumetsu_tag'
 
     def __str__(self):
-        return f'tag {self.label} dla anime {self.anime_anilist_id}.'
+        return f'Tag {self.label_polish}'
 
 
 class EpisodeComment(models.Model):
