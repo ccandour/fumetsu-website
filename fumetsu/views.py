@@ -264,25 +264,29 @@ class About(ListView):
 
         context = super().get_context_data(**kwargs)
 
-        # Prepare a lists of staff members
-        administators = Profile.objects.filter(user__is_superuser='True')
-        translators = []
-        editors = []
+        # Prefetch related StaffCredit objects
+        db_credits = StaffCredit.objects.select_related('user').all()
 
-        db_credits = StaffCredit.objects.all()
+        # Create dictionaries to store the counts
+        translator_counts = {}
+        editor_counts = {}
+
+        # Iterate through the credits and count the roles
         for credit in db_credits:
-            if 'Tłumaczenie' in credit.role and [credit.user, len(list(
-                    StaffCredit.objects.filter(user=credit.user, role__contains='Tłumaczenie')))] not in translators:
-                translators.append(
-                    [credit.user, len(list(StaffCredit.objects.filter(user=credit.user, role__contains='Tłumaczenie')))])
-            if 'Korekta' in credit.role and [credit.user, len(list(
-                    StaffCredit.objects.filter(user=credit.user, role__contains='Korekta')))] not in editors:
-                editors.append([credit.user, len(list(StaffCredit.objects.filter(user=credit.user, role__contains='Korekta')))])
+            if 'Tłumaczenie' in credit.role:
+                if credit.user not in translator_counts:
+                    translator_counts[credit.user] = 0
+                translator_counts[credit.user] += 1
+            if 'Korekta' in credit.role:
+                if credit.user not in editor_counts:
+                    editor_counts[credit.user] = 0
+                editor_counts[credit.user] += 1
 
-        translators.sort(key=lambda x: x[1], reverse=True)
-        editors.sort(key=lambda x: x[1], reverse=True)
+        # Convert the dictionaries to sorted lists
+        translators = sorted(translator_counts.items(), key=lambda x: x[1], reverse=True)
+        editors = sorted(editor_counts.items(), key=lambda x: x[1], reverse=True)
 
-        context['administators'] = administators
+        context['administators'] = Profile.objects.filter(user__is_superuser=True)
         context['translators'] = translators
         context['editors'] = editors
 
