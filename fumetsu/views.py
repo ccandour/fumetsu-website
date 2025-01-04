@@ -100,12 +100,7 @@ class Series(TemplateView):
 
         context['ep'] = AnimeEpisode.objects.filter(key_map_id=ani).order_by('ep_nr')
 
-        db_tags = Tag.objects.filter(anime_anilist_id=ani.anilist_id).only("label")
-
-        list_tags = []
-        for tag in db_tags:
-            list_tags.append(tag_label_to_polish(tag.label))
-        context['tags'] = list_tags
+        context['tags'] = ani.tags.all()
 
         context['com_ed'] = CreateComment()
 

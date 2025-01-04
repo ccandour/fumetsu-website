@@ -55,8 +55,8 @@
 
                 <div id="tags" class="mb-3 d-flex flex-row flex-wrap gap-2">
                     {% for tag in tags %}
-                        <a href="/anime/?tags={{ tag|lower }}">
-                            <button class="btn btn-secondary tag-btn">{{ tag }}</button>
+                        <a href="/anime/?tags={{ tag.label|lower }}">
+                            <button class="btn btn-secondary tag-btn">{{ tag.label_polish }}</button>
                         </a>
                     {% endfor %}
                 </div>
