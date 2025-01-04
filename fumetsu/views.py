@@ -249,7 +249,9 @@ class Home(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['anime'] = AnimePost.objects.all().order_by('-key_map__date_posted')[:12]
+        context['anime'] = AnimePost.objects.all().order_by('-key_map__date_posted')[:12].prefetch_related(
+            Prefetch('key_map', queryset=AnimeEpisode.objects.prefetch_related('key_map'))
+        )
         return context
 
 
