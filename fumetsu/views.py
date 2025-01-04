@@ -17,37 +17,38 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 
 
+from django.db.models import Prefetch, Q
+from django.http import JsonResponse
+import json
+
 def search_anime(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         search_text = request.POST.get('search_text')
         tags = request.POST.getlist('tags[]')
 
-        if len(search_text) > 0:
-            # Search for anime series with the given search text
-            tags_prefetch = Prefetch('tags', queryset=Tag.objects.only('label_polish'))
-            query_set = AnimeSeries.objects.filter(
+        tags_prefetch = Prefetch('tags', queryset=Tag.objects.only('label_polish'))
+        query_set = AnimeSeries.objects.prefetch_related(tags_prefetch)
+
+        if search_text:
+            query_set = query_set.filter(
                 Q(name_english__icontains=search_text) |
                 Q(name_romaji__icontains=search_text)
-            ).prefetch_related(tags_prefetch)
-        else:
-            tags_prefetch = Prefetch('tags', queryset=Tag.objects.only('label_polish'))
-            query_set = AnimeSeries.objects.all().prefetch_related(tags_prefetch)
-        if any(tag.strip() for tag in tags):
-            # Check if the series has all the selected tags
-            for series in query_set:
-                print(series.tags.all().values('label_polish', ))
-                if not all(tag in series.tags.all().values_list('label_polish', flat=True) for tag in tags):
-                    query_set = query_set.exclude(anilist_id=series.anilist_id)
+            )
 
-        # Return appropriate json response
-        if len(query_set) > 0:
+        if tags:
+            for tag in tags:
+                query_set = query_set.filter(tags__label_polish=tag.strip())
+
+        query_set = query_set.distinct().order_by('-rating')
+
+        if query_set.exists():
             response = json.loads(
-                json.dumps(sorted(list(query_set), key=lambda x: x.rating, reverse=True), cls=AnimeSeriesJSONEncoder))
+                json.dumps(list(query_set), cls=AnimeSeriesJSONEncoder)
+            )
         else:
             response = 'Nie znaleziono anime.'
 
-        return JsonResponse({'data': response})
-    return JsonResponse({})
+        return JsonResponse(response, safe=False)
 
 
 def redirect_legacy_anime(request, anime_name, ep=None):
