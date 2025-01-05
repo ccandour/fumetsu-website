@@ -1,0 +1,5 @@
+.env
+.venv
+venv
+Dockerfile
+.DS_Store
