@@ -1,16 +1,23 @@
-FROM python:3.13
+# Start with building a python app
+FROM python:3.13 AS build
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /app
-
+# Install dependencies
 COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Copy project source code
+COPY ./django_site /django_site
 
-COPY . .
+# Set work directory
+WORKDIR /django_site
 
-EXPOSE 8000
+# Set PYTHONPATH
+ENV PYTHONPATH=/django_site
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Execute entrypoint shell script
+COPY ./entrypoint.sh /
+ENTRYPOINT ["sh", "/entrypoint.sh"]

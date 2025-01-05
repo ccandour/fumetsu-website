@@ -1,4 +1,4 @@
-.env
+django_site/.env
 .venv
 venv
 Dockerfile
