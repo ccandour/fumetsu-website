@@ -1,25 +1,20 @@
+import json
 from datetime import datetime
 
+from django.contrib import messages
+from django.db.models import Prefetch, Q
+from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse
 from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 
+from users.models import Profile
 from utils.utils import AnimeSeriesJSONEncoder
 from .forms import *
-from django.contrib import messages
-from .models import EpisodeComment
-
 from .models import AnimePost
-
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
-
-from django.db.models import Prefetch, Q
-from django.http import JsonResponse
-import json
-
-from users.models import Profile
+from .models import EpisodeComment
 
 
 def search_anime(request):

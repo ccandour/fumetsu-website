@@ -1,7 +1,8 @@
-from django.db import models
-from django.contrib.auth.models import User
 import uuid
+
 from PIL import Image
+from django.contrib.auth.models import User
+from django.db import models
 from django.utils import timezone
 
 from utils.utils import generate_upload_path

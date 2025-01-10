@@ -1,4 +1,3 @@
-
 def posts(request):
     from .models import AnimePost
     post_html = AnimePost.objects.all().order_by('-key_map__date_posted')

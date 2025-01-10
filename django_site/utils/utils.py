@@ -75,7 +75,7 @@ def tag_label_to_english(tag):
 
 class AnimeSeriesJSONEncoder(DjangoJSONEncoder):
     def default(self, obj):
-        from core.models import AnimeSeries, Tag
+        from core.models import AnimeSeries
         if isinstance(obj, AnimeSeries):
 
             return {

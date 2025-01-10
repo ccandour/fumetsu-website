@@ -1,13 +1,13 @@
+import datetime
+
 from django import forms
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
+from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
+from django_password_eye.fields import PasswordEye
 from django_password_eye.widgets import PasswordEyeWidget
 
 from .models import Profile
-
-from django_password_eye.fields import PasswordEye
-import datetime
 
 
 class SignupForm(UserCreationForm):

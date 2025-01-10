@@ -1,10 +1,12 @@
+import uuid
+
+from PIL import Image
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
-import uuid
-from PIL import Image
 
 from users.models import Profile
+
 
 class Relation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

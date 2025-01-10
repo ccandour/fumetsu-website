@@ -1,5 +1,6 @@
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, re_path
+
 from users import views as user_views
 
 urlpatterns = [
@@ -14,6 +15,6 @@ urlpatterns = [
     path('profile/<slug:username>/', user_views.ProfilePage.as_view(), name='profile'),
     path('change-password/', user_views.change_password, name='password_change'),
 
-    path('login/api/', include('social_django.urls', namespace='social')),
+    # path('login/api/', include('social_django.urls', namespace='social')),
 
 ]

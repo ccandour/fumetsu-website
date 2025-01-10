@@ -1,4 +1,5 @@
 import os
+
 import environ
 from django.contrib import messages
 
@@ -40,10 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
-    'captcha',
     'debug_toolbar',
     'lazy_srcset',
-    'social_django',
     'django_password_eye',
     'rest_framework',
 ]
@@ -56,7 +55,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
@@ -76,8 +74,6 @@ TEMPLATES = [
                 'core.context_processors.posts',
                 'core.context_processors.popular',
                 'core.context_processors.english_titles',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
             ],
             'libraries': {
                 'poll_extras': 'templatetags.poll_extras',
@@ -131,8 +127,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.facebook.FacebookOAuth2',
-    'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 

@@ -1,9 +1,9 @@
 from debug_toolbar.toolbar import debug_toolbar_urls
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, register_converter, include
-from django.conf import settings
-from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
 from . import converters

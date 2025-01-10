@@ -1,32 +1,27 @@
-from django.contrib.auth.tokens import default_token_generator
-from django.db.models import Prefetch
-from django.shortcuts import render, redirect
-from django.contrib import messages
-
 import os
 
-from core.forms import CreateComment
-from core.models import StaffCredit, SeriesComment
+import unidecode
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth import logout
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.db.models import Prefetch
+from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic.base import TemplateView
 
+from core.forms import CreateComment
+from core.models import EpisodeComment
+from core.models import StaffCredit, SeriesComment
 from core.settings import MEDIA_ROOT
 from utils.utils import generate_upload_path
 from .forms import *
-from core.models import EpisodeComment
-
-from django.contrib.auth import authenticate, login, update_session_auth_hash
-
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.template.loader import render_to_string
 from .tokens import account_activation_token
-from django.contrib.auth.models import User
-from django.core.mail import EmailMessage
-
-from django.contrib.auth import logout
-
-import unidecode
 
 
 def signup(request):
