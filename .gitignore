@@ -1,1 +1,3 @@
-/media/
+/django_site/media/
+/django_site/staticfiles/
+/django_site/.env
