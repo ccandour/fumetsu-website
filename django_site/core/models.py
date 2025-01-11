@@ -69,7 +69,6 @@ class AnimeEpisode(models.Model):
 
     def get_absolute_url(self):
         if self.key_map_id is not None and self.key_map.web_name:
-            print(self.key_map.web_name)
             return f'/anime/{self.key_map.web_name}/{self.ep_nr}/'
         return '/anime/'
 

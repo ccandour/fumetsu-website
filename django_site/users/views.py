@@ -170,7 +170,6 @@ def reset_password_confirm(request, uidb64, token, token_generator=default_token
             messages.success(request, 'Twoje hasło zostało zmienione.')
             return redirect('home')
         else:
-            print(f'User: {user.username} - Token: {token} - Valid: {token_generator.check_token(user, token)}')
             messages.error(request, 'Nie udało się zmienić hasła.')
             return redirect('home')
     else:

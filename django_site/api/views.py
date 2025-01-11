@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
-from core.models import AnimeSeries, AnimePost, Player
+from core.models import AnimeSeries, AnimePost, Player, Tag
 from utils.utils import generate_web_name
 from .serializers import SeriesSerializer, EpisodeSerializer, RelationSerializer, PostSerializer, PlayerSerializer, \
     EpisodePOSTSerializer, \
@@ -68,6 +68,14 @@ def addSeries(request):
     serializer = SeriesSerializer(data=data)
     if serializer.is_valid():
         series = serializer.save()
+
+        # Add tags
+        tags = {tag.label.lower(): tag for tag in Tag.objects.all()}
+        for genre in anilist_entry.genres:
+            tag = tags.get(genre.lower())
+            if tag:
+                series.tags.add(tag)
+
         # Add relations
         db_series = AnimeSeries.objects.all()
         for relation in anilist_entry.relations:
@@ -91,9 +99,7 @@ def addSeries(request):
                         }
                         related_relation_serializer = RelationSerializer(data=related_relation_data)
                         if related_relation_serializer.is_valid():
-                            print('workin')
                             related_relation_serializer.save()
-                        print(related_relation_serializer.errors)
 
     return Response(serializer.data)
 

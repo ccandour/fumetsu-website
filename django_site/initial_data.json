@@ -1,0 +1,19 @@
+[
+    {"model": "core.tag", "pk": "0ff9c1cf-8ee4-4c83-8463-5067d9560936", "fields": {"label": "Mecha", "label_polish": "Mecha"}},
+    {"model": "core.tag", "pk": "31ea5f7b-9224-4f24-a908-a5cfdd8f5380", "fields": {"label": "Adventure", "label_polish": "Przygodowe"}},
+    {"model": "core.tag", "pk": "36922258-22a9-4ad0-9649-6489ee9d740b", "fields": {"label": "Action", "label_polish": "Akcja"}},
+    {"model": "core.tag", "pk": "43cb75e2-b426-4c42-8e63-0a69bfbc227c", "fields": {"label": "Fantasy", "label_polish": "Fantasy"}},
+    {"model": "core.tag", "pk": "495806cf-568b-4174-993d-ec5358e8e92e", "fields": {"label": "Horror", "label_polish": "Horror"}},
+    {"model": "core.tag", "pk": "50aecb22-9e80-441c-87b5-cdc5fce2b94c", "fields": {"label": "Sci-Fi", "label_polish": "Sci-Fi"}},
+    {"model": "core.tag", "pk": "54aef18e-7c2d-47f1-93ff-c83b445e63ae", "fields": {"label": "Mahou Shoujo", "label_polish": "Mahou Shoujo"}},
+    {"model": "core.tag", "pk": "67444869-e773-4028-9d86-4cb68d9312ca", "fields": {"label": "Mystery", "label_polish": "Kryminał"}},
+    {"model": "core.tag", "pk": "7456180f-a689-43f0-b6a2-f0ffabb541b0", "fields": {"label": "Slice of Life", "label_polish": "Slice of Life"}},
+    {"model": "core.tag", "pk": "87e0da6d-392c-4e5b-8687-bf14ef4f1823", "fields": {"label": "Psychological", "label_polish": "Psychologiczne"}},
+    {"model": "core.tag", "pk": "93112038-b07a-4e1e-a367-ae8153734d16", "fields": {"label": "Ecchi", "label_polish": "Ecchi"}},
+    {"model": "core.tag", "pk": "b4d23f46-ab13-47bd-bea0-8d02c2d07aa7", "fields": {"label": "Romance", "label_polish": "Romans"}},
+    {"model": "core.tag", "pk": "d1da07bf-1cea-441e-8460-46b959595594", "fields": {"label": "Drama", "label_polish": "Dramat"}},
+    {"model": "core.tag", "pk": "d3bf33eb-88bf-4528-ad85-b980be4fc266", "fields": {"label": "Thriller", "label_polish": "Thriller"}},
+    {"model": "core.tag", "pk": "e25168ab-749b-470d-aaa4-17e05d9f7105", "fields": {"label": "Supernatural", "label_polish": "Nadnaturalne"}},
+    {"model": "core.tag", "pk": "f682b388-e134-4883-91a1-b3f9d5827160", "fields": {"label": "Comedy", "label_polish": "Komedia"}},
+    {"model": "core.tag", "pk": "fcf51c6c-22f2-4e66-a7f0-7e71b4d78eff", "fields": {"label": "Sports", "label_polish": "Sportowe"}}
+]
