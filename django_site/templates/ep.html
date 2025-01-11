@@ -12,13 +12,13 @@
 <div class="d-flex flex-column gap-4">
     <!-- Title and Episode Navigation -->
     <div class="d-flex flex-column align-items-center">
-        <a href="{% url 'anime-nm' series.web_name %}"><h2>
+        <a href="{% url 'anime-nm' series.web_name %}"><h3>
             {% if english_titles %}
             {{series.name_english}}
             {% else %}
             {{series.name_romaji}}
             {% endif %}
-        </h2></a>
+        </h3></a>
         <h5>
             {% if prev %}
                 <a class="ps-4" href="{% url 'ep-nm' prev.key_map.web_name prev.ep_nr %}"><i class="fas fa-chevron-left"></i></a>
@@ -86,9 +86,9 @@
 
     <!-- Comments -->
     {% if user.is_authenticated or comment %}
-    <div class="card">
-        <div class="card-header d-flex flex-row align-items-center">
-            <h4 class="card-title mb-0 py-1">Sekcja komentarzy:</h4>
+    <div class="card mb-4">
+        <div class="card-header d-flex flex-row align-items-center px-4">
+            <h5 class="card-title mb-0 py-1">Sekcja komentarzy:</h5>
         </div>
         <div class="card-body d-flex flex-column gap-4">
             {% if user.is_authenticated %}

@@ -124,7 +124,7 @@ const renderSeries = (data) => {
                             <h6 class="d-block d-md-none card-title mb-1">${primaryTitle.replace(/\\\"/g, '"')}</h6>
                             <div class="card-text mb-2">${secondaryTitle.replace(/\\\"/g, '"')}</div>
                             <div class="d-flex flex-row flex-wrap row-gap-1">
-                                ${series.tags.map(tag => `<button class="btn btn-secondary me-1 tag h-25">${tag}</button>`).join('')}
+                                ${series.tags.map(tag => `<button class="btn btn-secondary me-2 mb-1 tag h-25">${tag}</button>`).join('')}
                             </div>
                         </div>
                         <div class="d-none d-md-block text-bg-success fs-5 me-3 px-2 py-1 rounded-3">${series.rating}</div>

@@ -181,7 +181,7 @@
     <!-- Sidebar -->
     <section class="d-none d-lg-flex flex-column flex-shrink-0 card bg-dark-subtle" style="width:280px; overflow-y: auto;">
         <div class="card-header">
-            <h4 class="text-center mb-0 py-1">Najnowsze odcinki</h4>
+            <h5 class="text-center mb-0 py-1 text-white">Ostatnio Dodane</h5>
         </div>
         <div class="d-flex flex-column gap-3 mx-4 my-3">
             {% for post in posts|slice:3 %}
@@ -207,7 +207,7 @@
             {% endfor %}
         </div>
         <div class="card-header border-top">
-            <h4 class="text-center mb-0 py-1">Popularne serie</h4>
+            <h5 class="text-center mb-0 py-1 text-white">Popularne serie</h5>
         </div>
         <div class="d-flex flex-column gap-3 mx-4 my-3">
             {% for series in popular %}

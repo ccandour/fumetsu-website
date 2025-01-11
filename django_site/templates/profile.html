@@ -8,7 +8,7 @@
 <div class="d-flex flex-column align-items-center align-items-md-start flex-md-row gap-3 align-items-start bg-body-secondary card p-3 mb-4">
 	<img {% srcset f_user.profile.image  %} class="user-img float-start mt-1" alt="Profile Picture">
     <div class="d-flex flex-column">
-        <h3 class="d-flex flex-row align-items-center justify-content-center justify-content-md-start gap-2" style="color:{{f_user.profile.color}}">
+        <h4 class="d-flex flex-row align-items-center justify-content-center justify-content-md-start gap-2" style="color:{{f_user.profile.color}}">
             {{ f_user.username }}
             {% if f_user.is_staff %}
                 <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Członek ekipy">
@@ -25,7 +25,7 @@
                 <i class="fa-solid fa-pen fa-2xs text-body" aria-hidden="true"></i>
             </a>
             {% endif %}
-        </h3>
+        </h4>
         {{f_user.profile.description|convert_markdown|safe}}
     </div>
 </div>
@@ -33,8 +33,8 @@
 <!-- Credits -->
 {% if credits %}
 <div class="card mb-4">
-    <div class="card-header d-flex flex-row align-items-center">
-        <h4 class="card-title mb-0 py-1">Moje serie:</h4>
+    <div class="card-header d-flex flex-row align-items-center px-4">
+        <h5 class="card-title mb-0 py-1">Moje serie</h5>
     </div>
     <div class="d-flex flex-row overflow-auto gap-3 pb-4 card-body">
         {% for credit in credits %}
@@ -70,8 +70,8 @@
 <!-- Comments -->
 {% if com_ser or com_ep %}
 <div class="card">
-    <div class="card-header d-flex flex-row align-items-center">
-        <h4 class="card-title mb-0 py-1">Komentarze ({{ com_ser|add_two_sizes:com_ep }}):</h4>
+    <div class="card-header d-flex flex-row align-items-center px-4">
+        <h5 class="card-title mb-0 py-1">Komentarze ({{ com_ser|add_two_sizes:com_ep }}):</h5>
     </div>
     <div class="d-flex flex-column gap-4 card-body">
         {% for com in com_ser %}
@@ -81,13 +81,13 @@
 
                     <div class="d-flex flex-column text-body">
                         <div class="d-flex flex-row gap-2">
-                            <h5 class="fw-semibold mb-0">
+                            <h6 class="fw-semibold mb-0">
                                 {% if english_titles %}
                                 {{com.key_map.name_english}}
                                 {% else %}
                                 {{com.key_map.name_romaji}}
                                 {% endif %}
-                            </h5>
+                            </h6>
                             <span class="d-none d-md-block">
                                 {{com.date_posted|date:"d.m.o"}}
                             </span>
