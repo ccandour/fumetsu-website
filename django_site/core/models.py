@@ -25,9 +25,9 @@ class AnimeSeries(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     anilist_id = models.CharField(max_length=100, null=True, blank=True)
-    name_romaji = models.CharField(max_length=100, null=True, blank=True)
-    name_english = models.CharField(max_length=100, null=True, blank=True)
-    web_name = models.CharField(max_length=100, null=True, blank=True)
+    name_romaji = models.CharField(max_length=255, null=True, blank=True)
+    name_english = models.CharField(max_length=255, null=True, blank=True)
+    web_name = models.CharField(max_length=255, null=True, blank=True)
     image = models.CharField(max_length=100, null=True, blank=True)
     content = models.TextField()
 
@@ -55,7 +55,7 @@ class AnimeEpisode(models.Model):
     ep_nr = models.IntegerField(null=True, blank=True)
     title = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
-    subtitles = models.FileField(upload_to='subtitles/', blank=True)
+    subtitles = models.FileField(upload_to='subtitles/', blank=True, max_length=255)
 
     class Meta:
         db_table = 'core_anime_episode'
@@ -202,15 +202,6 @@ class PostComment(models.Model):
 
     def __str__(self):
         return (f'post {self.author}, {self.content} do anime {self.post_map}.')
-
-
-class UrlRedirect(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    old_url = models.CharField(max_length=100)
-    new_url = models.CharField(max_length=100)
-
-    class Meta:
-        db_table = 'core_url_redirect'
 
 
 class StaffCredit(models.Model):

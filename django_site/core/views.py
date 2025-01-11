@@ -47,19 +47,6 @@ def search_anime(request):
         return JsonResponse(response, safe=False)
 
 
-def redirect_legacy_anime(request, anime_name, ep=None):
-    if ep:
-        # Redirect old url to new url using url_redirects and append episode number
-        url_redirect = UrlRedirect.objects.filter(old_url=anime_name).first()
-        if url_redirect:
-            return redirect(f'ep-nm', anime_name=url_redirect.new_url, ep=ep)
-    else:
-        # Redirect old url to new url using url_redirects
-        url_redirect = UrlRedirect.objects.filter(old_url=anime_name).first()
-        if url_redirect:
-            return redirect(f'anime-nm', url_redirect.new_url)
-
-
 class Series(TemplateView):
     model = AnimeSeries
     template_name = '../templates/series.html'

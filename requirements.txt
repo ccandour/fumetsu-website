@@ -13,5 +13,6 @@ markdown-link-attr-modifier
 pyanilist
 pillow
 python-slugify
+psycopg2-binary
 requests
 unidecode
