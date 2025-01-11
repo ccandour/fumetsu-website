@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'imagekit',
     'lazy_srcset',
     'django_password_eye',
     'rest_framework',
@@ -74,6 +75,8 @@ TEMPLATES = [
                 'core.context_processors.posts',
                 'core.context_processors.popular',
                 'core.context_processors.english_titles',
+                'core.context_processors.domain',
+                'core.context_processors.site_name',
             ],
             'libraries': {
                 'poll_extras': 'templatetags.poll_extras',
@@ -99,21 +102,26 @@ DATABASES = {
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
     'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, '../../django_debug.log'),
+        'console': {
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
         },
     },
     'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
+        'mylogger': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
             'propagate': True,
         },
     },
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -168,3 +176,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env('EMAIL_LOGIN')
 EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
+
+LAZY_SRCSET_ENABLED = True
+
+DJANGORESIZED_DEFAULT_QUALITY = 90
+DJANGORESIZED_DEFAULT_KEEP_META = False
+DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'JPEG'
+DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'JPEG': ".jpg"}

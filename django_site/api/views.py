@@ -167,7 +167,7 @@ def addEpisode(request):
         image.close()
         os.remove(f'media/temp/{image_name}')
 
-        episode_url = f'https://fumetsu.pl/anime/{episode.key_map.web_name}/{episode.ep_nr}/'
+        episode_url = f'{os.environ.get('DOMAIN')}/anime/{episode.key_map.web_name}/{episode.ep_nr}/'
         return Response({'url': episode_url})
     else:
         subtitles.close()

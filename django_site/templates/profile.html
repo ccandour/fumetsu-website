@@ -4,7 +4,7 @@
 {% load utils_extras %}
 {% load poll_extras %}
 
-{% block title %}Profil {{ f_user.username }} - Fumetsu{% endblock title %}
+{% block title %}Profil {{ f_user.username }} - {{ site_name }}{% endblock title %}
 {% block content %}
 <div class="d-flex flex-column align-items-center align-items-md-start flex-md-row gap-3 align-items-start bg-body-secondary card p-3 mb-4">
 	<img {% srcset f_user.profile.image  %} class="user-img float-start mt-1" alt="Profile Picture">

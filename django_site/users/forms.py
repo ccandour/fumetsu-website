@@ -131,7 +131,7 @@ class ProfileUpdateForm(forms.ModelForm):
     color = forms.CharField(
         required=False,
         max_length=7,
-        label=mark_safe('Kolor (dostępny dla <a href="https://www.patronite.pl/fumetsu" target="_blank">Patronów</a>)'),
+        label=mark_safe('Kolor (dostępny dla <a href="https://www.patronite.pl/example" target="_blank">Patronów</a>)'),
         widget=forms.TextInput(
             attrs={
                 'placeholder': '#000000',

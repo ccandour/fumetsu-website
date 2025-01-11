@@ -6,6 +6,7 @@ crispy-bootstrap5
 django-debug-toolbar
 django-lazy-srcset
 django-password-eye
+django-resized
 djangorestframework
 gunicorn
 markdown

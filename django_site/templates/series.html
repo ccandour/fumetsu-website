@@ -8,7 +8,7 @@
     <script src="{% static 'js/search_by_tag.js' %}"></script>
 {% endblock scripts %}
 
-{% block title %}{{ series.name_english }} - Fumetsu{% endblock title %}
+{% block title %}{{ series.name_english }} - {{ site_name }}{% endblock title %}
 {% block meta %}
 	<meta name="description" content="{{ series.content|safe }}">
 {% endblock %}

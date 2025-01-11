@@ -3,7 +3,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %}{{series.name_english}}, Odcinek {{odc_html|floatformat}} - Fumetsu{% endblock title %}
+{% block title %}{{series.name_english}}, Odcinek {{odc_html|floatformat}} - {{ site_name }}{% endblock title %}
 {% block meta %}
     <meta name="description" content="{{series.name_english}}, Odcinek {{odc_html|floatformat}} - Oglądaj online z napisami PL.">
 {% endblock %}

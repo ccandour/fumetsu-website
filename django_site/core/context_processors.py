@@ -1,3 +1,6 @@
+import os
+
+
 def posts(request):
     from .models import AnimePost
     post_html = AnimePost.objects.all().order_by('-key_map__date_posted')
@@ -17,4 +20,14 @@ def english_titles(request):
     english = request.COOKIES.get('englishTitles') == 'true'
     return {
         'english_titles': english,
+    }
+
+def domain(request):
+    return {
+        'domain': os.environ.get('DOMAIN'),
+    }
+
+def site_name(request):
+    return {
+        'site_name': os.environ.get('SITE_NAME'),
     }

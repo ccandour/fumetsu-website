@@ -1,10 +1,10 @@
 import os
 
 import unidecode
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth import logout
-from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
@@ -50,7 +50,7 @@ def signup(request):
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                     'token': account_activation_token.make_token(user),
                 })
-                mail_subject = 'Aktywacja konta na Fumetsu'
+                mail_subject = f'Aktywacja konta na {os.environ.get("SITE_NAME")}'
                 to_email = form.cleaned_data.get('email')
                 email = EmailMessage(mail_subject, message, to=[to_email])
                 email.send()
@@ -145,7 +145,7 @@ def reset_password(request):
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                     'token': reset_token,
                 })
-                mail_subject = 'Resetowanie hasła na Fumetsu'
+                mail_subject = f'Resetowanie hasła na {os.environ.get("SITE_NAME")}'
                 to_email = mail
                 email = EmailMessage(mail_subject, message, to=[to_email])
                 email.send()
@@ -231,23 +231,6 @@ class EditProfile(TemplateView):
         # Save description and image
         if profile_form.is_valid() and (profile_form.has_changed() or profile_form.files.get(
                     'image') != request.user.profile.image):
-            if request.user.profile.image and request.user.profile.image.name != 'default.png' and profile_form.files.get(
-                    'image') and profile_form.files.get('image') != request.user.profile.image:
-
-                # Remove old image
-                image_name = os.path.join(MEDIA_ROOT, request.user.profile.image.name.replace("/", "\\"))
-                if os.path.exists(image_name):
-                    os.remove(image_name)
-
-                # Save new image
-                new_image_name = generate_upload_path(request.user.profile, request.FILES['image'].name)
-                with open(os.path.join(MEDIA_ROOT, new_image_name), 'wb+') as destination:
-                    for chunk in request.FILES['image'].chunks():
-                        destination.write(chunk)
-
-                # Update the db
-                profile_form.cleaned_data['image'] = new_image_name
-                request.user.profile.image = profile_form.cleaned_data.get('image')
             profile_form.save()
             request.user.profile.save()
 

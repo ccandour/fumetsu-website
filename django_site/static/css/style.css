@@ -170,6 +170,12 @@ html {
 	padding-bottom: 6px;
 }
 
+.navbar-image {
+	height: 40px;
+	object-fit: cover;
+	width: 40px;
+}
+
 .navbar-toggler:focus {
 	outline: none;
 }
