@@ -12,23 +12,18 @@
     {% block meta %}{% endblock %}
 
     <!-- Halfmoon CSS -->
-    <link href="{% static 'css/halfmoon_min.css' %}" rel="stylesheet">
-
-    <!-- Halfmoon modern core theme -->
-    <link href="{% static 'css/halfmoon_modern_min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/modified-halfmoon.css' %}" rel="stylesheet">
+    <link href="{% static 'css/modified-halfmoon-modern.css' %}" rel="stylesheet">
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
-
-    <!-- jQuery-Cookie -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <!-- Custom JS & CSS -->
     <script src="{% static 'js/script.js' %}"></script>
-    <link href="{% static 'css/style_min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
     {% block scripts %}{% endblock scripts %}
 
 	<!-- Font Awesome -->
@@ -37,11 +32,10 @@
 	<!-- Google Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Sen&display=swap" rel="stylesheet">
  
-   <!-- logo web -->
+   <!-- Favicon -->
 	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %}" />
-
-
 </head>
+
 <body class="bg-dark-subtle">
 
 <!-- Navbar -->

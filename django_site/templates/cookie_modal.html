@@ -15,7 +15,7 @@
             </div>
             <div class="modal-footer d-flex flex-row justify-content-center">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" id="acceptCookies">Akceptuję</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="rejectCookies">Odrzucam</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="rejectCookies">Tylko niezbędne</button>
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
             date.setTime(date.getTime() + (days*24*60*60*1000));
             expires = "; expires=" + date.toUTCString();
         }
-        document.cookie = name + "=" + (value || "") + expires + "; SameSite=None; Secure; path=/";
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
     }
 
     function getCookie(name) {
@@ -58,7 +58,7 @@
     });
 
     $('#rejectCookies').on('click', function(){
-        setCookie('cookiesAccepted', 'false', 365);
+        setCookie('cookiesAccepted', 'necessary', 365);
         setCookie('englishTitles', $('#englishTitlesSwitch').is(':checked') ? 'true' : 'false', 365);
         $('#cookieModal').modal('hide');
     });

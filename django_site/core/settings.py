@@ -79,7 +79,6 @@ TEMPLATES = [
                 'core.context_processors.site_name',
             ],
             'libraries': {
-                'poll_extras': 'templatetags.poll_extras',
                 'utils_extras': 'templatetags.utils_extras',
             },
         },
