@@ -2,6 +2,8 @@
 
 Strona dla grup fansubberskich, z możliwością dodawania serii, odcinków i odtwarzaczy, ogłoszeń, podpisów pod seriami oraz napisów.
 
+![Preview](sample.png)
+
 ## O stronie
 
 Stronę, początkowo używaną właśnie w grupie subberskiej, postanowiłem otworzyć i zrobić z niej łatwy w instalacji template dla potencjalnie innych grup.
