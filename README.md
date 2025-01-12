@@ -1,4 +1,4 @@
-# Fumetsu Website
+# Fumetsu
 
 Strona dla grup fansubberskich, z możliwością dodawania serii, odcinków i odtwarzaczy, ogłoszeń, podpisów pod seriami oraz napisów.
 
@@ -138,7 +138,7 @@ docker exec -it django-website python3 manage.py createsuperuser
 Jeśli z dobrego serca postanowisz dodać/usprawnić coś na stronie, 
 otwórz pull requesta ze swojego forka i tam się wszystko ogarnie.
 A i jeśli są jakieś problemy czy coś, Issues czekają na zapełnienie :)
-Co do commitów, fajnie jakby były podobnie nazywane co [Convencional Commits]{https://www.conventionalcommits.org/en/v1.0.0/}.
+Co do commitów, fajnie jakby były podobnie nazywane co [Convencional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## Licencja
 
