@@ -1,0 +1,80 @@
+name: core-website
+
+services:
+  django-app:
+    image: core-website
+    container_name: django-website
+    build: .
+    volumes:
+      - ./django_site/initial_data.json:/tmp/initial_data.json
+      - static:/django_site/staticfiles
+      - media:/django_site/media
+    expose:
+      - 8000
+    env_file:
+        - django_site/.env
+    depends_on:
+        - pgdb
+    restart: on-failure
+
+  pgdb:
+    container_name: pgdb
+    image: postgres
+    environment:
+        POSTGRES_DB: postgres
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        PGDATA: /var/lib/postgresql/data
+    volumes:
+        - pgdata:/var/lib/postgresql/data
+    restart: on-failure
+
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    volumes:
+      - ./certbot/www:/var/www/certbot/:ro
+      - static:/django_site/staticfiles
+      - media:/django_site/media
+      - nginx_logs:/var/log/nginx
+      - nginx_conf:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/nginx/ssl:rw
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - django-app
+    restart: no
+    entrypoint: ["/bin/sh", "-c", "/watch_conf.sh & nginx -g 'daemon off;'"]
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - /etc/letsencrypt:/etc/letsencrypt:rw
+    command: certonly --webroot --webroot-path /var/www/certbot --email example@example.com -d example.com --agree-tos --non-interactive --expand
+    depends_on:
+      - nginx
+    restart: no
+
+  switch-nginx:
+    container_name: switch-nginx
+    image: nginx
+    volumes:
+      - ./nginx/switch_nginx.sh:/usr/local/bin/switch_nginx.sh
+      - nginx_conf:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/nginx/ssl:rw
+      - ./nginx/https.conf:/tmp/https.conf
+    entrypoint: /bin/sh /usr/local/bin/switch_nginx.sh
+    depends_on:
+      certbot:
+        condition: service_completed_successfully
+    restart: no
+
+volumes:
+    static:
+    media:
+    pgdata:
+    nginx_logs:
+    nginx_conf:
